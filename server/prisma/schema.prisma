@@ -1,0 +1,44 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Factory {
+  id        Int         @id @default(autoincrement())
+  name      String
+  location  String?
+  equipment Equipment[]
+}
+
+model Equipment {
+  id                 Int       @id @default(autoincrement())
+  factoryId          Int
+  factory            Factory   @relation(fields: [factoryId], references: [id])
+  name               String
+  categoryMain       String?   // 대분류
+  categorySub        String?   // 중분류
+  categoryDetail     String?   // 소분류
+  specification      String?   // 규격/형식번호
+  capacity           String?   // 용량/등급
+  manufacturingNum   String?   // 기기제조번호
+  recentPassNum      String?   // 최근합격번호
+  certificationNum   String?   // 기기인증번호
+  lastInspectionDate DateTime?
+  nextInspectionDate DateTime? // 유효기간
+  status             String    @default("ACTIVE") // ACTIVE, PASS, FAIL, EXCLUDED
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  username     String   @unique
+  passwordHash String
+  role         String   @default("guest") // admin, guest
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
