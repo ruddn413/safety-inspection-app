@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { LayoutDashboard, Bot, Settings } from 'lucide-react';
+import { LayoutDashboard, Bot, Settings, Map } from 'lucide-react';
 import { Dashboard } from './components/Dashboard';
 import { FactoryList } from './components/FactoryList';
+import { FloorPlanAdmin } from './components/FloorPlanAdmin';
 import logo from './assets/choheung-logo.png';
 
 function App() {
@@ -42,6 +43,19 @@ function App() {
             </div>
             안전검사 설비 관리
           </button>
+          <button
+            onClick={() => setActiveTab('floorplans')}
+            className={`w-full flex items-center px-3 py-3 text-sm font-medium rounded-xl transition-colors ${
+              activeTab === 'floorplans' 
+                ? 'bg-blue-50 text-blue-700 shadow-sm border border-blue-100' 
+                : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 border border-transparent'
+            }`}
+          >
+            <div className={`p-1.5 rounded-lg mr-3 ${activeTab === 'floorplans' ? 'bg-blue-100' : 'bg-orange-100'}`}>
+              <Map className={`h-5 w-5 ${activeTab === 'floorplans' ? 'text-blue-700' : 'text-orange-600'}`} />
+            </div>
+            공정별 도면 관리
+          </button>
         </nav>
         <div className="p-4 border-t border-gray-200">
           <div className="flex items-center text-sm text-gray-500 hover:text-gray-900 cursor-pointer p-2 hover:bg-gray-50 rounded-lg transition-colors">
@@ -57,6 +71,7 @@ function App() {
       <main className="flex-1 overflow-y-auto p-8">
         {activeTab === 'dashboard' && <Dashboard />}
         {activeTab === 'factories' && <FactoryList />}
+        {activeTab === 'floorplans' && <FloorPlanAdmin />}
       </main>
     </div>
   );

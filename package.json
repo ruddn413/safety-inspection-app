@@ -7,14 +7,17 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "postinstall": "cd server && npm install && npx prisma generate && npx prisma db push"
   },
   "dependencies": {
-    "date-fns": "^4.2.1",
+    "date-fns": "^4.3.0",
     "lucide-react": "^1.16.0",
+    "pdfjs-dist": "^5.7.284",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
-    "react-router-dom": "^7.15.1"
+    "react-router-dom": "^7.15.1",
+    "recharts": "^3.8.1"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

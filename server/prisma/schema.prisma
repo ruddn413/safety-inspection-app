@@ -3,15 +3,28 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
 model Factory {
-  id        Int         @id @default(autoincrement())
-  name      String
-  location  String?
-  equipment Equipment[]
+  id         Int         @id @default(autoincrement())
+  name       String
+  location   String?
+  equipment  Equipment[]
+  floorPlans FloorPlan[]
+}
+
+model FloorPlan {
+  id          Int         @id @default(autoincrement())
+  factoryId   Int
+  factory     Factory     @relation(fields: [factoryId], references: [id])
+  name        String      // 도면 이름 (예: 이스트 작업장 도면)
+  processName String?     // 매핑되는 공정/팀 이름 (categoryMain 과 매칭)
+  imageUrl    String      // 업로드된 도면 이미지 URL
+  equipment   Equipment[]
+  createdAt   DateTime    @default(now())
 }
 
 model Equipment {
@@ -26,10 +39,20 @@ model Equipment {
   capacity           String?   // 용량/등급
   manufacturingNum   String?   // 기기제조번호
   recentPassNum      String?   // 최근합격번호
-  certificationNum   String?   // 기기인증번호
+  certificationNum   String?   // 기기인증번호 (QR번호)
+  qrImageUrl         String?   // QR코드 이미지 URL
+  attachmentUrl      String?   // 첨부파일 (추가 이미지) URL
+  attachmentMemo     String?   // 첨부파일 하단 메모
   lastInspectionDate DateTime?
   nextInspectionDate DateTime? // 유효기간
   status             String    @default("ACTIVE") // ACTIVE, PASS, FAIL, EXCLUDED
+  
+  // Floor Plan Mapping
+  floorPlanId        Int?
+  floorPlan          FloorPlan? @relation(fields: [floorPlanId], references: [id])
+  locationX          Float?    // 0.0 ~ 1.0 (비율)
+  locationY          Float?    // 0.0 ~ 1.0 (비율)
+  
   createdAt          DateTime  @default(now())
   updatedAt          DateTime  @updatedAt
 }

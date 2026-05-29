@@ -1,0 +1,1831 @@
+Created At: 2026-05-28T03:05:57Z
+Completed At: 2026-05-28T03:05:57Z
+File Path: `file:///C:/Users/82106/.gemini/antigravity/brain/fda0e4f9-4322-44de-b21f-dd412d28fa1b/.system_generated/tasks/task-210.log`
+Total Lines: 236
+Total Bytes: 15306
+Showing lines 1 to 236
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+1: 
+2: > safety-inspection-app@0.0.0 dev
+3: > vite
+4: 
+5: (node:29424) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+6: (Use `node --trace-deprecation ...` to show where the warning was created)
+7: 
+8:   VITE v8.0.14  ready in 859 ms
+9: 
+10:   ➜  Local:   http://localhost:5173/
+11:   ➜  Network: use --host to expose
+12: 오전 11:36:05 [vite] (client) hmr update /src/index.css, /src/components/Dashboard.tsx, /src/components/FactoryList.tsx
+13: 오전 11:36:33 [vite] (client) hmr update /src/index.css, /src/components/FactoryList.tsx
+14: 오전 11:36:39 [vite] (client) [console.error] Error: Failed to delete equipment
+15:     at deleteEquipment (http://localhost:5173/src/api.ts?t=1779935765212:36:21)
+16:     at async handleDeleteEquipment (http://localhost:5173/src/components/FactoryList.tsx?t=1779935793419:131:4)
+17: 오전 11:36:48 [vite] (client) [console.error] Error: Failed to delete equipment
+18:     at deleteEquipment (http://localhost:5173/src/api.ts?t=1779935765212:36:21)
+19:     at async handleDeleteEquipment (http://localhost:5173/src/components/FactoryList.tsx?t=1779935793419:131:4)
+20: 오전 11:36:59 [vite] (client) [console.error] Error: Failed to delete equipment
+21:     at deleteEquipment (http://localhost:5173/src/api.ts?t=1779935765212:36:21)
+22:     at async handleDeleteEquipment (http://localhost:5173/src/components/FactoryList.tsx?t=1779935793419:131:4)
+23: 오전 11:44:06 [vite] (client) hmr update /src/index.css, /src/components/Factor
+<truncated 12870 bytes>
+ 
+208: 오후 12:05:22 [vite] (client) [console.warn] An error occurred in the <FactoryList> component.
+209: 
+210: Consider adding an error boundary to your tree to customize error handling behavior.
+211: Visit https://react.dev/link/error-boundaries to learn more about error boundaries.
+212: 
+213: 오후 12:05:40 [vite] (client) [Unhandled error] ReferenceError: useState is not defined
+214:  > FactoryList src/components/FactoryList.tsx:5:36
+215:     3  |  
+216:     4  |  export function FactoryList() {
+217:     5  |    const [factories, setFactories] = useState<Factory[]>([]);
+218:        |                                      ^
+219:     6  |    const [equipment, setEquipment] = useState<Equipment[]>([]);
+220:     7  |    const [selectedFactoryId, setSelectedFactoryId] = useState<number | 'all'>('all');
+221:  > Object.react_stack_bottom_frame node_modules/react-dom/cjs/react-dom-client.development.js:25904:19
+222:  > renderWithHooks node_modules/react-dom/cjs/react-dom-client.development.js:7662:21
+223:  > updateFunctionComponent node_modules/react-dom/cjs/react-dom-client.development.js:10166:18
+224:  > beginWork node_modules/react-dom/cjs/react-dom-client.development.js:11778:17
+225:  > runWithFiberInDEV node_modules/react-dom/cjs/react-dom-client.development.js:871:29
+226:  > performUnitOfWork node_modules/react-dom/cjs/react-dom-client.development.js:17641:21
+227:  > workLoopSync node_modules/react-dom/cjs/react-dom-client.development.js:17469:40
+228:  > renderRootSync node_modules/react-dom/cjs/react-dom-client.development.js:17450:10
+229:  > performWorkOnRoot node_modules/react-dom/cjs/react-dom-client.development.js:16583:34
+230: 
+231: 오후 12:05:40 [vite] (client) [console.warn] An error occurred in the <FactoryList> component.
+232: 
+233: Consider adding an error boundary to your tree to customize error handling behavior.
+234: Visit https://react.dev/link/error-boundaries to learn more about error boundaries.
+235: 
+236: 
+The above content shows the entire, complete file contents of the requested file.
+
+
+---NEXT---
+
+Created At: 2026-05-28T04:39:21Z
+Completed At: 2026-05-28T04:39:21Z
+File Path: `file:///C:/Users/82106/.gemini/antigravity/brain/fda0e4f9-4322-44de-b21f-dd412d28fa1b/.system_generated/tasks/task-210.log`
+Total Lines: 641
+Total Bytes: 36211
+Showing lines 1 to 641
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+1: 
+2: > safety-inspection-app@0.0.0 dev
+3: > vite
+4: 
+5: (node:29424) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+6: (Use `node --trace-deprecation ...` to show where the warning was created)
+7: 
+8:   VITE v8.0.14  ready in 859 ms
+9: 
+10:   ➜  Local:   http://localhost:5173/
+11:   ➜  Network: use --host to expose
+12: 오전 11:36:05 [vite] (client) hmr update /src/index.css, /src/components/Dashboard.tsx, /src/components/FactoryList.tsx
+13: 오전 11:36:33 [vite] (client) hmr update /src/index.css, /src/components/FactoryList.tsx
+14: 오전 11:36:39 [vite] (client) [console.error] Error: Failed to delete equipment
+15:     at deleteEquipment (http://localhost:5173/src/api.ts?t=1779935765212:36:21)
+16:     at async handleDeleteEquipment (http://localhost:5173/src/components/FactoryList.tsx?t=1779935793419:131:4)
+17: 오전 11:36:48 [vite] (client) [console.error] Error: Failed to delete equipment
+18:     at deleteEquipment (http://localhost:5173/src/api.ts?t=1779935765212:36:21)
+19:     at async handleDeleteEquipment (http://localhost:5173/src/components/FactoryList.tsx?t=1779935793419:131:4)
+20: 오전 11:36:59 [vite] (client) [console.error] Error: Failed to delete equipment
+21:     at deleteEquipment (http://localhost:5173/src/api.ts?t=1779935765212:36:21)
+22:     at async handleDeleteEquipment (http://localhost:5173/src/components/FactoryList.tsx?t=1779935793419:131:4)
+23: 오전 11:44:06 [vite] (client) hmr update /src/index.css, /src/components/Factor
+<truncated 35800 bytes>
+ ╭─[ src/components/FactoryList.tsx:321:15 ]
+604:      │
+605:  251 │               <thead className="bg-gray-50">
+606:      │                ──┬──  
+607:      │                  ╰──── Opened here
+608:      │ 
+609:  321 │             </table>
+610:      │               ──┬──  
+611:      │                 ╰──── Expected `</thead>`
+612: ─────╯
+613: 
+614: [PARSE_ERROR] Expected corresponding JSX closing tag for 'table'.
+615:      ╭─[ src/components/FactoryList.tsx:322:13 ]
+616:      │
+617:  250 │             <table className="min-w-full divide-y divide-gray-200">
+618:      │              ──┬──  
+619:      │                ╰──── Opened here
+620:      │ 
+621:  322 │           </div>
+622:      │             ─┬─  
+623:      │              ╰─── Expected `</table>`
+624: ─────╯
+625: 
+626: [PARSE_ERROR] Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+627:      ╭─[ src/components/FactoryList.tsx:527:1 ]
+628:      │
+629:  527 │ }
+630:      │ │ 
+631:      │ ╰─ 
+632: ─────╯
+633: 
+634:   Plugin: vite:oxc
+635:   File: C:/Users/82106/safety-inspection-app/src/components/FactoryList.tsx
+636:       at transformWithOxc (file:///C:/Users/82106/safety-inspection-app/node_modules/vite/dist/node/chunks/node.js:3338:19)
+637:       at TransformPluginContext.transform (file:///C:/Users/82106/safety-inspection-app/node_modules/vite/dist/node/chunks/node.js:3409:26)
+638:       at EnvironmentPluginContainer.transform (file:///C:/Users/82106/safety-inspection-app/node_modules/vite/dist/node/chunks/node.js:30273:51)
+639:       at async loadAndTransform (file:///C:/Users/82106/safety-inspection-app/node_modules/vite/dist/node/chunks/node.js:24532:26)
+640:       at async viteTransformMiddleware (file:///C:/Users/82106/safety-inspection-app/node_modules/vite/dist/node/chunks/node.js:24326:20)
+641: 
+The above content shows the entire, complete file contents of the requested file.
+
+
+---NEXT---
+
+Created At: 2026-05-28T06:28:00Z
+Completed At: 2026-05-28T06:28:00Z
+File Path: `file:///c:/Users/82106/safety-inspection-app/src/components/Dashboard.tsx`
+Total Lines: 53
+Total Bytes: 2302
+Showing lines 1 to 53
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+1: import React, { useEffect, useState } from 'react';
+2: import { fetchDashboardSummary, fetchFactories, type DashboardSummary } from '../api';
+3: 
+4: export function Dashboard() {
+5:   const [summary, setSummary] = useState<DashboardSummary | null>(null);
+6:   const [factoryCount, setFactoryCount] = useState<number>(0);
+7: 
+8:   useEffect(() => {
+9:     async function loadData() {
+10:       try {
+11:         const [sumData, facts] = await Promise.all([
+12:           fetchDashboardSummary(),
+13:           fetchFactories()
+14:         ]);
+15:         setSummary(sumData);
+16:         setFactoryCount(facts.length);
+17:       } catch (err) {
+18:         console.error("Failed to load dashboard data", err);
+19:       }
+20:     }
+21:     loadData();
+22:   }, []);
+23: 
+24:   return (
+25:     <div>
+26:       <h2 className="text-2xl font-bold text-gray-900 mb-6">대시보드</h2>
+27:       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+28:         <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+29:           <h3 className="text-sm font-medium text-gray-500">등록된 공장</h3>
+30:           <p className="mt-2 text-3xl font-semibold text-gray-900">{factoryCount}</p>
+31:         </div>
+32:         <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+33:           <h3 className="text-sm font-medium text-gray-500">총 설비 수</h3>
+34:           <p className="mt-2 text-3xl font-semibold text-gray-900">{summary?.totalEquipment || 0}</p>
+35:         </div>
+36:         <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 border-l-4 border-l-red-500">
+37:           <h3 className="text-sm font-medium text-gray-500">검사 도래 (30일 이내)</h3>
+38:           <p className="mt-2 text-3xl font-semibold text-red-600">{summary?.approaching || 0}</p>
+39:         </div>
+40:       </div>
+41:       <div className="mt-8 bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+42:         <h3 className="text-lg font-medium text-gray-900 mb-4">최근 알림</h3>
+43:         {(summary?.overdue || 0) > 0 && (
+44:           <p className="text-red-600 text-sm font-semibold mb-2">
+45:             ⚠️ 검사 기한이 지난 설비가 {summary?.overdue}건 있습니다.
+46:           </p>
+47:         )}
+48:         <p className="text-gray-500 text-sm">추가 알림 내용이 여기에 표시됩니다.</p>
+49:       </div>
+50:     </div>
+51:   );
+52: }
+53: 
+The above content shows the entire, complete file contents of the requested file.
+
+
+---NEXT---
+
+Created At: 2026-05-28T07:47:20Z
+Completed At: 2026-05-28T07:47:20Z
+File Path: `file:///c:/Users/82106/safety-inspection-app/src/components/Dashboard.tsx`
+Total Lines: 272
+Total Bytes: 13105
+Showing lines 100 to 160
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+100:           <button 
+101:             onClick={() => setSelectedFactoryId('all')}
+102:             className={`px-4 py-2 rounded-full text-sm font-semibold transition-colors shadow-sm border ${
+103:               selectedFactoryId === 'all' 
+104:                 ? 'bg-blue-600 text-white border-blue-600' 
+105:                 : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'
+106:             }`}
+107:           >
+108:             전체 공장
+109:           </button>
+110:           {factories.map(f => (
+111:             <button 
+112:               key={f.id}
+113:               onClick={() => setSelectedFactoryId(f.id)}
+114:               className={`px-4 py-2 rounded-full text-sm font-semibold transition-colors shadow-sm border ${
+115:                 selectedFactoryId === f.id 
+116:                   ? 'bg-blue-600 text-white border-blue-600' 
+117:                   : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'
+118:               }`}
+119:             >
+120:               {f.name}
+121:             </button>
+122:           ))}
+123:         </div>
+124:       </div>
+125: 
+126:       {/* KPI Cards */}
+127:       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+128:         {/* Total */}
+129:         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow relative overflow-hidden group">
+130:           <div className="absolute -right-6 -top-6 bg-blue-50 w-24 h-24 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+1
+<truncated 393 bytes>
+span className="text-sm font-medium text-gray-500">대</span>
+137:           </div>
+138:         </div>
+139: 
+140:         {/* 30 Days */}
+141:         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow relative overflow-hidden group">
+142:           <div className="absolute -right-6 -top-6 bg-amber-50 w-24 h-24 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+143:             <Clock className="w-8 h-8 text-amber-200 absolute bottom-4 left-4" />
+144:           </div>
+145:           <p className="text-sm font-semibold text-amber-600 mb-1 relative z-10">30일 이내 검사 예정</p>
+146:           <div className="flex items-baseline gap-2 relative z-10">
+147:             <h3 className="text-4xl font-bold text-amber-500">{within30DaysCount}</h3>
+148:             <span className="text-sm font-medium text-gray-500">대</span>
+149:           </div>
+150:         </div>
+151: 
+152:         {/* This Year */}
+153:         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow relative overflow-hidden group">
+154:           <div className="absolute -right-6 -top-6 bg-emerald-50 w-24 h-24 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+155:             <CalendarClock className="w-8 h-8 text-emerald-200 absolute bottom-4 left-4" />
+156:           </div>
+157:           <p className="text-sm font-semibold text-emerald-600 mb-1 relative z-10">올해 검사 예정 ({currentYear}년)</p>
+158:           <div className="flex items-baseline gap-2 relative z-10">
+159:             <h3 className="text-4xl font-bold text-emerald-600">{withinThisYearCount}</h3>
+160:             <span className="text-sm font-medium text-gray-500">대</span>
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.
+
+
+---NEXT---
+
+Created At: 2026-05-28T07:56:26Z
+Completed At: 2026-05-28T07:56:26Z
+File Path: `file:///c:/Users/82106/safety-inspection-app/src/components/Dashboard.tsx`
+Total Lines: 358
+Total Bytes: 17802
+Showing lines 240 to 275
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+240:                   <Pie
+241:                     data={pieData}
+242:                     cx="50%"
+243:                     cy="50%"
+244:                     innerRadius={60}
+245:                     outerRadius={100}
+246:                     paddingAngle={5}
+247:                     dataKey="value"
+248:                     label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+249:                     labelLine={false}
+250:                   >
+251:                     {pieData.map((entry, index) => (
+252:                       <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+253:                     ))}
+254:                   </Pie>
+255:                   <RechartsTooltip 
+256:                     contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
+257:                     itemStyle={{ color: '#1f2937', fontWeight: 'bold' }}
+258:                   />
+259:                   <Legend verticalAlign="bottom" height={36} />
+260:                 </PieChart>
+261:               </ResponsiveContainer>
+262:             </div>
+263:           </div>
+264:         </div>
+265:       </div>
+266:       
+267:       {/* Bar Chart Row */}
+268:       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 h-[400px] flex flex-col">
+269:         <h3 className="text-lg font-bold text-gray-800 mb-4">설비 종류별 현황</h3>
+270:         <div className="flex-1 w-full h-full min-h-0">
+271:           <ResponsiveContainer width="100%" height="100%">
+272:             <BarChart
+273:               data={barData}
+274:               margin={{ top: 10, right: 30, left: 0, bottom: 5 }}
+275:             >
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.
+
+
+---NEXT---
+
+Created At: 2026-05-28T07:56:33Z
+Completed At: 2026-05-28T07:56:33Z
+File Path: `file:///c:/Users/82106/safety-inspection-app/src/components/Dashboard.tsx`
+Total Lines: 358
+Total Bytes: 17802
+Showing lines 265 to 295
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+265:       </div>
+266:       
+267:       {/* Bar Chart Row */}
+268:       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 h-[400px] flex flex-col">
+269:         <h3 className="text-lg font-bold text-gray-800 mb-4">설비 종류별 현황</h3>
+270:         <div className="flex-1 w-full h-full min-h-0">
+271:           <ResponsiveContainer width="100%" height="100%">
+272:             <BarChart
+273:               data={barData}
+274:               margin={{ top: 10, right: 30, left: 0, bottom: 5 }}
+275:             >
+276:               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f3f4f6" />
+277:               <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#6b7280', fontSize: 12 }} />
+278:               <YAxis allowDecimals={false} axisLine={false} tickLine={false} tick={{ fill: '#6b7280', fontSize: 12 }} />
+279:               <RechartsTooltip 
+280:                 cursor={{ fill: '#f9fafb' }}
+281:                 contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
+282:               />
+283:               <Bar dataKey="count" name="설비 수" radius={[6, 6, 0, 0]}>
+284:                 {barData.map((entry, index) => (
+285:                   <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+286:                 ))}
+287:               </Bar>
+288:             </BarChart>
+289:           </ResponsiveContainer>
+290:         </div>
+291:       </div>
+292: 
+293:       {/* Equipment List Modal */}
+294:       {modalType && (
+295:         <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-in fade-in duration-200">
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.
+
+
+---NEXT---
+
+Created At: 2026-05-28T07:56:49Z
+Completed At: 2026-05-28T07:56:50Z
+File Path: `file:///c:/Users/82106/safety-inspection-app/src/components/Dashboard.tsx`
+Total Lines: 358
+Total Bytes: 17802
+Showing lines 170 to 265
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+170:         {/* Scheduled Next Year */}
+171:         <div 
+172:           onClick={() => setModalType('scheduledNextYear')}
+173:           className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md hover:border-indigo-200 transition-all cursor-pointer relative overflow-hidden group"
+174:         >
+175:           <div className="absolute -right-6 -top-6 bg-indigo-50 w-24 h-24 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+176:             <CalendarClock className="w-8 h-8 text-indigo-300 absolute bottom-4 left-4" />
+177:           </div>
+178:           <p className="text-sm font-semibold text-indigo-600 mb-1 relative z-10 flex items-center gap-1 group-hover:underline">
+179:             내년 검사 대상 ({currentYear + 1}년) <ArrowRight className="w-3 h-3" />
+180:           </p>
+181:           <div className="flex items-baseline gap-2 relative z-10">
+182:             <h3 className="text-4xl font-bold text-indigo-600">{scheduledNextYearCount}</h3>
+183:             <span className="text-sm font-medium text-gray-500">대</span>
+184:           </div>
+185:         </div>
+186:       </div>
+187: 
+188:       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+189:         {/* Left Col: D-Day List */}
+190:         <div className="lg:col-span-1 bg-white rounded-2xl shadow-sm border border-gray-100 flex flex-col h-[500px]">
+191:           <div className="p-5 border-b border-gray-100 flex justify-between items-center">
+192:             <h3 className="text-lg font-bold text-gray
+<truncated 2409 bytes>
+                   );
+227:                 })}
+228:               </ul>
+229:             )}
+230:           </div>
+231:         </div>
+232: 
+233:         {/* Right Col: Charts */}
+234:         <div className="lg:col-span-2 flex flex-col gap-6 h-[500px]">
+235:           <div className="flex-1 bg-white rounded-2xl shadow-sm border border-gray-100 p-5 flex flex-col">
+236:             <h3 className="text-lg font-bold text-gray-800 mb-4">공정(팀)별 설비 보유 현황</h3>
+237:             <div className="flex-1 w-full h-full min-h-0">
+238:               <ResponsiveContainer width="100%" height="100%">
+239:                 <PieChart>
+240:                   <Pie
+241:                     data={pieData}
+242:                     cx="50%"
+243:                     cy="50%"
+244:                     innerRadius={60}
+245:                     outerRadius={100}
+246:                     paddingAngle={5}
+247:                     dataKey="value"
+248:                     label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+249:                     labelLine={false}
+250:                   >
+251:                     {pieData.map((entry, index) => (
+252:                       <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+253:                     ))}
+254:                   </Pie>
+255:                   <RechartsTooltip 
+256:                     contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
+257:                     itemStyle={{ color: '#1f2937', fontWeight: 'bold' }}
+258:                   />
+259:                   <Legend verticalAlign="bottom" height={36} />
+260:                 </PieChart>
+261:               </ResponsiveContainer>
+262:             </div>
+263:           </div>
+264:         </div>
+265:       </div>
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.
+
+
+---NEXT---
+
+Created At: 2026-05-29T00:36:51Z
+Completed At: 2026-05-29T00:36:51Z
+File Path: `file:///C:/Users/82106/.gemini/antigravity/brain/fda0e4f9-4322-44de-b21f-dd412d28fa1b/implementation_plan.md`
+Total Lines: 61
+Total Bytes: 4332
+Showing lines 1 to 61
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+1: # 🗺️ 공정별 도면 위치 표시 기능 (Floor Plan Mapping) 구축 계획
+2: 
+3: 요청하신 스크린샷과 같이 공정별 도면 위에 설비의 위치를 매핑하고, 클릭 시 해당 설비의 상세 정보(합격증명서, 사진 등)를 보여주는 기능은 **충분히 구현 가능하며, 시스템의 활용도를 극대화할 수 있는 매우 훌륭한 아이디어**입니다.
+4: 
+5: 성공적인 구현을 위해 다음과 같은 단계적 개발 계획을 제안합니다.
+6: 
+7: ## 🚨 사용자 확인 사항 (User Review Required)
+8: 
+9: > [!IMPORTANT]
+10: > **도면(Floor Plan) 이미지 관리 방식**
+11: > 각 공정별(이스트, 피자, 슈레드 등)로 2D 도면 이미지 파일(.jpg, .png 등)을 업로드하고 관리해야 합니다. 도면 이미지는 사용자가 직접 시스템에 업로드하여 관리하는 형태로 구축하는 것이 맞을까요? (초기에는 제가 테스트용 도면 이미지를 하나 생성하여 시연해 드릴 수 있습니다.)
+12: 
+13: > [!TIP]
+14: > **설비 위치(핀) 등록 방식**
+15: > 설비의 위치는 어떻게 등록하는 것이 가장 편할까요?
+16: > 1. 도면 화면에서 우측의 **'배치되지 않은 설비 리스트'를 마우스로 드래그(Drag & Drop)**해서 도면 위 원하는 곳에 올려놓는 방식 (추천)
+17: > 2. 설비 관리 목록에서 특정 설비를 클릭 후 X, Y 좌표값을 직접 숫자로 입력하는 방식
+18: 
+19: ## 🛠️ 제안하는 개발 변경 사항 (Proposed Changes)
+20: 
+21: ### 1. Databas
+<truncated 1042 bytes>
+nts/Dashboard.tsx`
+42: - **도면 뷰어 모드 탭 추가:** 대시보드 상단에 [통계 현황] / [도면 뷰어] 탭을 분리하여 넓은 화면에서 도면을 볼 수 있도록 제공.
+43: - **공정별 도면 선택기:** '이스트', '피자' 등 공정을 선택하면 해당 도면 이미지가 중앙에 로드됨.
+44: - **설비 핀셋(Pin) 렌더링:** `locationX`, `locationY` 데이터가 있는 설비들을 도면 이미지 위에 마커 아이콘으로 오버레이.
+45: - **Hover/Click 팝오버:** 마커에 마우스를 올리거나 클릭하면, 스크린샷처럼 툴팁 형태로 **해당 설비의 사진(attachmentUrl), 합격번호, 설비명**이 팝업으로 나타남.
+46: 
+47: #### [NEW] `src/components/FloorPlanAdmin.tsx` (도면 관리 및 핀 배치)
+48: - 관리자가 새로운 공정 도면을 업로드하는 기능.
+49: - 아직 도면에 배치되지 않은 설비들을 드래그 앤 드롭으로 도면 위에 자유롭게 배치하여 좌표를 저장하는 기능.
+50: 
+51: ## ✅ 검증 계획 (Verification Plan)
+52: 
+53: 1. **DB Migration:** Prisma schema 변경 및 마이그레이션이 정상적으로 수행되는지 확인.
+54: 2. **Mock Data Test:** '이스트' 공정에 임의의 가상 도면 이미지를 업로드하고, 컨베이어 설비 몇 개의 좌표를 부여.
+55: 3. **UI Interaction Test:**
+56:    - 대시보드 도면 뷰어에서 핀이 정확한 위치에 렌더링되는지 확인.
+57:    - 브라우저 창 크기를 줄이거나 늘려도 핀의 상대적 위치(%)가 정확히 유지되는지 반응형 테스트.
+58:    - 핀 클릭 시 팝업에 첨부파일 사진과 검사합격번호가 정상적으로 노출되는지 확인.
+59: 
+60: 위 계획에 대해 어떻게 생각하시는지, 특히 **도면 업로드 방식과 핀 배치 방식(드래그 앤 드롭)**에 대한 의견을 주시면 즉시 데이터베이스 수정 및 화면 구현을 시작하겠습니다!
+61: 
+The above content shows the entire, complete file contents of the requested file.
+
+
+---NEXT---
+
+Created At: 2026-05-29T01:22:33Z
+Completed At: 2026-05-29T01:22:33Z
+File Path: `file:///c:/Users/82106/safety-inspection-app/src/components/Dashboard.tsx`
+Total Lines: 401
+Total Bytes: 20299
+Showing lines 300 to 360
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+300:               { bg: 'bg-emerald-50', text: 'text-emerald-700', icon: 'text-emerald-500', border: 'border-emerald-100', hover: 'hover:border-emerald-300 hover:shadow-emerald-100' },
+301:               { bg: 'bg-rose-50', text: 'text-rose-700', icon: 'text-rose-500', border: 'border-rose-100', hover: 'hover:border-rose-300 hover:shadow-rose-100' },
+302:             ];
+303:             const colorTheme = colors[idx % colors.length];
+304:             
+305:             const getIcon = () => {
+306:               if (item.name.includes('컨베이어')) return <ConveyorIcon className={`w-7 h-7 ${colorTheme.icon}`} />;
+307:               if (item.name.includes('로봇')) return <Bot className={`w-7 h-7 ${colorTheme.icon}`} />;
+308:               if (item.name.includes('압력용기')) return <Cylinder className={`w-7 h-7 ${colorTheme.icon}`} />;
+309:               return <Settings className={`w-7 h-7 ${colorTheme.icon}`} />;
+310:             };
+311: 
+312:             return (
+313:               <div 
+314:                 key={item.name} 
+315:                 className={`bg-white rounded-2xl p-5 border shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md cursor-default group overflow-hidden relative ${colorTheme.border} ${colorTheme.hover}`}
+316:               >
+317:                 <div className={`absolute -right-4 -top-4 w-24 h-24 rounded-full ${colorTheme.bg} opacity-50 group-hover:scale-[2] transition-transform duration-700 ease-out`}></div>
+318:                 <div className="relative z-10 flex flex-col h-full">
+319:     
+<truncated 650 bytes>
+t-medium text-gray-400">대</span>
+327:                     </div>
+328:                   </div>
+329:                 </div>
+330:               </div>
+331:             );
+332:           })}
+333:         </div>
+334:       </div>
+335: 
+336:       {/* Equipment List Modal */}
+337:       {modalType && (
+338:         <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-in fade-in duration-200">
+339:           <div className="bg-white rounded-2xl shadow-xl w-full max-w-2xl overflow-hidden flex flex-col max-h-[85vh]">
+340:             <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50">
+341:               <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
+342:                 {modalType === 'completedThisYear' ? (
+343:                   <><ShieldCheck className="w-5 h-5 text-emerald-500" /> 올해 검사 완료 ({currentYear}년)</>
+344:                 ) : (
+345:                   <><CalendarClock className="w-5 h-5 text-indigo-500" /> 내년 검사 대상 ({currentYear + 1}년)</>
+346:                 )}
+347:               </h3>
+348:               <button 
+349:                 onClick={() => setModalType(null)}
+350:                 className="text-gray-400 hover:text-gray-600 transition-colors p-1 rounded-md hover:bg-gray-200"
+351:               >
+352:                 <X className="w-5 h-5" />
+353:               </button>
+354:             </div>
+355:             
+356:             <div className="flex-1 overflow-y-auto p-2 bg-white">
+357:               {modalEquipment.length === 0 ? (
+358:                 <div className="py-12 text-center text-gray-400">해당되는 설비가 없습니다.</div>
+359:               ) : (
+360:                 <ul className="divide-y divide-gray-50">
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.
+
+
+---NEXT---
+
+Created At: 2026-05-29T02:14:06Z
+Completed At: 2026-05-29T02:14:07Z
+File Path: `file:///c:/Users/82106/safety-inspection-app/src/components/Dashboard.tsx`
+Total Lines: 484
+Total Bytes: 25076
+Showing lines 360 to 400
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+360:                     className={`px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2 whitespace-nowrap transition-colors ${
+361:                       selectedPlanId === plan.id 
+362:                         ? 'bg-blue-600 text-white shadow-md' 
+363:                         : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-100'
+364:                     }`}
+365:                   >
+366:                     <Map className="w-4 h-4" /> {plan.name}
+367:                   </button>
+368:                 ))}
+369:               </div>
+370:               <div className="flex-1 bg-slate-100 relative p-4 flex items-center justify-center overflow-hidden">
+371:                 {(() => {
+372:                   const selectedPlan = floorPlans.find(p => p.id === selectedPlanId);
+373:                   const placedEquipment = equipment.filter(eq => eq.floorPlanId === selectedPlanId && eq.locationX !== null && eq.locationY !== null);
+374:                   
+375:                   if (!selectedPlan) return null;
+376:                   return (
+377:                         draggable={false}
+378:                       />
+379:                       
+380:                       {placedEquipment.map(eq => (
+381:                         <div
+382:                           key={eq.id}
+383:                           className="absolute group cursor-pointer"
+384:                           style={{ 
+385:                             left: `${(eq.locationX || 0) * 100}%`, 
+386:                             top: `${(eq.locationY || 0) * 100}%`,
+387:                             transform: 'translate(-50%, -50%)'
+388:                           }}
+389:                         >
+390:                           <div className="relative flex h-5 w-5">
+391:                             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+392:                             <span className="relative inline-flex rounded-full h-5 w-5 bg-blue-600 border-2 border-white shadow-md"></span>
+393:                           </div>
+394:                           
+395:                           {/* Interactive Tooltip */}
+396:                           <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 bg-white text-gray-800 rounded-xl p-3 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-2xl border border-gray-100 z-10 flex flex-col gap-2">
+397:                             <div className="font-bold border-b border-gray-100 pb-2 text-sm">{eq.name}</div>
+398:                             <div className="flex justify-between text-xs">
+399:                               <span className="text-gray-500">합격번호</span>
+400:                               <span className="font-semibold text-blue-600">{eq.recentPassNum || '-'}</span>
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.
+
+
+---NEXT---
+
+Created At: 2026-05-29T02:14:21Z
+Completed At: 2026-05-29T02:14:21Z
+File Path: `file:///c:/Users/82106/safety-inspection-app/src/components/Dashboard.tsx`
+Total Lines: 497
+Total Bytes: 25968
+Showing lines 380 to 430
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+380:                         <Map className="w-4 h-4 text-blue-600" />
+381:                         <span className="font-bold text-gray-800">{selectedPlan.name}</span>
+382:                       </div>
+383: 
+384:                       <div className="relative shadow-xl border-4 border-white rounded-xl bg-white inline-block max-w-full">
+385:                         <img 
+386:                           src={`http://localhost:3000${selectedPlan.imageUrl}`} 
+387:                           alt="Floor Plan" 
+388:                           className="max-w-full block"
+389:                           style={{ maxHeight: '600px', objectFit: 'contain' }}
+390:                           draggable={false}
+391:                         />
+392:                       
+393:                       {placedEquipment.map(eq => (
+394:                         <div
+395:                           key={eq.id}
+396:                           className="absolute group cursor-pointer"
+397:                           style={{ 
+398:                             left: `${(eq.locationX || 0) * 100}%`, 
+399:                             top: `${(eq.locationY || 0) * 100}%`,
+400:                             transform: 'translate(-50%, -50%)'
+401:                           }}
+402:                         >
+403:                           <div className="relative flex h-5 w-5">
+404:                             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+405:                             <span className="relative inline-flex rounded-full h-5 w-5 bg-blue-600 border-2 border-white shadow-md"></span>
+406:                           </div>
+407:                           
+408:                           {/* Interactive Tooltip */}
+409:                           <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 bg-white text-gray-800 rounded-xl p-3 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-2xl border border-gray-100 z-10 flex flex-col gap-2">
+410:                             <div className="font-bold border-b border-gray-100 pb-2 text-sm">{eq.name}</div>
+411:                             <div className="flex justify-between text-xs">
+412:                               <span className="text-gray-500">합격번호</span>
+413:                               <span className="font-semibold text-blue-600">{eq.recentPassNum || '-'}</span>
+414:                             </div>
+415:                             {eq.attachmentUrl && (
+416:                               <div className="mt-1 h-24 w-full rounded-lg overflow-hidden bg-gray-100 border border-gray-200">
+417:                                 <img src={`http://localhost:3000${eq.attachmentUrl}`} alt={eq.name} className="w-full h-full object-cover" />
+418:                               </div>
+419:                             )}
+420:                           </div>
+421:                         </div>
+422:                       ))}
+423:                     </div>
+424:                   );
+425:                 })()}
+426:               </div>
+427:             </>
+428:           )}
+429:         </div>
+430:       </div>
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.
+
+
+---NEXT---
+
+Created At: 2026-05-29T02:29:41Z
+Completed At: 2026-05-29T02:29:41Z
+File Path: `file:///c:/Users/82106/safety-inspection-app/src/components/Dashboard.tsx`
+Total Lines: 498
+Total Bytes: 26057
+Showing lines 300 to 380
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+300:           {barData.map((item, idx) => {
+301:             const colors = [
+302:               { bg: 'bg-blue-50', text: 'text-blue-700', icon: 'text-blue-500', border: 'border-blue-100', hover: 'hover:border-blue-300 hover:shadow-blue-100' },
+303:               { bg: 'bg-purple-50', text: 'text-purple-700', icon: 'text-purple-500', border: 'border-purple-100', hover: 'hover:border-purple-300 hover:shadow-purple-100' },
+304:               { bg: 'bg-amber-50', text: 'text-amber-700', icon: 'text-amber-500', border: 'border-amber-100', hover: 'hover:border-amber-300 hover:shadow-amber-100' },
+305:               { bg: 'bg-emerald-50', text: 'text-emerald-700', icon: 'text-emerald-500', border: 'border-emerald-100', hover: 'hover:border-emerald-300 hover:shadow-emerald-100' },
+306:               { bg: 'bg-rose-50', text: 'text-rose-700', icon: 'text-rose-500', border: 'border-rose-100', hover: 'hover:border-rose-300 hover:shadow-rose-100' },
+307:             ];
+308:             const colorTheme = colors[idx % colors.length];
+309:             
+310:             const getIcon = () => {
+311:               if (item.name.includes('컨베이어')) return <ConveyorIcon className={`w-7 h-7 ${colorTheme.icon}`} />;
+312:               if (item.name.includes('로봇')) return <Bot className={`w-7 h-7 ${colorTheme.icon}`} />;
+313:               if (item.name.includes('압력용기')) return <Cylinder className={`w-7 h-7 ${colorTheme.icon}`} />;
+314:               return <Settings className={`w-7 h-7 ${colorTheme.icon}`} />;
+315:             };
+316: 
+317:       
+<truncated 2367 bytes>
+면을 업로드해주세요.</p>
+352:             </div>
+353:           ) : (
+354:             <>
+355:               <div className="flex gap-2 p-4 border-b border-gray-100 bg-gray-50 overflow-x-auto">
+356:                 {floorPlans.map(plan => (
+357:                   <button
+358:                     key={plan.id}
+359:                     onClick={() => setSelectedPlanId(plan.id)}
+360:                     className={`px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2 whitespace-nowrap transition-colors ${
+361:                       selectedPlanId === plan.id 
+362:                         ? 'bg-blue-600 text-white shadow-md' 
+363:                         : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-100'
+364:                     }`}
+365:                   >
+366:                     <Map className="w-4 h-4" /> {plan.name}
+367:                   </button>
+368:                 ))}
+369:               </div>
+370:               <div className="flex-1 bg-slate-100 relative p-4 flex items-center justify-center overflow-hidden min-h-0 min-w-0">
+371:                 {(() => {
+372:                   const selectedPlan = floorPlans.find(p => p.id === selectedPlanId);
+373:                   const placedEquipment = equipment.filter(eq => eq.floorPlanId === selectedPlanId && eq.locationX !== null && eq.locationY !== null);
+374:                   
+375:                   if (!selectedPlan) return null;
+376:                   return (
+377:                     <>
+378:                       {/* Floor Plan Name Badge */}
+379:                       <div className="absolute top-4 left-4 z-20 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-xl shadow-sm border border-gray-200/50 flex items-center gap-2 pointer-events-none">
+380:                         <Map className="w-4 h-4 text-blue-600" />
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.
+
+
+---NEXT---
+
+Created At: 2026-05-29T02:29:47Z
+Completed At: 2026-05-29T02:29:47Z
+File Path: `file:///c:/Users/82106/safety-inspection-app/src/components/Dashboard.tsx`
+Total Lines: 498
+Total Bytes: 26057
+Showing lines 380 to 400
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+380:                         <Map className="w-4 h-4 text-blue-600" />
+381:                         <span className="font-bold text-gray-800">{selectedPlan.name}</span>
+382:                       </div>
+383: 
+384:                       <div className="relative shadow-xl border-4 border-white rounded-xl bg-white flex justify-center items-center" style={{ maxWidth: '100%', maxHeight: '100%' }}>
+385:                         <img 
+386:                           src={`http://localhost:3000${selectedPlan.imageUrl}`} 
+387:                           alt="Floor Plan" 
+388:                           className="max-w-full max-h-full block"
+389:                           style={{ objectFit: 'contain' }}
+390:                           draggable={false}
+391:                         />
+392:                       
+393:                       {placedEquipment.map(eq => (
+394:                         <div
+395:                           key={eq.id}
+396:                           className="absolute group cursor-pointer"
+397:                           style={{ 
+398:                             left: `${(eq.locationX || 0) * 100}%`, 
+399:                             top: `${(eq.locationY || 0) * 100}%`,
+400:                             transform: 'translate(-50%, -50%)'
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.
+
+
+---NEXT---
+
+Created At: 2026-05-29T02:34:11Z
+Completed At: 2026-05-29T02:34:11Z
+File Path: `file:///c:/Users/82106/safety-inspection-app/src/components/Dashboard.tsx`
+Total Lines: 498
+Total Bytes: 25998
+Showing lines 340 to 430
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+340: 
+341:       {/* Floor Plan Viewer */}
+342:       <div className="mb-8">
+343:         <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+344:           <Map className="w-5 h-5 text-gray-500" /> 공정별 도면 뷰어
+345:         </h3>
+346:         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col h-[600px]">
+347:           {floorPlans.length === 0 ? (
+348:             <div className="flex-1 flex flex-col items-center justify-center text-gray-400 bg-slate-50">
+349:               <ImageIcon className="w-16 h-16 mb-4 text-gray-200" />
+350:               <p className="text-lg font-semibold text-gray-600 mb-2">등록된 공정 도면이 없습니다.</p>
+351:               <p className="text-sm">좌측 메뉴의 <strong>[공정별 도면 관리]</strong> 탭에서 먼저 도면을 업로드해주세요.</p>
+352:             </div>
+353:           ) : (
+354:             <>
+355:               <div className="flex gap-2 p-4 border-b border-gray-100 bg-gray-50 overflow-x-auto">
+356:                 {floorPlans.map(plan => (
+357:                   <button
+358:                     key={plan.id}
+359:                     onClick={() => setSelectedPlanId(plan.id)}
+360:                     className={`px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2 whitespace-nowrap transition-colors ${
+361:                       selectedPlanId === plan.id 
+362:                         ? 'bg-blue-600 text-white shadow-md' 
+363:                         : 'bg-white text-gray-600 
+<truncated 2453 bytes>
+                       <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+405:                             <span className="relative inline-flex rounded-full h-5 w-5 bg-blue-600 border-2 border-white shadow-md"></span>
+406:                           </div>
+407:                           
+408:                           {/* Interactive Tooltip */}
+409:                           <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 bg-white text-gray-800 rounded-xl p-3 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-2xl border border-gray-100 z-10 flex flex-col gap-2">
+410:                             <div className="font-bold border-b border-gray-100 pb-2 text-sm">{eq.name}</div>
+411:                             <div className="flex justify-between text-xs">
+412:                               <span className="text-gray-500">합격번호</span>
+413:                               <span className="font-semibold text-blue-600">{eq.recentPassNum || '-'}</span>
+414:                             </div>
+415:                             {eq.attachmentUrl && (
+416:                               <div className="mt-1 h-24 w-full rounded-lg overflow-hidden bg-gray-100 border border-gray-200">
+417:                                 <img src={`http://localhost:3000${eq.attachmentUrl}`} alt={eq.name} className="w-full h-full object-cover" />
+418:                               </div>
+419:                             )}
+420:                           </div>
+421:                         </div>
+422:                       ))}
+423:                     </div>
+424:                     </>
+425:                   );
+426:                 })()}
+427:               </div>
+428:             </>
+429:           )}
+430:         </div>
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.
+
+
+---NEXT---
+
+Created At: 2026-05-29T02:49:20Z
+Completed At: 2026-05-29T02:49:20Z
+File Path: `file:///c:/Users/82106/safety-inspection-app/src/components/Dashboard.tsx`
+Total Lines: 547
+Total Bytes: 29496
+Showing lines 1 to 150
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+1: import React, { useEffect, useState } from 'react';
+2: import { fetchEquipment, fetchFactories, fetchFloorPlans, type Equipment, type Factory, type FloorPlan } from '../api';
+3: import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, Tooltip as RechartsTooltip, ResponsiveContainer, CartesianGrid, Legend } from 'recharts';
+4: import { AlertCircle, CheckCircle, Clock, ArrowRight, ShieldCheck, CalendarClock, Building2, Package, X, Bot, Cylinder, Settings, Map, Image as ImageIcon } from 'lucide-react';
+5: import { differenceInDays, isBefore, startOfToday, parseISO } from 'date-fns';
+6: 
+7: const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#14b8a6', '#f97316'];
+8: 
+9: const ConveyorIcon = ({ className }: { className?: string }) => (
+10:   <svg 
+11:     xmlns="http://www.w3.org/2000/svg" 
+12:     viewBox="0 0 24 24" 
+13:     fill="none" 
+14:     stroke="currentColor" 
+15:     strokeWidth="2" 
+16:     strokeLinecap="round" 
+17:     strokeLinejoin="round" 
+18:     className={className}
+19:   >
+20:     {/* Box on top */}
+21:     <rect x="7" y="4" width="10" height="7" rx="1" />
+22:     {/* Conveyor belt loop */}
+23:     <rect x="2" y="13" width="20" height="6" rx="3" />
+24:     {/* Rollers */}
+25:     <circle cx="6" cy="16" r="1" />
+26:     <circle cx="12" cy="16" r="1" />
+27:     <circle cx="18" cy="16" r="1" />
+28:   </svg>
+29: );
+30: 
+31: export function Dashboard() {
+32:   const [equipment, setEquipment] = useState<Equipment[]>([]);
+33:   const [factories, setFactories] = useState<Factory[]>([]);
+34:
+<truncated 3062 bytes>
+5:     .sort((a, b) => b.count - a.count);
+116: 
+117:   const modalEquipment = modalType === 'completedThisYear' 
+118:     ? filteredEq.filter(eq => eq.lastInspectionDate && parseISO(eq.lastInspectionDate as string).getFullYear() === currentYear)
+119:     : modalType === 'scheduledNextYear'
+120:       ? filteredEq.filter(eq => eq.nextInspectionDate && parseISO(eq.nextInspectionDate as string).getFullYear() === currentYear + 1)
+121:       : [];
+122: 
+123:   if (isLoading) {
+124:     return (
+125:       <div className="flex justify-center items-center h-full">
+126:         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+127:       </div>
+128:     );
+129:   }
+130: 
+131:   return (
+132:     <div className="space-y-6 pb-12 animate-in fade-in duration-500">
+133:       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-4">
+134:         <div>
+135:           <h2 className="text-3xl font-extrabold text-gray-900 tracking-tight">안전검사 통합 대시보드</h2>
+136:           <p className="text-sm text-gray-500 mt-1">사업장 내 전체 위험기계기구 검사 및 자산 현황을 한눈에 파악하세요.</p>
+137:         </div>
+138:         {/* Factory Filter Tabs */}
+139:         <div className="flex flex-wrap gap-2">
+140:           <button 
+141:             onClick={() => setSelectedFactoryId('all')}
+142:             className={`px-4 py-2 rounded-full text-sm font-semibold transition-colors shadow-sm border ${
+143:               selectedFactoryId === 'all' 
+144:                 ? 'bg-blue-600 text-white border-blue-600' 
+145:                 : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'
+146:             }`}
+147:           >
+148:             전체 공장
+149:           </button>
+150:           {factories.map(f => (
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.
+
+
+---NEXT---
+
+Created At: 2026-05-29T02:49:44Z
+Completed At: 2026-05-29T02:49:44Z
+File Path: `file:///c:/Users/82106/safety-inspection-app/src/components/Dashboard.tsx`
+Total Lines: 548
+Total Bytes: 29578
+Showing lines 430 to 485
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+430:                 </div>
+431: 
+432:                 {/* Right: Info Panel */}
+433:                 <div className="w-72 bg-white border-l border-gray-100 p-5 flex flex-col gap-4 overflow-y-auto z-10 shadow-[-4px_0_15px_-5px_rgba(0,0,0,0.05)]">
+434:                   {(() => {
+435:                     const selectedPlan = floorPlans.find(p => p.id === selectedPlanId);
+436:                     const placedEquipment = equipment.filter(eq => eq.floorPlanId === selectedPlanId && eq.locationX !== null && eq.locationY !== null);
+437:                     if (!selectedPlan) return null;
+438:                     
+439:                     const totalEq = placedEquipment.length;
+440:                     const categories = placedEquipment.reduce((acc, eq) => {
+441:                       const name = eq.name || '알 수 없음';
+442:                       acc[name] = (acc[name] || 0) + 1;
+443:                       return acc;
+444:                     }, {} as Record<string, number>);
+445: 
+446:                     return (
+447:                       <>
+448:                         <h4 className="font-bold text-gray-800 text-base border-b pb-3">도면 요약 정보</h4>
+449:                         <div className="bg-blue-50 rounded-xl p-5 border border-blue-100 shadow-sm relative overflow-hidden">
+450:                           <div className="absolute -right-4 -top-4 w-16 h-16 bg-blue-100 rounded-full opacity-50"></div>
+451:                           <div className="text-sm font-semibold text-blue-800 mb-1 relative z-10">배치된 설비 총계</div>
+
+<truncated 381 bytes>
+               <div className="text-xs font-bold text-gray-500 mb-1 uppercase tracking-wider">설비 종류별 현황</div>
+458:                             <div className="space-y-2">
+459:                               {Object.entries(categories).map(([cat, count]) => (
+460:                                 <div key={cat} className="flex justify-between items-center text-sm p-3 bg-gray-50 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+461:                                   <span className="font-bold text-gray-700">{cat}</span>
+462:                                   <span className="font-extrabold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-lg">{count}대</span>
+463:                                 </div>
+464:                               ))}
+465:                             </div>
+466:                           </div>
+467:                         )}
+468:                         
+469:                         <div className="mt-auto pt-4 text-xs text-gray-400 bg-gray-50 p-4 rounded-xl border border-gray-100 leading-relaxed">
+470:                           <Map className="w-5 h-5 mb-2 text-gray-300" />
+471:                           도면 위의 파란색 마커에 마우스를 올리면 해당 설비의 <strong>합격번호</strong> 및 <strong>첨부 사진</strong>을 확인할 수 있습니다.
+472:                         </div>
+473:                       </>
+474:                     );
+475:                   })()}
+476:                 </div>
+477:               </div>
+478:             </>
+479:           )}
+480:         </div>
+481:       </div>
+482: 
+483:       {/* Equipment List Modal */}
+484:       {modalType && (
+485:         <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-in fade-in duration-200">
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.
+
+
+---NEXT---
+
+Created At: 2026-05-29T02:53:19Z
+Completed At: 2026-05-29T02:53:19Z
+File Path: `file:///c:/Users/82106/safety-inspection-app/src/components/Dashboard.tsx`
+Total Lines: 594
+Total Bytes: 33095
+Showing lines 390 to 430
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+390:                             alt="Floor Plan" 
+391:                             className="max-w-full block"
+392:                             style={{ maxHeight: '480px' }}
+393:                             draggable={false}
+394:                           />
+395:                         
+396:                         {placedEquipment.map(eq => (
+397:                           <div
+398:                             key={eq.id}
+399:                             onClick={() => setExpandedCategory(eq.name)}
+400:                             className="absolute group cursor-pointer hover:z-50"
+401:                             style={{ 
+402:                               left: `${(eq.locationX || 0) * 100}%`, 
+403:                               top: `${(eq.locationY || 0) * 100}%`,
+404:                               transform: 'translate(-50%, -50%)'
+405:                             }}
+406:                           >
+407:                             <div className="relative flex h-5 w-5">
+408:                               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+409:                               <span className="relative inline-flex rounded-full h-5 w-5 bg-blue-600 border-2 border-white shadow-md"></span>
+410:                             </div>
+411:                             
+412:                             {/* Interactive Tooltip */}
+413:                             <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 bg-white text-gray-800 rounded-xl p-3 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-2xl border border-gray-100 z-10 flex flex-col gap-2">
+414:                               <div className="font-bold border-b border-gray-100 pb-2 text-sm">{eq.name}</div>
+415:                               <div className="flex justify-between text-xs">
+416:                                 <span className="text-gray-500">합격번호</span>
+417:                                 <span className="font-semibold text-blue-600">{eq.recentPassNum || '-'}</span>
+418:                               </div>
+419:                               {eq.attachmentUrl && (
+420:                                 <div className="mt-1 h-24 w-full rounded-lg overflow-hidden bg-gray-100 border border-gray-200">
+421:                                   <img src={`http://localhost:3000${eq.attachmentUrl}`} alt={eq.name} className="w-full h-full object-cover" />
+422:                                 </div>
+423:                               )}
+424:                             </div>
+425:                           </div>
+426:                         ))}
+427:                       </div>
+428:                       </>
+429:                     );
+430:                   })()}
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.
+
+
+---NEXT---
+
+Created At: 2026-05-29T02:53:25Z
+Completed At: 2026-05-29T02:53:25Z
+File Path: `file:///c:/Users/82106/safety-inspection-app/src/components/Dashboard.tsx`
+Total Lines: 594
+Total Bytes: 33095
+Showing lines 480 to 520
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+480:                                       }`} />
+481:                                     </div>
+482:                                   </button>
+483:                                   
+484:                                   {expandedCategory === cat && (
+485:                                     <div className="mt-1 mb-2 space-y-2 pl-3 border-l-2 border-indigo-200 animate-in slide-in-from-top-2 duration-200">
+486:                                       {placedEquipment.filter(eq => eq.name === cat).map(eq => (
+487:                                         <div key={eq.id} className="bg-white p-3 rounded-xl border border-gray-100 shadow-sm text-xs space-y-1.5 hover:border-indigo-100 transition-colors">
+488:                                           <div className="font-bold text-gray-800 flex justify-between">
+489:                                             <span>{eq.name}</span>
+490:                                             <span className="text-blue-600">{eq.recentPassNum || '합격번호 없음'}</span>
+491:                                           </div>
+492:                                           {eq.specification && (
+493:                                             <div className="text-gray-600 flex gap-2">
+494:                                               <span className="font-semibold text-gray-500 w-16">형식/규격:</span>
+495:                                               <span className="truncate">{eq.specification}</span>
+496:                                             </div>
+497:                                           )}
+498:                                           {eq.capacity && (
+499:                                             <div className="text-gray-600 flex gap-2">
+500:                                               <span className="font-semibold text-gray-500 w-16">용량/등급:</span>
+501:                                               <span className="truncate">{eq.capacity}</span>
+502:                                             </div>
+503:                                           )}
+504:                                           {eq.lastInspectionDate && (
+505:                                             <div className="text-gray-500 mt-1.5 pt-1.5 border-t border-gray-50 flex items-center gap-1">
+506:                                               <ShieldCheck className="w-3.5 h-3.5 text-green-500"/> 
+507:                                               최근 검사일: {eq.lastInspectionDate}
+508:                                             </div>
+509:                                           )}
+510:                                         </div>
+511:                                       ))}
+512:                                     </div>
+513:                                   )}
+514:                                 </div>
+515:                               ))}
+516:                             </div>
+517:                           </div>
+518:                         )}
+519:                       </>
+520:                     );
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.
+
+
+---NEXT---
+
+Created At: 2026-05-29T04:45:46Z
+Completed At: 2026-05-29T04:45:46Z
+File Path: `file:///c:/Users/82106/safety-inspection-app/src/components/Dashboard.tsx`
+Total Lines: 622
+Total Bytes: 35041
+Showing lines 350 to 380
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+350:         </div>
+351:       </div>
+352: 
+353:       {/* Floor Plan Viewer */}
+354:       <div className="mb-8">
+355:         <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+356:           <Map className="w-5 h-5 text-gray-500" /> 공정별 도면 뷰어
+357:         </h3>
+358:         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col h-[600px]">
+359:           {floorPlans.length === 0 ? (
+360:             <div className="flex-1 flex flex-col items-center justify-center text-gray-400 bg-slate-50">
+361:               <ImageIcon className="w-16 h-16 mb-4 text-gray-200" />
+362:               <p className="text-lg font-semibold text-gray-600 mb-2">등록된 공정 도면이 없습니다.</p>
+363:               <p className="text-sm">좌측 메뉴의 <strong>[공정별 도면 관리]</strong> 탭에서 먼저 도면을 업로드해주세요.</p>
+364:             </div>
+365:           ) : (
+366:             <>
+367:               <div className="flex gap-2 p-4 border-b border-gray-100 bg-gray-50 overflow-x-auto">
+368:                 {floorPlans.map(plan => (
+369:                   <button
+370:                     key={plan.id}
+371:                     onClick={() => setSelectedPlanId(plan.id)}
+372:                     className={`px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2 whitespace-nowrap transition-colors ${
+373:                       selectedPlanId === plan.id 
+374:                         ? 'bg-blue-600 text-white shadow-md' 
+375:                         : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-100'
+376:                     }`}
+377:                   >
+378:                     <Map className="w-4 h-4" /> {plan.name}
+379:                   </button>
+380:                 ))}
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.
+
+
+---NEXT---
+
+Created At: 2026-05-29T04:46:11Z
+Completed At: 2026-05-29T04:46:11Z
+File Path: `file:///c:/Users/82106/safety-inspection-app/src/components/Dashboard.tsx`
+Total Lines: 622
+Total Bytes: 35041
+Showing lines 1 to 60
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+1: import React, { useEffect, useState, useRef } from 'react';
+2: import { fetchEquipment, fetchFactories, fetchFloorPlans, type Equipment, type Factory, type FloorPlan } from '../api';
+3: import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, Tooltip as RechartsTooltip, ResponsiveContainer, CartesianGrid, Legend } from 'recharts';
+4: import { AlertCircle, CheckCircle, Clock, ArrowRight, ShieldCheck, CalendarClock, Building2, Package, X, Bot, Cylinder, Settings, Map, Image as ImageIcon } from 'lucide-react';
+5: import { differenceInDays, isBefore, startOfToday, parseISO } from 'date-fns';
+6: 
+7: const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#14b8a6', '#f97316'];
+8: 
+9: const ConveyorIcon = ({ className }: { className?: string }) => (
+10:   <svg 
+11:     xmlns="http://www.w3.org/2000/svg" 
+12:     viewBox="0 0 24 24" 
+13:     fill="none" 
+14:     stroke="currentColor" 
+15:     strokeWidth="2" 
+16:     strokeLinecap="round" 
+17:     strokeLinejoin="round" 
+18:     className={className}
+19:   >
+20:     {/* Box on top */}
+21:     <rect x="7" y="4" width="10" height="7" rx="1" />
+22:     {/* Conveyor belt loop */}
+23:     <rect x="2" y="13" width="20" height="6" rx="3" />
+24:     {/* Rollers */}
+25:     <circle cx="6" cy="16" r="1" />
+26:     <circle cx="12" cy="16" r="1" />
+27:     <circle cx="18" cy="16" r="1" />
+28:   </svg>
+29: );
+30: 
+31: export function Dashboard() {
+32:   const [equipment, setEquipment] = useState<Equipment[]>([]);
+33:   const [factories, setFactories] = useState<Factory[]>([]);
+34:   const [floorPlans, setFloorPlans] = useState<FloorPlan[]>([]);
+35:   const [selectedPlanId, setSelectedPlanId] = useState<number | null>(null);
+36:   const [isLoading, setIsLoading] = useState(true);
+37:   const [selectedFactoryId, setSelectedFactoryId] = useState<number | 'all'>('all');
+38:   
+39:   // Modal states
+40:   const [modalType, setModalType] = useState<'completedThisYear' | 'scheduledNextYear' | null>(null);
+41:   const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
+42:   const [selectedEquipmentId, setSelectedEquipmentId] = useState<number | null>(null);
+43:   const selectedEqRef = useRef<HTMLDivElement>(null);
+44: 
+45:   useEffect(() => {
+46:     if (selectedEquipmentId && selectedEqRef.current) {
+47:       // Small timeout ensures the accordion animation completes and layout settles before scrolling
+48:       setTimeout(() => {
+49:         selectedEqRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+50:       }, 150);
+51:     }
+52:   }, [selectedEquipmentId, expandedCategory]);
+53: 
+54:   useEffect(() => {
+55:     async function loadData() {
+56:       try {
+57:         setIsLoading(true);
+58:         const [eq, facts, plans] = await Promise.all([
+59:           fetchEquipment(),
+60:           fetchFactories(),
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.
+
+
+---NEXT---
+
+Created At: 2026-05-29T04:49:46Z
+Completed At: 2026-05-29T04:49:46Z
+File Path: `file:///c:/Users/82106/safety-inspection-app/src/components/Dashboard.tsx`
+Total Lines: 622
+Total Bytes: 35041
+Showing lines 350 to 400
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+350:         </div>
+351:       </div>
+352: 
+353:       {/* Floor Plan Viewer */}
+354:       <div className="mb-8">
+355:         <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+356:           <Map className="w-5 h-5 text-gray-500" /> 공정별 도면 뷰어
+357:         </h3>
+358:         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col h-[600px]">
+359:           {floorPlans.length === 0 ? (
+360:             <div className="flex-1 flex flex-col items-center justify-center text-gray-400 bg-slate-50">
+361:               <ImageIcon className="w-16 h-16 mb-4 text-gray-200" />
+362:               <p className="text-lg font-semibold text-gray-600 mb-2">등록된 공정 도면이 없습니다.</p>
+363:               <p className="text-sm">좌측 메뉴의 <strong>[공정별 도면 관리]</strong> 탭에서 먼저 도면을 업로드해주세요.</p>
+364:             </div>
+365:           ) : (
+366:             <>
+367:               <div className="flex gap-2 p-4 border-b border-gray-100 bg-gray-50 overflow-x-auto">
+368:                 {floorPlans.map(plan => (
+369:                   <button
+370:                     key={plan.id}
+371:                     onClick={() => setSelectedPlanId(plan.id)}
+372:                     className={`px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2 whitespace-nowrap transition-colors ${
+373:                       selectedPlanId === plan.id 
+374:                         ? 'bg-blue-600 text-white shadow-md' 
+375:                         : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-100'
+376:                     }`}
+377:                   >
+378:                     <Map className="w-4 h-4" /> {plan.name}
+379:                   </button>
+380:                 ))}
+381:               </div>
+382:               <div className="flex-1 flex overflow-hidden min-h-0 min-w-0">
+383:                 {/* Left: Map Viewer */}
+384:                 <div className="flex-[3] bg-slate-100 relative p-4 flex items-center justify-center overflow-hidden min-h-0 min-w-0">
+385:                   {(() => {
+386:                     const selectedPlan = floorPlans.find(p => p.id === selectedPlanId);
+387:                     const placedEquipment = equipment.filter(eq => eq.floorPlanId === selectedPlanId && eq.locationX !== null && eq.locationY !== null);
+388:                     
+389:                     if (!selectedPlan) return null;
+390:                     return (
+391:                       <>
+392:                         {/* Floor Plan Name Badge */}
+393:                         <div className="absolute top-4 left-4 z-20 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-xl shadow-sm border border-gray-200/50 flex items-center gap-2 pointer-events-none">
+394:                           <Map className="w-4 h-4 text-blue-600" />
+395:                           <span className="font-bold text-gray-800">{selectedPlan.name}</span>
+396:                         </div>
+397: 
+398:                         <div className="relative shadow-xl border-4 border-white rounded-xl bg-white inline-block max-w-full">
+399:                           <img 
+400:                             src={`http://localhost:3000${selectedPlan.imageUrl}`} 
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.
+
+
+---NEXT---
+
+Created At: 2026-05-29T04:49:57Z
+Completed At: 2026-05-29T04:49:57Z
+File Path: `file:///c:/Users/82106/safety-inspection-app/src/components/Dashboard.tsx`
+Total Lines: 622
+Total Bytes: 35041
+Showing lines 110 to 150
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+110:     const key = eq.categoryMain || '미분류';
+111:     acc[key] = (acc[key] || 0) + 1;
+112:     return acc;
+113:   }, {} as Record<string, number>);
+114: 
+115:   const pieData = Object.entries(categoryMainStats)
+116:     .map(([name, value]) => ({ name, value }))
+117:     .sort((a, b) => b.value - a.value);
+118: 
+119:   const nameStats = filteredEq.reduce((acc, eq) => {
+120:     const key = eq.name || '미분류';
+121:     acc[key] = (acc[key] || 0) + 1;
+122:     return acc;
+123:   }, {} as Record<string, number>);
+124: 
+125:   const barData = Object.entries(nameStats)
+126:     .map(([name, count]) => ({ name, count }))
+127:     .sort((a, b) => b.count - a.count);
+128: 
+129:   const modalEquipment = modalType === 'completedThisYear' 
+130:     ? filteredEq.filter(eq => eq.lastInspectionDate && parseISO(eq.lastInspectionDate as string).getFullYear() === currentYear)
+131:     : modalType === 'scheduledNextYear'
+132:       ? filteredEq.filter(eq => eq.nextInspectionDate && parseISO(eq.nextInspectionDate as string).getFullYear() === currentYear + 1)
+133:       : [];
+134: 
+135:   if (isLoading) {
+136:     return (
+137:       <div className="flex justify-center items-center h-full">
+138:         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+139:       </div>
+140:     );
+141:   }
+142: 
+143:   return (
+144:     <div className="space-y-6 pb-12 animate-in fade-in duration-500">
+145:       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-4">
+146:         <div>
+147:           <h2 className="text-3xl font-extrabold text-gray-900 tracking-tight">안전검사 통합 대시보드</h2>
+148:           <p className="text-sm text-gray-500 mt-1">사업장 내 전체 위험기계기구 검사 및 자산 현황을 한눈에 파악하세요.</p>
+149:         </div>
+150:         {/* Factory Filter Tabs */}
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.
+
+
+---NEXT---
+
+Created At: 2026-05-29T05:01:33Z
+Completed At: 2026-05-29T05:01:33Z
+File Path: `file:///c:/Users/82106/safety-inspection-app/src/components/Dashboard.tsx`
+Total Lines: 615
+Total Bytes: 34594
+Showing lines 380 to 440
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+380:                     const placedEquipment = equipment.filter(eq => eq.floorPlanId === selectedPlanId && eq.locationX !== null && eq.locationY !== null);
+381:                     
+382:                     if (!selectedPlan) return null;
+383:                     return (
+384:                       <>
+385:                         {/* Floor Plan Name Badge */}
+386:                         <div className="absolute top-4 left-4 z-20 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-xl shadow-sm border border-gray-200/50 flex items-center gap-2 pointer-events-none">
+387:                           <Map className="w-4 h-4 text-blue-600" />
+388:                           <span className="font-bold text-gray-800">{selectedPlan.name}</span>
+389:                         </div>
+390: 
+391:                         <div className="relative shadow-xl border-4 border-white rounded-xl bg-white inline-block max-w-full">
+392:                           <img 
+393:                             src={`http://localhost:3000${selectedPlan.imageUrl}`} 
+394:                             alt="Floor Plan" 
+395:                             className="max-w-full block"
+396:                             style={{ maxHeight: '480px' }}
+397:                             draggable={false}
+398:                           />
+399:                         
+400:                         {placedEquipment.map(eq => (
+401:                           <div
+402:                             key={eq.id}
+403:                             onClick={() => {
+404:                               setExpande
+<truncated 915 bytes>
+                           <span className={`relative inline-flex rounded-full h-5 w-5 border-2 border-white shadow-md transition-all ${selectedEquipmentId === eq.id ? 'bg-amber-500 scale-125 ring-2 ring-amber-200' : 'bg-blue-600'}`}></span>
+417:                             </div>
+418:                             
+419:                             {/* Interactive Tooltip */}
+420:                             <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 bg-white text-gray-800 rounded-xl p-3 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-2xl border border-gray-100 z-10 flex flex-col gap-2">
+421:                               <div className="font-bold border-b border-gray-100 pb-2 text-sm">{eq.name}</div>
+422:                               <div className="flex justify-between text-xs">
+423:                                 <span className="text-gray-500">합격번호</span>
+424:                                 <span className="font-semibold text-blue-600">{eq.recentPassNum || '-'}</span>
+425:                               </div>
+426:                               {eq.attachmentUrl && (
+427:                                 <div className="mt-1 h-24 w-full rounded-lg overflow-hidden bg-gray-100 border border-gray-200">
+428:                                   <img src={`http://localhost:3000${eq.attachmentUrl}`} alt={eq.name} className="w-full h-full object-cover" />
+429:                                 </div>
+430:                               )}
+431:                             </div>
+432:                           </div>
+433:                         ))}
+434:                       </div>
+435:                       </>
+436:                     );
+437:                   })()}
+438:                 </div>
+439: 
+440:                 {/* Right: Info Panel */}
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.
+
+
+---NEXT---
+
+Created At: 2026-05-29T05:18:45Z
+Completed At: 2026-05-29T05:18:46Z
+File Path: `file:///c:/Users/82106/safety-inspection-app/src/components/Dashboard.tsx`
+Total Lines: 594
+Total Bytes: 33598
+Showing lines 380 to 400
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+380:                           />
+381:                         
+382:                         {placedEquipment.map(eq => (
+383:                           <div
+384:                             key={eq.id}
+385:                             onClick={() => {
+386:                               setExpandedCategory(eq.name);
+387:                               setSelectedEquipmentId(eq.id);
+388:                             }}
+389:                             className={`absolute group cursor-pointer ${selectedEquipmentId === eq.id ? 'z-50' : 'hover:z-50'}`}
+390:                             style={{ 
+391:                               left: `${(eq.locationX || 0) * 100}%`, 
+392:                               top: `${(eq.locationY || 0) * 100}%`,
+393:                               transform: 'translate(-50%, -50%)'
+394:                             }}
+395:                           >
+396:                             <EquipmentMarker equipment={eq} isSelected={selectedEquipmentId === eq.id} />
+397:                             
+398:                             {/* Interactive Tooltip */}
+399:                             <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 bg-white text-gray-800 rounded-xl p-3 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-2xl border border-gray-100 z-10 flex flex-col gap-2">
+400:                               <div className="font-bold border-b border-gray-100 pb-2 text-sm">{eq.name}</div>
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.
+
+
+---NEXT---
+
+Created At: 2026-05-29T05:18:52Z
+Completed At: 2026-05-29T05:18:52Z
+File Path: `file:///c:/Users/82106/safety-inspection-app/src/components/Dashboard.tsx`
+Total Lines: 594
+Total Bytes: 33598
+Showing lines 360 to 390
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+360:                   {(() => {
+361:                     const selectedPlan = floorPlans.find(p => p.id === selectedPlanId);
+362:                     const placedEquipment = equipment.filter(eq => eq.floorPlanId === selectedPlanId && eq.locationX !== null && eq.locationY !== null);
+363:                     
+364:                     if (!selectedPlan) return null;
+365:                     return (
+366:                       <>
+367:                         {/* Floor Plan Name Badge */}
+368:                         <div className="absolute top-4 left-4 z-20 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-xl shadow-sm border border-gray-200/50 flex items-center gap-2 pointer-events-none">
+369:                           <Map className="w-4 h-4 text-blue-600" />
+370:                           <span className="font-bold text-gray-800">{selectedPlan.name}</span>
+371:                         </div>
+372: 
+373:                         <div className="relative shadow-xl border-4 border-white rounded-xl bg-white inline-block max-w-full">
+374:                           <img 
+375:                             src={`http://localhost:3000${selectedPlan.imageUrl}`} 
+376:                             alt="Floor Plan" 
+377:                             className="max-w-full block"
+378:                             style={{ maxHeight: '480px' }}
+379:                             draggable={false}
+380:                           />
+381:                         
+382:                         {placedEquipment.map(eq => (
+383:                           <div
+384:                             key={eq.id}
+385:                             onClick={() => {
+386:                               setExpandedCategory(eq.name);
+387:                               setSelectedEquipmentId(eq.id);
+388:                             }}
+389:                             className={`absolute group cursor-pointer ${selectedEquipmentId === eq.id ? 'z-50' : 'hover:z-50'}`}
+390:                             style={{ 
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.
+
+
+---NEXT---
+
+Created At: 2026-05-29T05:21:36Z
+Completed At: 2026-05-29T05:21:36Z
+File Path: `file:///c:/Users/82106/safety-inspection-app/src/components/Dashboard.tsx`
+Total Lines: 597
+Total Bytes: 33736
+Showing lines 150 to 450
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+150:                 selectedFactoryId === f.id 
+151:                   ? 'bg-blue-600 text-white border-blue-600' 
+152:                   : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'
+153:               }`}
+154:             >
+155:               {f.name}
+156:             </button>
+157:           ))}
+158:         </div>
+159:       </div>
+160: 
+161:       {/* KPI Cards */}
+162:       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+163:         {/* Total */}
+164:         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow relative overflow-hidden group">
+165:           <div className="absolute -right-6 -top-6 bg-blue-50 w-24 h-24 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+166:             <Package className="w-8 h-8 text-blue-200 absolute bottom-4 left-4" />
+167:           </div>
+168:           <p className="text-sm font-semibold text-gray-500 mb-1 relative z-10">총 등록 설비</p>
+169:           <div className="flex items-baseline gap-2 relative z-10">
+170:             <h3 className="text-4xl font-bold text-gray-900">{totalEq}</h3>
+171:             <span className="text-sm font-medium text-gray-500">대</span>
+172:           </div>
+173:         </div>
+174: 
+175:         {/* Completed This Year */}
+176:         <div 
+177:           onClick={() => setModalType('completedThisYear')}
+178:           className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md hover:border-emerald-200 transitio
+<truncated 16349 bytes>
+&& eq.locationX !== null && eq.locationY !== null);
+427:                     if (!selectedPlan) return null;
+428:                     
+429:                     const totalEq = placedEquipment.length;
+430:                     const categories = placedEquipment.reduce((acc, eq) => {
+431:                       const name = eq.name || '알 수 없음';
+432:                       acc[name] = (acc[name] || 0) + 1;
+433:                       return acc;
+434:                     }, {} as Record<string, number>);
+435: 
+436:                     return (
+437:                       <>
+438:                         <h4 className="font-bold text-gray-800 text-base border-b pb-3 flex items-center justify-between">
+439:                           도면 요약 정보
+440:                           <span className="text-xs font-normal text-gray-400">자세히 보려면 목록을 클릭하세요</span>
+441:                         </h4>
+442:                         <div className="bg-blue-50 rounded-xl p-5 border border-blue-100 shadow-sm relative overflow-hidden shrink-0">
+443:                           <div className="absolute -right-4 -top-4 w-16 h-16 bg-blue-100 rounded-full opacity-50"></div>
+444:                           <div className="text-sm font-semibold text-blue-800 mb-1 relative z-10">배치된 설비 총계</div>
+445:                           <div className="text-3xl font-extrabold text-blue-600 relative z-10">{totalEq}<span className="text-base font-medium ml-1">대</span></div>
+446:                         </div>
+447:                         
+448:                         {totalEq > 0 && (
+449:                           <div className="flex flex-col gap-2 mt-2">
+450:                             <div className="text-xs font-bold text-gray-500 mb-1 uppercase tracking-wider">설비 종류별 상세 현황</div>
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.
+
+
+---NEXT---
+
+Created At: 2026-05-29T05:21:54Z
+Completed At: 2026-05-29T05:21:54Z
+File Path: `file:///c:/Users/82106/safety-inspection-app/src/components/Dashboard.tsx`
+Total Lines: 597
+Total Bytes: 33736
+Showing lines 450 to 597
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+450:                             <div className="text-xs font-bold text-gray-500 mb-1 uppercase tracking-wider">설비 종류별 상세 현황</div>
+451:                             <div className="space-y-3">
+452:                               {Object.entries(categories).map(([cat, count]) => (
+453:                                 <div key={cat} className="flex flex-col gap-1">
+454:                                   <button 
+455:                                     onClick={() => setExpandedCategory(expandedCategory === cat ? null : cat)}
+456:                                     className={`w-full flex justify-between items-center text-sm p-3 rounded-xl border transition-all text-left ${
+457:                                       expandedCategory === cat
+458:                                         ? 'bg-blue-50 border-blue-300 shadow-md ring-2 ring-blue-100'
+459:                                         : 'bg-gray-50 border-gray-100 shadow-sm hover:shadow-md hover:border-indigo-200'
+460:                                     }`}
+461:                                   >
+462:                                     <span className={`font-bold ${expandedCategory === cat ? 'text-blue-800' : 'text-gray-700'}`}>{cat}</span>
+463:                                     <div className="flex items-center gap-2">
+464:                                       <span className={`font-extrabold px-2 py-0.5 rounded-lg ${
+465:                                         expandedCategory === cat ? 'text-white bg-blue-600' : 'text-indigo-600 bg-indigo-50'
+466:                      
+<truncated 6628 bytes>
+                          {idx + 1}. {eq.name} <span className="text-gray-500 font-normal text-xs ml-1">({eq.specification || '-'})</span>
+562:                         </span>
+563:                         <div className="flex items-center gap-2 text-xs text-gray-500 mt-1">
+564:                           <span className="bg-gray-100 px-1.5 py-0.5 rounded font-medium">{eq.categoryMain || '미분류'}</span>
+565:                           <span>|</span>
+566:                           <span className="truncate">
+567:                             {modalType === 'completedThisYear' ? '완료일:' : '예정일:'} 
+568:                             <span className="text-gray-900 font-medium ml-1">
+569:                               {modalType === 'completedThisYear' ? eq.lastInspectionDate?.split('T')[0] : eq.nextInspectionDate?.split('T')[0]}
+570:                             </span>
+571:                           </span>
+572:                         </div>
+573:                       </div>
+574:                       <div className="text-xs text-gray-400">
+575:                         기기번호: {eq.manufacturingNum || '-'}
+576:                       </div>
+577:                     </li>
+578:                   ))}
+579:                 </ul>
+580:               )}
+581:             </div>
+582:             
+583:             <div className="px-6 py-4 border-t border-gray-100 bg-gray-50 text-right">
+584:               <button 
+585:                 onClick={() => setModalType(null)}
+586:                 className="px-4 py-2 bg-gray-900 text-white rounded-lg text-sm font-semibold hover:bg-gray-800 transition-colors"
+587:               >
+588:                 닫기
+589:               </button>
+590:             </div>
+591:           </div>
+592:         </div>
+593:       )}
+594:     </div>
+595:   );
+596: }
+597: 
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.
+
+
+---NEXT---
+
+Created At: 2026-05-29T05:22:22Z
+Completed At: 2026-05-29T05:22:22Z
+File Path: `file:///c:/Users/82106/safety-inspection-app/src/components/Dashboard.tsx`
+Total Lines: 597
+Total Bytes: 33736
+Showing lines 190 to 230
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+190:         </div>
+191: 
+192:         {/* Scheduled Next Year */}
+193:         <div 
+194:           onClick={() => setModalType('scheduledNextYear')}
+195:           className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md hover:border-indigo-200 transition-all cursor-pointer relative overflow-hidden group"
+196:         >
+197:           <div className="absolute -right-6 -top-6 bg-indigo-50 w-24 h-24 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+198:             <CalendarClock className="w-8 h-8 text-indigo-300 absolute bottom-4 left-4" />
+199:           </div>
+200:           <p className="text-sm font-semibold text-indigo-600 mb-1 relative z-10 flex items-center gap-1 group-hover:underline">
+201:             내년 검사 대상 ({currentYear + 1}년) <ArrowRight className="w-3 h-3" />
+202:           </p>
+203:           <div className="flex items-baseline gap-2 relative z-10">
+204:             <h3 className="text-4xl font-bold text-indigo-600">{scheduledNextYearCount}</h3>
+205:             <span className="text-sm font-medium text-gray-500">대</span>
+206:           </div>
+207:         </div>
+208:       </div>
+209: 
+210:       {/* Floor Plan Viewer */}
+211:       <div className="mb-8">
+212:         <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+213:           <Map className="w-5 h-5 text-gray-500" /> 공정별 도면 뷰어
+214:         </h3>
+215:         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col h-[600px]">
+216:           {floorPlans.length === 0 ? (
+217:             <div className="flex-1 flex flex-col items-center justify-center text-gray-400 bg-slate-50">
+218:               <ImageIcon className="w-16 h-16 mb-4 text-gray-200" />
+219:               <p className="text-lg font-semibold text-gray-600 mb-2">등록된 공정 도면이 없습니다.</p>
+220:               <p className="text-sm">좌측 메뉴의 <strong>[공정별 도면 관리]</strong> 탭에서 먼저 도면을 업로드해주세요.</p>
+221:             </div>
+222:           ) : (
+223:             <>
+224:               <FloorPlanSelector
+225:                 factories={factories}
+226:                 floorPlans={floorPlans}
+227:                 selectedPlanId={selectedPlanId}
+228:                 onSelectPlan={setSelectedPlanId}
+229:                 defaultFactoryId={selectedFactoryId}
+230:               />
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.
+
+
+---NEXT---
+
+Created At: 2026-05-29T05:24:09Z
+Completed At: 2026-05-29T05:24:09Z
+File Path: `file:///c:/Users/82106/safety-inspection-app/src/components/Dashboard.tsx`
+Total Lines: 597
+Total Bytes: 33741
+Showing lines 406 to 540
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+406:       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+407:         {/* Left Col: D-Day List */}
+408:         <div className="lg:col-span-1 bg-white rounded-2xl shadow-sm border border-gray-100 flex flex-col h-[500px]">
+409:           <div className="p-5 border-b border-gray-100 flex justify-between items-center">
+410:             <h3 className="text-lg font-bold text-gray-800 flex items-center gap-2">
+411:               <ShieldCheck className="w-5 h-5 text-indigo-500" />
+412:               검사 도래 임박 설비
+413:             </h3>
+414:             <span className="text-xs bg-indigo-50 text-indigo-600 px-2 py-1 rounded-md font-semibold">Top 8</span>
+415:           </div>
+416:           <div className="flex-1 overflow-y-auto p-2">
+417:             {upcomingList.length === 0 ? (
+418:               <div className="flex flex-col items-center justify-center h-full text-gray-400 gap-3">
+419:                 <CheckCircle className="w-12 h-12 text-emerald-400" />
+420:                 <p>당분간 검사가 필요한 설비가 없습니다.</p>
+421:               </div>
+422:             ) : (
+423:               <ul className="space-y-1">
+424:                 {upcomingList.map((eq, i) => {
+425:                   const isUrgent = eq.dDay <= 30;
+426:                   return (
+427:                     <li key={eq.id} className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-xl transition-colors group cursor-default">
+428:                       <div className="flex flex-col min-w-0">
+429:                         <span
+<truncated 5444 bytes>
+h-24 rounded-full ${colorTheme.bg} opacity-50 group-hover:scale-[2] transition-transform duration-700 ease-out`}></div>
+514:                 <div className="relative z-10 flex flex-col h-full">
+515:                   <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-5 shadow-sm bg-white border ${colorTheme.border} group-hover:scale-110 transition-transform duration-300`}>
+516:                     {getIcon()}
+517:                   </div>
+518:                   <div className="mt-auto">
+519:                     <h4 className="text-sm font-semibold text-gray-500 mb-1">{item.name}</h4>
+520:                     <div className="flex items-baseline gap-1.5">
+521:                       <span className={`text-3xl font-bold ${colorTheme.text}`}>{item.count}</span>
+522:                       <span className="text-sm font-medium text-gray-400">대</span>
+523:                     </div>
+524:                   </div>
+525:                 </div>
+526:               </div>
+527:             );
+528:           })}
+529:         </div>
+530:       </div>
+531: 
+532:       {/* Equipment List Modal */}
+533:       {modalType && (
+534:         <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-in fade-in duration-200">
+535:           <div className="bg-white rounded-2xl shadow-xl w-full max-w-2xl overflow-hidden flex flex-col max-h-[85vh]">
+536:             <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50">
+537:               <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
+538:                 {modalType === 'completedThisYear' ? (
+539:                   <><ShieldCheck className="w-5 h-5 text-emerald-500" /> 올해 검사 완료 ({currentYear}년)</>
+540:                 ) : (
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.
+
+
+---NEXT---
+
+Created At: 2026-05-29T05:25:14Z
+Completed At: 2026-05-29T05:25:15Z
+File Path: `file:///c:/Users/82106/safety-inspection-app/src/components/Dashboard.tsx`
+Total Lines: 717
+Total Bytes: 41098
+Showing lines 400 to 500
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+400:                                 <span className="font-semibold text-blue-600">{eq.recentPassNum || '-'}</span>
+401:                               </div>
+402:                               {eq.attachmentUrl && (
+403:                                 <div className="mt-1 h-24 w-full rounded-lg overflow-hidden bg-gray-100 border border-gray-200">
+404:                                   <img src={`http://localhost:3000${eq.attachmentUrl}`} alt={eq.name} className="w-full h-full object-cover" />
+405:                                 </div>
+406:                               )}
+407:                             </div>
+408:                           </div>
+409:                         ))}
+410:                       </div>
+411:                       </>
+412:                     );
+413:                   })()}
+414:                 </div>
+415: 
+416:                 {/* Right: Info Panel */}
+417:                 <div className="w-96 bg-white border-l border-gray-100 p-5 flex flex-col gap-4 overflow-y-auto z-10 shadow-[-4px_0_15px_-5px_rgba(0,0,0,0.05)]">
+418:                   {(() => {
+419:                     const selectedPlan = floorPlans.find(p => p.id === selectedPlanId);
+420:                     const placedEquipment = equipment.filter(eq => eq.floorPlanId === selectedPlanId && eq.locationX !== null && eq.locationY !== null);
+421:                     if (!selectedPlan) return null;
+422:                     
+423:                     const totalEq = placedEquipment.length;
+424:                     const categories = placedEquipment.reduce((acc, 
+<truncated 4632 bytes>
+                                 >
+480:                                           <div className={`font-bold flex justify-between ${selectedEquipmentId === eq.id ? 'text-blue-900' : 'text-gray-800'}`}>
+481:                                             <span>{eq.name}</span>
+482:                                             <span className="text-blue-600">{eq.recentPassNum || '합격번호 없음'}</span>
+483:                                           </div>
+484:                                           {eq.specification && (
+485:                                             <div className="text-gray-600 flex gap-2">
+486:                                               <span className="font-semibold text-gray-500 w-16">형식/규격:</span>
+487:                                               <span className="truncate">{eq.specification}</span>
+488:                                             </div>
+489:                                           )}
+490:                                           {eq.capacity && (
+491:                                             <div className="text-gray-600 flex gap-2">
+492:                                               <span className="font-semibold text-gray-500 w-16">용량/등급:</span>
+493:                                               <span className="truncate">
+494:                                                 {eq.capacity}
+495:                                                 {eq.name.includes('컨베이어') ? 'm' : 
+496:                                                  eq.name.includes('로봇') ? ' (대)' : 
+497:                                                  eq.name.includes('압력용기') ? '㎥' : ''}
+498:                                               </span>
+499:                                             </div>
+500:                                           )}
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.
+
+
+---NEXT---
+
+Created At: 2026-05-29T05:25:22Z
+Completed At: 2026-05-29T05:25:23Z
+File Path: `file:///c:/Users/82106/safety-inspection-app/src/components/Dashboard.tsx`
+Total Lines: 717
+Total Bytes: 41098
+Showing lines 1 to 10
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+1: \n      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+2:         {/* Left Col: Pie Chart */}
+3:         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 flex flex-col h-[500px]">
+4:           <h3 className="text-lg font-bold text-gray-800 mb-4">공정(팀)별 설비 보유 현황</h3>
+5:           <div className="flex-1 w-full h-full min-h-0">
+6:             <ResponsiveContainer width="100%" height="100%">
+7:               <PieChart>
+8:                 <Pie
+9:                   data={pieData}
+10:                   cx="50%"
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.
+
+
+---NEXT---
+
+Created At: 2026-05-29T05:26:06Z
+Completed At: 2026-05-29T05:26:07Z
+File Path: `file:///c:/Users/82106/safety-inspection-app/src/components/Dashboard.tsx`
+Total Lines: 56
+Total Bytes: 2525
+Showing lines 1 to 25
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+1: import React, { useEffect, useState } from 'react';
+2: import { differenceInDays, isBefore, startOfToday, parseISO } from 'date-fns';
+3: import { FloorPlanSelector } from './FloorPlanSelector';
+4: import { EquipmentMarker, EquipmentLegend, ConveyorIcon } from './EquipmentMarker';
+5: import { fetchDashboardSummary, fetchFactories, type DashboardSummary } from '../api';
+6: 
+7: export function Dashboard() {
+8:   const [summary, setSummary] = useState<DashboardSummary | null>(null);
+9:   const [factoryCount, setFactoryCount] = useState<number>(0);
+10: 
+11:   useEffect(() => {
+12:     async function loadData() {
+13:       try {
+14:         const [sumData, facts] = await Promise.all([
+15:           fetchDashboardSummary(),
+16:           fetchFactories()
+17:         ]);
+18:         setSummary(sumData);
+19:         setFactoryCount(facts.length);
+20:       } catch (err) {
+21:         console.error("Failed to load dashboard data", err);
+22:       }
+23:     }
+24:     loadData();
+25:   }, []);
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.
