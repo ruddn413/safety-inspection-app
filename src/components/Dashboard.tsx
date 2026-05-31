@@ -100,11 +100,11 @@ export function Dashboard() {
   const pieData = useMemo(() => {
     const processMap = new Map<string, number>();
     equipment.forEach(eq => {
-      let p = '미지정 공정';
-      if (eq.floorPlanId) {
+      let p = eq.categoryMain && eq.categoryMain.trim() !== '' ? eq.categoryMain.trim() : '미지정 공정';
+      if (p === '미지정 공정' && eq.floorPlanId) {
         const plan = floorPlans.find(plan => plan.id === eq.floorPlanId);
-        if (plan && plan.processName) {
-          p = plan.processName;
+        if (plan && plan.processName && plan.processName.trim() !== '') {
+          p = plan.processName.trim();
         }
       }
       processMap.set(p, (processMap.get(p) || 0) + 1);
