@@ -829,42 +829,47 @@ export function FactoryList() {
               <div className="flex-1 mr-4">
                 <input 
                   type="text" 
-                  placeholder="여기에 간단한 메모를 작성하세요..." 
+                  placeholder={isAdmin ? "여기에 간단한 메모를 작성하세요..." : "메모가 없습니다."}
                   value={viewingAttachmentEq.attachmentMemo || ''}
-                  onChange={(e) => setViewingAttachmentEq(prev => prev ? {...prev, attachmentMemo: e.target.value} : null)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  onChange={(e) => isAdmin && setViewingAttachmentEq(prev => prev ? {...prev, attachmentMemo: e.target.value} : null)}
+                  className={`w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm ${!isAdmin ? 'bg-gray-100 cursor-not-allowed text-gray-600' : ''}`}
+                  readOnly={!isAdmin}
                 />
               </div>
-              <button 
-                onClick={async () => {
-                  try {
-                    await updateEquipment(viewingAttachmentEq.id, { attachmentMemo: viewingAttachmentEq.attachmentMemo });
-                    alert('메모가 저장되었습니다.');
-                    loadEquipment();
-                  } catch (err) {
-                    alert('메모 저장에 실패했습니다.');
-                  }
-                }}
-                className="px-4 py-2 bg-indigo-600 text-white border border-transparent rounded-md shadow-sm hover:bg-indigo-700 font-medium whitespace-nowrap mr-2"
-              >
-                메모 저장
-              </button>
-              <button 
-                onClick={async () => {
-                  if (confirm('이 첨부파일을 정말 삭제하시겠습니까?')) {
-                    try {
-                      await updateEquipment(viewingAttachmentEq.id, { attachmentUrl: '' });
-                      setViewingAttachmentEq(null);
-                      loadEquipment();
-                    } catch (err) {
-                      alert('삭제에 실패했습니다.');
-                    }
-                  }
-                }}
-                className="px-4 py-2 bg-red-50 text-red-600 border border-red-200 rounded-md hover:bg-red-100 font-medium"
-              >
-                사진 삭제
-              </button>
+              {isAdmin && (
+                <>
+                  <button 
+                    onClick={async () => {
+                      try {
+                        await updateEquipment(viewingAttachmentEq.id, { attachmentMemo: viewingAttachmentEq.attachmentMemo });
+                        alert('메모가 저장되었습니다.');
+                        loadEquipment();
+                      } catch (err) {
+                        alert('메모 저장에 실패했습니다.');
+                      }
+                    }}
+                    className="px-4 py-2 bg-indigo-600 text-white border border-transparent rounded-md shadow-sm hover:bg-indigo-700 font-medium whitespace-nowrap mr-2"
+                  >
+                    메모 저장
+                  </button>
+                  <button 
+                    onClick={async () => {
+                      if (confirm('이 첨부파일을 정말 삭제하시겠습니까?')) {
+                        try {
+                          await updateEquipment(viewingAttachmentEq.id, { attachmentUrl: '' });
+                          setViewingAttachmentEq(null);
+                          loadEquipment();
+                        } catch (err) {
+                          alert('삭제에 실패했습니다.');
+                        }
+                      }
+                    }}
+                    className="px-4 py-2 bg-red-50 text-red-600 border border-red-200 rounded-md hover:bg-red-100 font-medium mr-2"
+                  >
+                    사진 삭제
+                  </button>
+                </>
+              )}
               <button 
                 onClick={() => setViewingAttachmentEq(null)}
                 className="px-4 py-2 bg-gray-100 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-200 font-medium"
