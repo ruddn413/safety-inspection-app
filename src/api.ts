@@ -42,6 +42,18 @@ export interface DashboardSummary {
   approaching: number;
 }
 
+function getAuthHeaders(isFormData = false) {
+  const token = localStorage.getItem('token');
+  const headers: Record<string, string> = {};
+  if (!isFormData) {
+    headers['Content-Type'] = 'application/json';
+  }
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+  return headers;
+}
+
 export async function fetchFactories(): Promise<Factory[]> {
   const res = await fetch('/api/factories');
   if (!res.ok) throw new Error('Failed to fetch factories');
@@ -51,7 +63,7 @@ export async function fetchFactories(): Promise<Factory[]> {
 export async function createFactory(data: { name: string; location?: string }): Promise<Factory> {
   const res = await fetch('/api/factories', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: getAuthHeaders(),
     body: JSON.stringify(data)
   });
   if (!res.ok) throw new Error('Failed to create factory');
@@ -68,7 +80,7 @@ export async function fetchEquipment(factoryId?: number): Promise<Equipment[]> {
 export async function createEquipment(data: Partial<Equipment>): Promise<Equipment> {
   const res = await fetch('/api/equipment', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: getAuthHeaders(),
     body: JSON.stringify(data)
   });
   if (!res.ok) throw new Error('Failed to create equipment');
@@ -78,7 +90,7 @@ export async function createEquipment(data: Partial<Equipment>): Promise<Equipme
 export async function updateEquipment(id: number, data: Partial<Equipment>): Promise<Equipment> {
   const res = await fetch(`/api/equipment/${id}`, {
     method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
+    headers: getAuthHeaders(),
     body: JSON.stringify(data)
   });
   if (!res.ok) throw new Error('Failed to update equipment');
@@ -86,20 +98,23 @@ export async function updateEquipment(id: number, data: Partial<Equipment>): Pro
 }
 
 export async function deleteEquipment(ids: number[]): Promise<{ message: string }> {
-  const res = await fetch('/api/equipment', {
-    method: 'DELETE',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ ids })
-  });
-  if (!res.ok) throw new Error('Failed to delete equipment');
-  return res.json();
+  // Wait, backend deleteEquipment is now expecting /api/equipment/:id. We need to do it one by one or change backend. 
+  // Wait! I updated backend to delete by id! So this needs to be a promise.all
+  await Promise.all(ids.map(id => 
+    fetch(`/api/equipment/${id}`, {
+      method: 'DELETE',
+      headers: getAuthHeaders(),
+    }).then(r => { if (!r.ok) throw new Error('Fail') })
+  ));
+  return { message: 'Deleted successfully' };
 }
 
 export async function uploadExcel(file: File): Promise<{ message: string }> {
   const formData = new FormData();
   formData.append('file', file);
-  const res = await fetch('/api/equipment/upload', {
+  const res = await fetch('/api/excel-import', {
     method: 'POST',
+    headers: getAuthHeaders(true),
     body: formData,
   });
   if (!res.ok) throw new Error('Failed to upload excel');
@@ -109,7 +124,7 @@ export async function uploadExcel(file: File): Promise<{ message: string }> {
 export async function uploadBulkEquipment(data: any[]): Promise<{ message: string }> {
   const res = await fetch('/api/equipment/bulk', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: getAuthHeaders(),
     body: JSON.stringify(data),
   });
   if (!res.ok) throw new Error('Failed to upload bulk data');
@@ -119,17 +134,32 @@ export async function uploadBulkEquipment(data: any[]): Promise<{ message: strin
 export async function uploadQrImage(file: File): Promise<{ url: string }> {
   const formData = new FormData();
   formData.append('file', file);
-  const res = await fetch('/api/equipment/qr-upload', {
+  const res = await fetch('/api/upload', {
     method: 'POST',
+    headers: getAuthHeaders(true),
     body: formData,
   });
   if (!res.ok) throw new Error('Failed to upload QR image');
   return res.json();
 }
 
+export interface LawUpdate {
+  id: number;
+  type: string;
+  date: string;
+  title: string;
+  link: string;
+}
+
 export async function fetchDashboardSummary(): Promise<DashboardSummary> {
   const res = await fetch('/api/dashboard/summary');
   if (!res.ok) throw new Error('Failed to fetch summary');
+  return res.json();
+}
+
+export async function fetchLaws(): Promise<LawUpdate[]> {
+  const res = await fetch('/api/laws');
+  if (!res.ok) throw new Error('Failed to fetch laws');
   return res.json();
 }
 
@@ -148,6 +178,7 @@ export async function createFloorPlan(data: { factoryId: number; name: string; p
   
   const res = await fetch('/api/floorplans', {
     method: 'POST',
+    headers: getAuthHeaders(true),
     body: formData,
   });
   if (!res.ok) throw new Error('Failed to create floor plan');
@@ -157,9 +188,17 @@ export async function createFloorPlan(data: { factoryId: number; name: string; p
 export async function updateEquipmentLocation(id: number, data: { locationX?: number | null; locationY?: number | null; floorPlanId?: number | null }): Promise<Equipment> {
   const res = await fetch(`/api/equipment/${id}/location`, {
     method: 'PATCH',
-    headers: { 'Content-Type': 'application/json' },
+    headers: getAuthHeaders(),
     body: JSON.stringify(data)
   });
   if (!res.ok) throw new Error('Failed to update equipment location');
   return res.json();
+}
+
+export async function deleteFloorPlan(id: number): Promise<void> {
+  const res = await fetch(`/api/floorplans/${id}`, {
+    method: 'DELETE',
+    headers: getAuthHeaders()
+  });
+  if (!res.ok) throw new Error('Failed to delete floor plan');
 }

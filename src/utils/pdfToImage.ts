@@ -30,7 +30,12 @@ export async function convertPdfToImage(file: File): Promise<File> {
   canvas.height = viewport.height;
   canvas.width = viewport.width;
 
-  await page.render({ canvasContext: context, viewport }).promise;
+  const renderContext: any = {
+    canvasContext: context,
+    viewport: viewport,
+  };
+
+  await page.render(renderContext).promise;
   
   return new Promise((resolve, reject) => {
     canvas.toBlob((blob) => {

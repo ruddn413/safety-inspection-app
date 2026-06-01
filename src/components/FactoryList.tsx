@@ -1,19 +1,21 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { fetchFactories, fetchEquipment, createFactory, uploadExcel, uploadBulkEquipment, createEquipment, updateEquipment, deleteEquipment, uploadQrImage, type Factory, type Equipment } from '../api';
+import { useAuth } from '../context/AuthContext';
 import { differenceInDays, isBefore, startOfToday } from 'date-fns';
 
 const formatCapacity = (eq: Partial<Equipment>) => {
   if (!eq.capacity) return '-';
-  if (/[a-zA-Z가-힣㎥]/.test(eq.capacity)) return eq.capacity;
+  if (/[a-zA-Z가-힣㎥³]/.test(eq.capacity)) return eq.capacity;
   if (eq.name?.includes('컨베이어')) return `${eq.capacity}m`;
   if (eq.name?.includes('로봇')) return `${eq.capacity}(대)`;
-  if (eq.name?.includes('압력용기')) return `${eq.capacity}㎥`;
+  if (eq.name?.includes('압력용기')) return `${eq.capacity}m³`;
   return eq.capacity;
 };
 
 export function FactoryList() {
   const [factories, setFactories] = useState<Factory[]>([]);
   const [equipment, setEquipment] = useState<Equipment[]>([]);
+  const { isAdmin } = useAuth();
   const [selectedFactoryId, setSelectedFactoryId] = useState<number | 'all'>('all');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedTeam, setSelectedTeam] = useState<string>('all');
@@ -337,47 +339,50 @@ export function FactoryList() {
                 총 {filteredEquipment.length}대
               </div>
             </div>
-            <div className="flex gap-2">
-              <button 
-                onClick={() => {
-                  setEditingEqId(null);
-                  setNewEq(emptyEq);
-                  setValidityStart('');
-                  setValidityEnd('');
-                  setShowAddModal(true);
-                }}
-                className="bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700"
-              >
-                설비 추가
-              </button>
-              <button 
-                onClick={handleEditClick}
-                disabled={selectedIds.length !== 1}
-                className={`px-3 py-1 rounded text-sm ${selectedIds.length !== 1 ? 'bg-gray-100 text-gray-400 cursor-not-allowed border border-gray-200' : 'bg-blue-600 text-white hover:bg-blue-700'}`}
-              >
-                선택 수정
-              </button>
-              <button 
-                onClick={handleDeleteEquipment}
-                disabled={selectedIds.length === 0}
-                className={`px-3 py-1 rounded text-sm ${selectedIds.length === 0 ? 'bg-gray-100 text-gray-400 cursor-not-allowed border border-gray-200' : 'bg-red-600 text-white hover:bg-red-700'}`}
-              >
-                선택 삭제
-              </button>
-              <button 
-                onClick={() => setIsBulkModalOpen(true)}
-                className="bg-gray-100 text-gray-700 border border-gray-300 px-3 py-1 rounded text-sm hover:bg-gray-200"
-              >
-                엑셀 데이터 붙여넣기
-              </button>
-            </div>
+            
+            {isAdmin && (
+              <div className="flex gap-2 mt-4 sm:mt-0">
+                <button 
+                  onClick={() => {
+                    setEditingEqId(null);
+                    setNewEq(emptyEq);
+                    setValidityStart('');
+                    setValidityEnd('');
+                    setShowAddModal(true);
+                  }}
+                  className="bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700"
+                >
+                  설비 추가
+                </button>
+                <button 
+                  onClick={handleEditClick}
+                  disabled={selectedIds.length !== 1}
+                  className={`px-3 py-1 rounded text-sm ${selectedIds.length !== 1 ? 'bg-gray-100 text-gray-400 cursor-not-allowed border border-gray-200' : 'bg-blue-600 text-white hover:bg-blue-700'}`}
+                >
+                  선택 수정
+                </button>
+                <button 
+                  onClick={handleDeleteEquipment}
+                  disabled={selectedIds.length === 0}
+                  className={`px-3 py-1 rounded text-sm ${selectedIds.length === 0 ? 'bg-gray-100 text-gray-400 cursor-not-allowed border border-gray-200' : 'bg-red-600 text-white hover:bg-red-700'}`}
+                >
+                  선택 삭제
+                </button>
+                <button 
+                  onClick={() => setIsBulkModalOpen(true)}
+                  className="bg-gray-100 text-gray-700 border border-gray-300 px-3 py-1 rounded text-sm hover:bg-gray-200"
+                >
+                  엑셀 붙여넣기
+                </button>
+              </div>
+            )}
           </div>
           
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-10">
+                  <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-10">
                     <input 
                       type="checkbox" 
                       className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
@@ -391,33 +396,34 @@ export function FactoryList() {
                       checked={filteredEquipment.length > 0 && selectedIds.length === filteredEquipment.length}
                     />
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">공장</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">유해·위험기계명</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">형식(규격)</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">기기번호</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">용량</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">검사유효기간</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">합격번호</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">QR코드 번호</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">비고</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">첨부파일</th>
+                  <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">공장</th>
+                  <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">유해·위험기계명</th>
+                  <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">형식(규격)</th>
+                  <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">기기번호</th>
+                  <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">용량</th>
+                  <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">검사유효기간</th>
+                  <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">합격번호</th>
+                  <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">QR코드 번호</th>
+                  <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">비고</th>
+                  <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">첨부파일</th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {filteredEquipment.length === 0 ? (
                   <tr>
-                    <td colSpan={10} className="px-6 py-4 text-center text-sm text-gray-500">
+                    <td colSpan={11} className="px-6 py-4 text-center text-sm text-gray-500">
                       등록된 설비가 없습니다.
                     </td>
                   </tr>
                 ) : (
                   filteredEquipment.map(eq => (
                     <tr key={eq.id} className="hover:bg-gray-50">
-                      <td className="px-6 py-4 whitespace-nowrap">
+                      <td className="px-6 py-4 whitespace-nowrap text-center">
                         <input 
                           type="checkbox" 
-                          className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
+                          className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer disabled:opacity-50"
                           checked={selectedIds.includes(eq.id)}
+                          disabled={!isAdmin}
                           onChange={(e) => {
                             if (e.target.checked) {
                               setSelectedIds(prev => [...prev, eq.id]);
@@ -427,19 +433,18 @@ export function FactoryList() {
                           }}
                         />
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{eq.factory?.name || '-'}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{eq.name || '-'}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{eq.categorySub || '-'}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{eq.specification || '-'}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{eq.manufacturingNum || '-'}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{formatCapacity(eq)}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-medium">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">{eq.factory?.name || '-'}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 text-center">{eq.name || '-'}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">{eq.specification || '-'}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">{eq.manufacturingNum || '-'}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">{formatCapacity(eq)}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-medium text-center">
                         {eq.lastInspectionDate ? new Date(eq.lastInspectionDate).toLocaleDateString() : (eq.nextInspectionDate ? '?' : '-')} ~ {eq.nextInspectionDate ? new Date(eq.nextInspectionDate).toLocaleDateString() : '-'}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-indigo-600">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-indigo-600 text-center">
                         {eq.recentPassNum || '-'}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
                         {eq.certificationNum || '-'}
                         {eq.qrImageUrl && (
                           <button 
@@ -450,8 +455,8 @@ export function FactoryList() {
                           </button>
                         )}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{eq.categoryDetail || '-'}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">{eq.categoryDetail || '-'}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
                         {eq.attachmentUrl ? (
                           <button 
                             onClick={() => { setViewingAttachmentEq(eq); setImageScale(1); }}
@@ -758,25 +763,27 @@ export function FactoryList() {
               />
             </div>
             <div className="p-4 border-t border-gray-200 flex justify-between bg-white">
-              <button 
-                onClick={async () => {
-                  if (confirm('이 사진을 정말 삭제하시겠습니까?')) {
-                    try {
-                      await updateEquipment(viewingImageEq.id, { qrImageUrl: null });
-                      setViewingImageEq(null);
-                      loadEquipment();
-                    } catch (err) {
-                      alert('삭제에 실패했습니다.');
+              {isAdmin && (
+                <button 
+                  onClick={async () => {
+                    if (confirm('이 사진을 정말 삭제하시겠습니까?')) {
+                      try {
+                        await updateEquipment(viewingImageEq.id, { qrImageUrl: '' });
+                        setViewingImageEq(null);
+                        loadEquipment();
+                      } catch (err) {
+                        alert('삭제에 실패했습니다.');
+                      }
                     }
-                  }
-                }}
-                className="px-4 py-2 bg-red-50 text-red-600 border border-red-200 rounded-md hover:bg-red-100 font-medium"
-              >
-                사진 삭제
-              </button>
+                  }}
+                  className="px-4 py-2 bg-red-50 text-red-600 border border-red-200 rounded-md hover:bg-red-100 font-medium"
+                >
+                  사진 삭제
+                </button>
+              )}
               <button 
                 onClick={() => setViewingImageEq(null)}
-                className="px-4 py-2 bg-gray-100 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-200 font-medium"
+                className={`px-4 py-2 bg-gray-100 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-200 font-medium ${!isAdmin ? 'w-full' : ''}`}
               >
                 닫기
               </button>
@@ -846,7 +853,7 @@ export function FactoryList() {
                 onClick={async () => {
                   if (confirm('이 첨부파일을 정말 삭제하시겠습니까?')) {
                     try {
-                      await updateEquipment(viewingAttachmentEq.id, { attachmentUrl: null });
+                      await updateEquipment(viewingAttachmentEq.id, { attachmentUrl: '' });
                       setViewingAttachmentEq(null);
                       loadEquipment();
                     } catch (err) {

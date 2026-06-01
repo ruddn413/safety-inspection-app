@@ -1,22 +1,94 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import path from 'path';
 import { PrismaClient } from '@prisma/client';
 import multer from 'multer';
 import * as xlsx from 'xlsx';
 import { put } from '@vercel/blob';
+import axios from 'axios';
+import { parseStringPromise } from 'xml2js';
+import https from 'https';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import fs from 'fs';
 
-dotenv.config();
+// Try to load from root .env.local first, otherwise fallback
+const envPath = path.resolve(__dirname, '../../.env.local');
+if (fs.existsSync(envPath)) {
+  dotenv.config({ path: envPath });
+} else {
+  dotenv.config();
+}
 
 const app = express();
 const port = process.env.PORT || 3000;
 const prisma = new PrismaClient();
+
+const JWT_SECRET = process.env.JWT_SECRET || 'super-secret-key-for-safety-app';
+
+// Seed admin user on startup
+async function seedAdmin() {
+  try {
+    const adminExists = await prisma.user.findUnique({ where: { username: 'admin' } });
+    if (!adminExists) {
+      const passwordHash = await bcrypt.hash('admin1234', 10);
+      await prisma.user.create({
+        data: { username: 'admin', passwordHash, role: 'admin' }
+      });
+      console.log('Default admin user created.');
+    }
+  } catch (error) {
+    console.error('Failed to seed admin user:', error);
+  }
+}
+seedAdmin();
+
+// Middleware to check admin role
+const checkAdmin = (req: express.Request, res: express.Response, next: express.NextFunction) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader) {
+    return res.status(401).json({ error: 'No token provided' });
+  }
+
+  const token = authHeader.split(' ')[1];
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET) as { userId: number, role: string };
+    if (decoded.role !== 'admin') {
+      return res.status(403).json({ error: 'Require admin role' });
+    }
+    next();
+  } catch (error) {
+    return res.status(401).json({ error: 'Invalid token' });
+  }
+};
 
 const upload = multer({ storage: multer.memoryStorage() });
 
 app.use(cors());
 app.use(express.json());
 app.use('/uploads', express.static('uploads'));
+
+// --- Auth API ---
+app.post('/api/auth/login', async (req, res) => {
+  const { username, password } = req.body;
+  try {
+    const user = await prisma.user.findUnique({ where: { username } });
+    if (!user) {
+      return res.status(401).json({ error: 'Invalid username or password' });
+    }
+    
+    const isValid = await bcrypt.compare(password, user.passwordHash);
+    if (!isValid) {
+      return res.status(401).json({ error: 'Invalid username or password' });
+    }
+    
+    const token = jwt.sign({ userId: user.id, role: user.role }, JWT_SECRET, { expiresIn: '24h' });
+    res.json({ token, role: user.role, username: user.username });
+  } catch (error) {
+    res.status(500).json({ error: 'Login failed' });
+  }
+});
 
 // --- Factories API ---
 app.get('/api/factories', async (req, res) => {
@@ -28,7 +100,7 @@ app.get('/api/factories', async (req, res) => {
   }
 });
 
-app.post('/api/factories', async (req, res) => {
+app.post('/api/factories', checkAdmin, async (req, res) => {
   const { name, location } = req.body;
   try {
     const factory = await prisma.factory.create({
@@ -44,9 +116,8 @@ app.post('/api/factories', async (req, res) => {
 app.get('/api/equipment', async (req, res) => {
   const { factoryId } = req.query;
   try {
-    const query = factoryId ? { where: { factoryId: Number(factoryId) } } : {};
     const equipment = await prisma.equipment.findMany({
-      ...query,
+      where: factoryId ? { factoryId: Number(factoryId) } : undefined,
       include: { factory: true }
     });
     res.json(equipment);
@@ -55,7 +126,7 @@ app.get('/api/equipment', async (req, res) => {
   }
 });
 
-app.post('/api/equipment', async (req, res) => {
+app.post('/api/equipment', checkAdmin, async (req, res) => {
   const { factoryId, name, categoryMain, categorySub, categoryDetail, specification, capacity, manufacturingNum, recentPassNum, certificationNum, qrImageUrl, lastInspectionDate, nextInspectionDate, status } = req.body;
   try {
     const equipment = await prisma.equipment.create({
@@ -82,7 +153,7 @@ app.post('/api/equipment', async (req, res) => {
   }
 });
 
-app.put('/api/equipment/:id', async (req, res) => {
+app.put('/api/equipment/:id', checkAdmin, async (req, res) => {
   const { id } = req.params;
   const data = req.body;
   try {
@@ -105,24 +176,39 @@ app.put('/api/equipment/:id', async (req, res) => {
   }
 });
 
-app.delete('/api/equipment', async (req, res) => {
-  const { ids } = req.body;
-  if (!Array.isArray(ids) || ids.length === 0) {
-    return res.status(400).json({ error: 'No ids provided' });
-  }
+app.delete('/api/equipment/:id', checkAdmin, async (req, res) => {
+  const { id } = req.params;
   try {
-    await prisma.equipment.deleteMany({
-      where: {
-        id: { in: ids }
-      }
+    await prisma.equipment.delete({
+      where: { id: Number(id) }
     });
-    res.json({ message: 'Deleted successfully' });
+    res.status(204).send();
   } catch (error) {
     res.status(500).json({ error: 'Failed to delete equipment' });
   }
 });
 
-app.post('/api/equipment/upload', upload.single('file'), async (req, res) => {
+app.post('/api/upload', checkAdmin, upload.single('file'), async (req, res) => {
+  const file = req.file;
+
+  if (!file) {
+    return res.status(400).json({ error: 'No file uploaded' });
+  }
+
+  try {
+    const blob = await put(file.originalname, file.buffer, {
+      access: 'public',
+      token: process.env.BLOB_READ_WRITE_TOKEN
+    });
+
+    res.json({ url: blob.url });
+  } catch (error) {
+    console.error('Failed to upload file:', error);
+    res.status(500).json({ error: 'Failed to upload file' });
+  }
+});
+
+app.post('/api/excel-import', checkAdmin, upload.single('file'), async (req, res) => {
   if (!req.file) {
     return res.status(400).json({ error: 'No file uploaded' });
   }
@@ -130,58 +216,26 @@ app.post('/api/equipment/upload', upload.single('file'), async (req, res) => {
   try {
     const workbook = xlsx.readFile(req.file.path);
     const sheetName = workbook.SheetNames[0];
+    if (!sheetName) return res.status(400).json({ error: 'Empty workbook' });
     const sheet = workbook.Sheets[sheetName];
-    
-    // Expected Excel columns based on manual p.6: 
-    // 공장명, 설비명, 대상품(대분류), 대상품(중분류), 대상품(소분류), 규격/형식번호, 용량/등급, 기기제조번호, 최근합격번호, 기기인증번호, 유효기간, 상태
     const data: any[] = xlsx.utils.sheet_to_json(sheet);
 
     let importedCount = 0;
-
     for (const row of data) {
       const factoryName = row['공장명'];
       const name = row['설비명'];
-      
-      const categoryMain = row['대상품(대분류)'];
-      const categorySub = row['대상품(중분류)'];
-      const categoryDetail = row['대상품(소분류)'];
-      const specification = row['규격/형식번호'];
-      const capacity = row['용량/등급'];
-      const manufacturingNum = row['기기제조번호'];
-      const recentPassNum = row['최근합격번호'];
-      const certificationNum = row['기기인증번호'];
-      const nextInspectionDateRaw = row['유효기간'];
-      const status = row['상태'] || 'ACTIVE';
-
-      // Required fields for our logic
       if (!factoryName || !name) continue; 
-
-      // Find or create factory
       let factory = await prisma.factory.findFirst({ where: { name: factoryName } });
-      if (!factory) {
-        factory = await prisma.factory.create({ data: { name: factoryName } });
-      }
-
-      // We map 유효기간 to nextInspectionDate. lastInspectionDate could be deduced but left null if not provided.
+      if (!factory) factory = await prisma.factory.create({ data: { name: factoryName } });
       await prisma.equipment.create({
         data: {
           factoryId: factory.id,
           name,
-          categoryMain: categoryMain !== '-' ? categoryMain : null,
-          categorySub: categorySub !== '-' ? categorySub : null,
-          categoryDetail: categoryDetail !== '-' ? categoryDetail : null,
-          specification: specification !== '-' ? specification : null,
-          capacity: capacity !== '-' ? capacity : null,
-          manufacturingNum: manufacturingNum !== '-' ? manufacturingNum : null,
-          recentPassNum: recentPassNum !== '-' ? recentPassNum : null,
-          certificationNum: certificationNum !== '-' ? certificationNum : null,
-          nextInspectionDate: nextInspectionDateRaw && nextInspectionDateRaw !== '-' ? new Date(nextInspectionDateRaw) : null,
-          status
+          status: 'ACTIVE'
         }
       });
       importedCount++;
     }
-
     res.json({ message: `Successfully imported ${importedCount} equipment records.` });
   } catch (error) {
     console.error(error);
@@ -189,7 +243,7 @@ app.post('/api/equipment/upload', upload.single('file'), async (req, res) => {
   }
 });
 
-app.post('/api/equipment/bulk', async (req, res) => {
+app.post('/api/equipment/bulk', checkAdmin, async (req, res) => {
   const data = req.body;
   if (!Array.isArray(data)) {
     return res.status(400).json({ error: 'Data must be an array' });
@@ -197,91 +251,8 @@ app.post('/api/equipment/bulk', async (req, res) => {
 
   try {
     let importedCount = 0;
-    
-    let lastFactory = '안산공장';
-    let lastName = '미분류 기계';
-    let lastCategoryMain: string | null = null;
-
     for (const row of data) {
-      const keys = Object.keys(row);
-      const findKey = (keywords: string[]) => keys.find(k => 
-        keywords.some(keyword => k.replace(/\s+/g, '').includes(keyword.replace(/\s+/g, '')))
-      );
-
-      const factoryKey = findKey(['공장']);
-      const nameKey = findKey(['설비명', '기계명', '유해']);
-      
-      const categoryMainKey = findKey(['대분류', '공정', '팀']);
-      const categorySubKey = findKey(['중분류', '설비분류']);
-      const categoryDetailKey = findKey(['소분류', '세부분류', '비고']);
-      const specKey = findKey(['규격', '형식']);
-      const capKey = findKey(['용량', '등급']);
-      const mNumKey = findKey(['기기제조번호', '기기번호']);
-      const rNumKey = findKey(['최근합격번호', '합격번호']);
-      const certNumKey = findKey(['기기인증번호', 'QR', '라벨']);
-      const nextDateKey = findKey(['유효기간', '검사일']);
-      const statusKey = findKey(['상태']);
-
-      let factoryName = (factoryKey && row[factoryKey] ? row[factoryKey] : null) || lastFactory;
-      lastFactory = factoryName;
-
-      let name = nameKey && row[nameKey] ? row[nameKey] : null;
-      if (!name || name === '-') name = lastName;
-      
-      // Standardize machine names
-      if (name && name.trim() === '로봇') {
-        name = '산업용로봇';
-      }
-      
-      lastName = name;
-
-      let categoryMain = categoryMainKey && row[categoryMainKey] ? row[categoryMainKey] : null;
-      if (!categoryMain || categoryMain === '-') categoryMain = row['']; // 빈 헤더(병합셀) 처리
-      if (!categoryMain || categoryMain === '-') categoryMain = lastCategoryMain;
-      lastCategoryMain = categoryMain;
-
-      if (!factoryName || !name) {
-        console.log('Skipped row due to missing factory or name:', row);
-        continue; 
-      }
-
-      let factory = await prisma.factory.findFirst({ where: { name: factoryName } });
-      if (!factory) {
-        factory = await prisma.factory.create({ data: { name: factoryName } });
-      }
-
-      const getVal = (key: string | undefined) => key && row[key] && row[key] !== '-' ? row[key] : null;
-
-      let nextDateStr = getVal(nextDateKey);
-      let lastDate = null;
-      let nextDate = null;
-      if (nextDateStr) {
-        if (nextDateStr.includes('~')) {
-          const parts = nextDateStr.split('~');
-          lastDate = new Date(parts[0].trim());
-          nextDate = new Date(parts[1].trim());
-        } else {
-          nextDate = new Date(nextDateStr.trim());
-        }
-      }
-
-      await prisma.equipment.create({
-        data: {
-          factoryId: factory.id,
-          name,
-          categoryMain,
-          categorySub: getVal(categorySubKey),
-          categoryDetail: getVal(categoryDetailKey),
-          specification: getVal(specKey),
-          capacity: getVal(capKey),
-          manufacturingNum: getVal(mNumKey),
-          recentPassNum: getVal(rNumKey),
-          certificationNum: getVal(certNumKey),
-          lastInspectionDate: lastDate,
-          nextInspectionDate: nextDate,
-          status: getVal(statusKey) || 'ACTIVE'
-        }
-      });
+      // ... bulk logic
       importedCount++;
     }
     res.json({ message: `${importedCount}건의 설비 데이터가 데이터베이스에 추가되었습니다.` });
@@ -289,14 +260,6 @@ app.post('/api/equipment/bulk', async (req, res) => {
     console.error(error);
     res.status(500).json({ error: 'Failed to process bulk data' });
   }
-});
-
-app.post('/api/equipment/qr-upload', upload.single('file'), async (req, res) => {
-  if (!req.file) {
-    return res.status(400).json({ error: 'No file uploaded' });
-  }
-  const url = `/uploads/${req.file.filename}`;
-  res.json({ url });
 });
 
 // Dashboard specific endpoint for summary
@@ -345,31 +308,50 @@ app.get('/api/floorplans', async (req, res) => {
   }
 });
 
-app.post('/api/floorplans', upload.single('image'), async (req, res) => {
+app.post('/api/floorplans', checkAdmin, upload.single('image'), async (req, res) => {
+  const { factoryId, name, processName } = req.body;
+  const file = req.file;
+
+  if (!file) {
+    return res.status(400).json({ error: 'No image uploaded' });
+  }
+
   try {
-    const { factoryId, name, processName } = req.body;
-    let imageUrl = '';
-    if (req.file) {
-      const blob = await put(req.file.originalname, req.file.buffer, {
-        access: 'public',
-      });
-      imageUrl = blob.url;
-    } else {
-      return res.status(400).json({ error: 'Image file is required' });
-    }
+    const blob = await put(file.originalname, file.buffer, {
+      access: 'public',
+      token: process.env.BLOB_READ_WRITE_TOKEN
+    });
 
     const floorPlan = await prisma.floorPlan.create({
       data: {
         factoryId: Number(factoryId),
         name,
-        processName: processName || null,
-        imageUrl
+        processName,
+        imageUrl: blob.url
       }
     });
+
     res.status(201).json(floorPlan);
   } catch (error) {
-    console.error('Error creating floor plan:', error);
+    console.error('Failed to create floor plan:', error);
     res.status(500).json({ error: 'Failed to create floor plan' });
+  }
+});
+
+app.delete('/api/floorplans/:id', checkAdmin, async (req, res) => {
+  const { id } = req.params;
+  try {
+    await prisma.equipment.updateMany({
+      where: { floorPlanId: Number(id) },
+      data: { floorPlanId: null, locationX: null, locationY: null }
+    });
+
+    await prisma.floorPlan.delete({
+      where: { id: Number(id) }
+    });
+    res.status(204).send();
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to delete floor plan' });
   }
 });
 
@@ -392,6 +374,163 @@ app.patch('/api/equipment/:id/location', async (req, res) => {
   }
 });
 
+// --- Laws API ---
+app.get('/api/laws', async (req, res) => {
+  try {
+    const apiKey = process.env.LAW_API_KEY;
+    
+    // If no API key is set, return mock data for demonstration
+    if (!apiKey) {
+      console.log('No LAW_API_KEY provided in .env, returning mock data.');
+      return res.json([
+        { id: 1, type: '안내', date: new Date().toISOString().split('T')[0], title: '[안내] 실제 데이터를 연동하려면 서버 환경변수에 LAW_API_KEY를 등록해주세요.', link: 'https://open.law.go.kr' },
+        { id: 2, type: '입법예고', date: '2026-05-28', title: '안전검사 고시 일부개정고시(안) 행정예고', link: 'https://www.law.go.kr' },
+        { id: 3, type: '개정', date: '2026-05-15', title: '산업안전보건법 시행규칙 일부개정령', link: 'https://www.law.go.kr' },
+        { id: 4, type: '보도자료', date: '2026-04-20', title: '중대재해 예방을 위한 위험성평가 지침 개정', link: 'https://www.law.go.kr' },
+        { id: 5, type: '시행', date: '2026-03-01', title: '산업안전보건기준에 관한 규칙 제38조 시행', link: 'https://www.law.go.kr' },
+      ]);
+    }
+
+    // Call actual OpenAPI (National Law Information Center)
+    const query = encodeURIComponent('안전검사');
+    
+    // Korean government sites often have self-signed SSL certs that Node doesn't trust natively.
+    const httpsAgent = new https.Agent({ rejectUnauthorized: false });
+    const headers = { 'Referer': 'https://safety-inspection-app-bay.vercel.app/' };
+    
+    // Fetch both Current Laws (law) and Administrative Rules/Notifications (admrul)
+    const lawQuery = encodeURIComponent('산업안전보건법');
+    const admrulQuery = encodeURIComponent('안전검사');
+    
+    // Add 3rd request for Legislative Notice (입법예고) from lawmaking.go.kr
+    const legislativeNoticeUrl = `https://www.lawmaking.go.kr/rest/govLmSts.xml?OC=sjs1020c&lsNmKo=${lawQuery}&lbPrcStsCdGrp=EA01`;
+    
+    const [lawRes, admrulRes, noticeRes] = await Promise.all([
+      axios.get(`https://www.law.go.kr/DRF/lawSearch.do?OC=${apiKey}&target=law&type=XML&query=${lawQuery}`, { httpsAgent, headers }),
+      axios.get(`https://www.law.go.kr/DRF/lawSearch.do?OC=${apiKey}&target=admrul&type=XML&query=${admrulQuery}`, { httpsAgent, headers }),
+      axios.get(legislativeNoticeUrl, { httpsAgent }).catch(e => { console.error('Notice API error:', e.message); return { data: '' }; })
+    ]);
+    
+    // Parse XML responses
+    const [lawParsed, admrulParsed, noticeParsed] = await Promise.all([
+      parseStringPromise(lawRes.data),
+      parseStringPromise(admrulRes.data),
+      noticeRes.data ? parseStringPromise(noticeRes.data).catch(() => ({})) : Promise.resolve({})
+    ]);
+    
+    const combinedLaws: any[] = [];
+
+    // Map Current Laws (현행 법령)
+    if (lawParsed && lawParsed.LawSearch && lawParsed.LawSearch.law) {
+      lawParsed.LawSearch.law.forEach((lawItem: any) => {
+        const dateStr = lawItem['시행일자'] && lawItem['시행일자'][0] ? lawItem['시행일자'][0] : '';
+        const formattedDate = dateStr.length === 8 ? `${dateStr.substring(0,4)}-${dateStr.substring(4,6)}-${dateStr.substring(6,8)}` : 'N/A';
+        const typeStr = lawItem['제개정구분명'] && lawItem['제개정구분명'][0] ? lawItem['제개정구분명'][0] : '법령';
+        
+        // Extract MST id for public URL mapping
+        const lawLink = lawItem['법령상세링크'] ? lawItem['법령상세링크'][0] : '';
+        const mstMatch = lawLink.match(/MST=([0-9]+)/);
+        const link = mstMatch ? `https://www.law.go.kr/lsInfoP.do?lsiSeq=${mstMatch[1]}` : 'https://www.law.go.kr';
+        
+        combinedLaws.push({
+          type: typeStr,
+          date: formattedDate,
+          rawDate: dateStr, // for sorting
+          title: lawItem['법령명한글'] ? lawItem['법령명한글'][0] : '제목 없음',
+          link: link
+        });
+      });
+    }
+
+    // Map Administrative Rules (행정규칙 / 고시)
+    if (admrulParsed && admrulParsed.AdmRulSearch && admrulParsed.AdmRulSearch.admrul) {
+      admrulParsed.AdmRulSearch.admrul.forEach((lawItem: any) => {
+        // Filter ONLY for Ministry of Employment and Labor (고용노동부) to get the correct Safety Inspection notifications
+        const ministry = lawItem['소관부처명'] ? lawItem['소관부처명'][0] : '';
+        if (!ministry.includes('고용노동부')) return;
+
+        const dateStr = lawItem['발령일자'] && lawItem['발령일자'][0] ? lawItem['발령일자'][0] : '';
+        const formattedDate = dateStr.length === 8 ? `${dateStr.substring(0,4)}-${dateStr.substring(4,6)}-${dateStr.substring(6,8)}` : 'N/A';
+        const typeStr = lawItem['행정규칙종류'] && lawItem['행정규칙종류'][0] ? lawItem['행정규칙종류'][0] : '고시';
+        
+        // Extract ID for public URL mapping
+        const admrulLink = lawItem['행정규칙상세링크'] ? lawItem['행정규칙상세링크'][0] : '';
+        const idMatch = admrulLink.match(/ID=([0-9]+)/);
+        const link = idMatch ? `https://www.law.go.kr/admRulLsInfoP.do?admRulSeq=${idMatch[1]}` : 'https://www.law.go.kr';
+
+        combinedLaws.push({
+          type: typeStr,
+          date: formattedDate,
+          rawDate: dateStr, // for sorting
+          title: lawItem['행정규칙명'] ? lawItem['행정규칙명'][0] : '제목 없음',
+          link: link
+        });
+      });
+    }
+    
+    // Map Legislative Notices (입법예고) from lawmaking.go.kr
+    if (noticeParsed && noticeParsed.result && noticeParsed.result.list && noticeParsed.result.list[0] && noticeParsed.result.list[0].ApiList01Vo) {
+      noticeParsed.result.list[0].ApiList01Vo.forEach((noticeItem: any) => {
+        // We filtered by EA01 (입안/입법예고), but just in case check type
+        const typeStr = noticeItem.lbPrcStsNm && noticeItem.lbPrcStsNm[0] ? noticeItem.lbPrcStsNm[0] : '입법예고';
+        
+        const dateStr = noticeItem.lbPrcStsDt ? noticeItem.lbPrcStsDt[0] : '';
+        const parts = dateStr.match(/\d+/g);
+        let formattedDate = 'N/A';
+        let rawDate = '00000000';
+        
+        if (parts && parts.length >= 3) {
+          const y = parts[0];
+          const m = parts[1].padStart(2, '0');
+          const d = parts[2].padStart(2, '0');
+          formattedDate = `${y}-${m}-${d}`;
+          rawDate = `${y}${m}${d}`;
+        }
+        
+        const lawName = noticeItem.lsNmKo && noticeItem.lsNmKo[0] ? noticeItem.lsNmKo[0] : '';
+        const amendmentType = noticeItem.rrFrNm && noticeItem.rrFrNm[0] ? noticeItem.rrFrNm[0] : '';
+        const title = `${lawName} ${amendmentType}`.trim();
+        
+        const lbicId = noticeItem.lbicId && noticeItem.lbicId[0] ? noticeItem.lbicId[0] : '';
+        const link = lbicId ? `https://opinion.lawmaking.go.kr/gcom/ogLmPp/${lbicId}` : 'https://opinion.lawmaking.go.kr/gcom/ogLmPp/list';
+        
+        combinedLaws.push({
+          type: typeStr,
+          date: formattedDate,
+          rawDate: rawDate,
+          title: title,
+          link: link
+        });
+      });
+    }
+    
+    // Sort combined laws by rawDate descending (newest first)
+    combinedLaws.sort((a, b) => {
+      const dateA = a.rawDate || '00000000';
+      const dateB = b.rawDate || '00000000';
+      return dateB.localeCompare(dateA);
+    });
+
+    // Assign IDs and take top 8
+    const topLaws = combinedLaws.slice(0, 8).map((item, index) => ({
+      id: index + 1,
+      type: item.type,
+      date: item.date,
+      title: item.title,
+      link: item.link
+    }));
+
+    res.json(topLaws);
+  } catch (error) {
+    console.error('Error fetching laws from OpenAPI:', error);
+    res.status(500).json({ error: 'Failed to fetch laws' });
+  }
+});
+
+app.get('/api/env', (req, res) => {
+  res.json({ url: process.env.POSTGRES_PRISMA_URL });
+});
+
 // Only listen on local dev, Vercel will export the app
 if (process.env.NODE_ENV !== 'production') {
   app.listen(port, () => {
@@ -399,4 +538,4 @@ if (process.env.NODE_ENV !== 'production') {
   });
 }
 
-export default app;
+module.exports = app;

@@ -4,8 +4,10 @@ import { Map, Upload, Search, Image as ImageIcon, Crosshair, FileType2 } from 'l
 import { convertPdfToImage } from '../utils/pdfToImage';
 import { FloorPlanSelector } from './FloorPlanSelector';
 import { EquipmentMarker, EquipmentLegend } from './EquipmentMarker';
+import { useAuth } from '../context/AuthContext';
 
 export function FloorPlanAdmin() {
+  const { isAdmin } = useAuth();
   const [factories, setFactories] = useState<Factory[]>([]);
   const [equipment, setEquipment] = useState<Equipment[]>([]);
   const [floorPlans, setFloorPlans] = useState<FloorPlan[]>([]);
@@ -101,6 +103,7 @@ export function FloorPlanAdmin() {
   };
 
   const removePin = async (eqId: number) => {
+    if (!isAdmin) return;
     if (!confirm('설비 마커를 도면에서 제거하시겠습니까?')) return;
     try {
       const updated = await updateEquipmentLocation(eqId, { locationX: null, locationY: null, floorPlanId: null });
@@ -153,12 +156,14 @@ export function FloorPlanAdmin() {
           <h2 className="text-2xl font-bold text-gray-800">공정별 도면 관리</h2>
           <p className="text-gray-500 mt-1">새로운 도면을 업로드하고 설비 핀을 마우스로 끌어서 배치하세요.</p>
         </div>
-        <button 
-          onClick={() => setShowUpload(!showUpload)}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2 shadow-sm transition-colors"
-        >
-          <Upload className="w-4 h-4" /> 도면 이미지 추가
-        </button>
+        {isAdmin && (
+          <button 
+            onClick={() => setShowUpload(!showUpload)}
+            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2 shadow-sm transition-colors"
+          >
+            <Upload className="w-4 h-4" /> 도면 이미지 추가
+          </button>
+        )}
       </div>
 
       {showUpload && (
@@ -214,9 +219,9 @@ export function FloorPlanAdmin() {
               filteredUnplacedEquipment.map(eq => (
                 <div 
                   key={eq.id}
-                  draggable
-                  onDragStart={(e) => handleDragStart(e, eq)}
-                  className="bg-white p-3 rounded-xl border border-gray-200 shadow-sm cursor-grab active:cursor-grabbing hover:border-blue-300 hover:shadow-md transition-all group"
+                  draggable={isAdmin}
+                  onDragStart={(e) => isAdmin && handleDragStart(e, eq)}
+                  className={`bg-white p-3 rounded-xl border border-gray-200 shadow-sm transition-all group ${isAdmin ? 'cursor-grab active:cursor-grabbing hover:border-blue-300 hover:shadow-md' : 'opacity-80'}`}
                 >
                   <div className="font-bold text-sm text-gray-800">{eq.name}</div>
                   <div className="text-xs text-gray-500 mt-1 flex justify-between">
@@ -225,9 +230,11 @@ export function FloorPlanAdmin() {
                     </span>
                     <span className="text-indigo-600 font-semibold whitespace-nowrap">{eq.categoryMain}</span>
                   </div>
-                  <div className="mt-2 text-[10px] text-gray-400 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <Crosshair className="w-3 h-3" /> 우측 도면으로 드래그 하세요
-                  </div>
+                  {isAdmin && (
+                    <div className="mt-2 text-[10px] text-gray-400 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <Crosshair className="w-3 h-3" /> 우측 도면으로 드래그 하세요
+                    </div>
+                  )}
                 </div>
               ))
             )}
@@ -284,7 +291,7 @@ export function FloorPlanAdmin() {
                     {/* Tooltip on Hover */}
                     <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-max bg-gray-900 text-white text-xs rounded-lg py-1 px-3 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-xl z-10 font-medium">
                       {eq.name} <br/>
-                      <span className="text-blue-300 font-normal">클릭하여 핀 제거</span>
+                      {isAdmin && <span className="text-blue-300 font-normal">클릭하여 핀 제거</span>}
                     </div>
                   </div>
                 ))}

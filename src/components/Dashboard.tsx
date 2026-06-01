@@ -2,9 +2,13 @@ import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { differenceInDays, isBefore, startOfToday, parseISO } from 'date-fns';
 import { FloorPlanSelector } from './FloorPlanSelector';
 import { EquipmentMarker, EquipmentLegend, ConveyorIcon } from './EquipmentMarker';
-import { fetchDashboardSummary, fetchFactories, fetchFloorPlans, fetchEquipment, type DashboardSummary, type Factory, type FloorPlan, type Equipment } from '../api';
-import { ShieldCheck, AlertTriangle, AlertCircle, Settings, Map as MapIcon, Image as ImageIcon, CheckCircle, CalendarClock, Bot, Cylinder, X, ArrowRight, Activity, Package } from 'lucide-react';
+import { fetchDashboardSummary, fetchFactories, fetchFloorPlans, fetchEquipment, fetchLaws, type DashboardSummary, type Factory, type FloorPlan, type Equipment, type LawUpdate } from '../api';
+import { ShieldCheck, AlertTriangle, AlertCircle, Settings, Map as MapIcon, Image as ImageIcon, CheckCircle, CalendarClock, Bot, Cylinder, X, ArrowRight, Activity, Package, Download, FileSpreadsheet } from 'lucide-react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip as RechartsTooltip, Legend } from 'recharts';
+import { toPng } from 'html-to-image';
+import { jsPDF } from 'jspdf';
+import autoTable from 'jspdf-autotable';
+import * as XLSX from 'xlsx';
 
 const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#14b8a6', '#f97316'];
 
@@ -13,31 +17,200 @@ export function Dashboard() {
   const [factories, setFactories] = useState<Factory[]>([]);
   const [floorPlans, setFloorPlans] = useState<FloorPlan[]>([]);
   const [equipment, setEquipment] = useState<Equipment[]>([]);
+  const [laws, setLaws] = useState<LawUpdate[]>([]);
   const [factoryCount, setFactoryCount] = useState<number>(0);
   
   const [selectedFactoryId, setSelectedFactoryId] = useState<number | 'all'>('all');
   const [selectedPlanId, setSelectedPlanId] = useState<number | null>(null);
   const [selectedEquipmentId, setSelectedEquipmentId] = useState<number | null>(null);
+  const [hoveredEqId, setHoveredEqId] = useState<number | null>(null);
   const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
   
   const [modalType, setModalType] = useState<'completedThisYear' | 'scheduledNextYear' | null>(null);
   const [modalEquipment, setModalEquipment] = useState<Equipment[]>([]);
   const selectedEqRef = useRef<HTMLDivElement>(null);
+  const dashboardRef = useRef<HTMLDivElement>(null);
+  const [isDownloading, setIsDownloading] = useState(false);
+
+  const handleDownloadPdf = async () => {
+    setIsDownloading(true);
+    try {
+      // 1. Fetch Korean Font (NanumGothic from local public folder)
+      const fontRes = await fetch('/NanumGothic.ttf');
+      if (!fontRes.ok) throw new Error("Failed to load font");
+      
+      const blob = await fontRes.blob();
+      const reader = new FileReader();
+      reader.readAsDataURL(blob);
+      await new Promise(resolve => reader.onload = resolve);
+      const base64 = (reader.result as string).split(',')[1];
+      
+      const pdf = new jsPDF({
+        orientation: 'landscape',
+        unit: 'mm',
+        format: 'a4',
+      });
+      
+      pdf.addFileToVFS('NanumGothic.ttf', base64);
+      pdf.addFont('NanumGothic.ttf', 'NanumGothic', 'normal');
+      pdf.setFont('NanumGothic');
+      
+      const dateStr = new Date().toISOString().split('T')[0];
+      
+      // Header
+      pdf.setFontSize(22);
+      pdf.setTextColor(30);
+      pdf.text('안전검사 통합 대시보드 현황 리포트', 14, 20);
+      
+      pdf.setFontSize(10);
+      pdf.setTextColor(100);
+      pdf.text(`출력일자: ${dateStr}`, 14, 28);
+      
+      // Summary Box
+      pdf.setFontSize(12);
+      pdf.setTextColor(0);
+      pdf.text(`총 등록 설비: ${totalEquipmentCount}대`, 14, 40);
+      pdf.text(`올해 정기검사 대상: ${completedThisYearCount}대`, 70, 40);
+      pdf.text(`내년 정기검사 대상: ${scheduledNextYearCount}대`, 140, 40);
+      
+      // Table Data
+      const tableData = equipment.map(eq => {
+        let capacity = eq.capacity || '-';
+        if (capacity !== '-' && !/[a-zA-Z가-힣㎥³]/.test(capacity)) {
+          if (eq.name?.includes('컨베이어')) capacity = `${capacity}m`;
+          else if (eq.name?.includes('로봇')) capacity = `${capacity}(대)`;
+          else if (eq.name?.includes('압력용기')) capacity = `${capacity}m³`;
+        }
+        
+        return [
+          eq.factory?.name || '-',
+          eq.name || '-',
+          eq.specification || '-',
+          eq.manufacturingNum || '-',
+          capacity,
+          eq.recentPassNum || '-',
+          `${eq.lastInspectionDate ? new Date(eq.lastInspectionDate).toLocaleDateString() : '-'} ~ ${eq.nextInspectionDate ? new Date(eq.nextInspectionDate).toLocaleDateString() : '-'}`
+        ];
+      });
+      
+      autoTable(pdf, {
+        startY: 48,
+        head: [['공장', '유해·위험기계명', '형식(규격)', '기기번호', '용량', '합격번호', '검사유효기간']],
+        body: tableData,
+        styles: { font: 'NanumGothic', fontSize: 9, cellPadding: 3 },
+        headStyles: { fillColor: [79, 70, 229], textColor: [255, 255, 255], fontStyle: 'normal' },
+        alternateRowStyles: { fillColor: [249, 250, 251] },
+        margin: { top: 14, left: 14, right: 14 },
+      });
+      
+      pdf.save(`안전검사_대시보드_리포트_${dateStr}.pdf`);
+    } catch (error: any) {
+      console.error('PDF 다운로드 실패:', error);
+      alert('PDF 생성 중 오류가 발생했습니다.\n상세 내용: ' + (error?.message || error));
+    } finally {
+      setIsDownloading(false);
+    }
+  };
+
+  const handleDownloadExcel = () => {
+    const workbook = XLSX.utils.book_new();
+    const aoa: any[][] = [];
+
+    // 1. Group data by equipment name
+    const eqGroups = new Map<string, Equipment[]>();
+    equipment.forEach(eq => {
+      const eqName = eq.name || '미분류';
+      if (!eqGroups.has(eqName)) eqGroups.set(eqName, []);
+      eqGroups.get(eqName)!.push(eq);
+    });
+
+    // 2. Summary Section
+    aoa.push(['[설비 종류별 대수 요약]']);
+    aoa.push(['유해·위험기계명', '보유 대수']);
+    let total = 0;
+    const sortedNames = Array.from(eqGroups.keys()).sort();
+    sortedNames.forEach(name => {
+      const list = eqGroups.get(name)!;
+      aoa.push([name, `${list.length}대`]);
+      total += list.length;
+    });
+    aoa.push(['총합계', `${total}대`]);
+    aoa.push([]); // blank row
+    aoa.push([]); // blank row
+
+    // 3. Header Section
+    aoa.push(['[설비 종류별 상세 현황]']);
+    aoa.push(['공장명', '유해·위험기계명', '형식(규격)', '기기번호', '용량', '최근 검사일', '차기 검사일', '합격번호', '비고']);
+
+    // 4. Detailed Data Rows (grouped by equipment name)
+    sortedNames.forEach(name => {
+      const list = eqGroups.get(name)!;
+      list.forEach(eq => {
+        let capacity = eq.capacity || '-';
+        if (capacity !== '-' && !/[a-zA-Z가-힣㎥³]/.test(capacity)) {
+          if (eq.name?.includes('컨베이어')) capacity = `${capacity}m`;
+          else if (eq.name?.includes('로봇')) capacity = `${capacity}(대)`;
+          else if (eq.name?.includes('압력용기')) capacity = `${capacity}m³`;
+        }
+        
+        aoa.push([
+          eq.factory?.name || '-',
+          eq.name || '-',
+          eq.specification || '-',
+          eq.manufacturingNum || '-',
+          capacity,
+          eq.lastInspectionDate ? new Date(eq.lastInspectionDate).toLocaleDateString() : '-',
+          eq.nextInspectionDate ? new Date(eq.nextInspectionDate).toLocaleDateString() : '-',
+          eq.recentPassNum || '-',
+          eq.categoryDetail || '-'
+        ]);
+      });
+    });
+
+    const worksheet = XLSX.utils.aoa_to_sheet(aoa);
+
+    // Merge cells for the title headers to make it look nicer
+    if (!worksheet['!merges']) worksheet['!merges'] = [];
+    worksheet['!merges'].push(
+      { s: { r: 0, c: 0 }, e: { r: 0, c: 1 } }, // [설비 종류별 대수 요약]
+      { s: { r: aoa.length - total - 3, c: 0 }, e: { r: aoa.length - total - 3, c: 2 } } // [상세 현황] title
+    );
+
+    const wscols = [
+      { wch: 15 }, // 공장명
+      { wch: 25 }, // 기계명
+      { wch: 25 }, // 규격
+      { wch: 20 }, // 기기번호
+      { wch: 15 }, // 용량
+      { wch: 15 }, // 최근
+      { wch: 15 }, // 차기
+      { wch: 15 }, // 합격번호
+      { wch: 25 }  // 비고
+    ];
+    worksheet['!cols'] = wscols;
+
+    XLSX.utils.book_append_sheet(workbook, worksheet, "통합 설비현황");
+    
+    const dateStr = new Date().toISOString().split('T')[0];
+    XLSX.writeFile(workbook, `안전검사_통합현황_${dateStr}.xlsx`);
+  };
 
   useEffect(() => {
     async function loadData() {
       try {
-        const [sumData, facts, plans, eqData] = await Promise.all([
+        const [sumRes, facts, plans, eqData, lawsRes] = await Promise.all([
           fetchDashboardSummary(),
           fetchFactories(),
           fetchFloorPlans(),
-          fetchEquipment()
+          fetchEquipment(),
+          fetchLaws()
         ]);
-        setSummary(sumData);
+        setSummary(sumRes);
         setFactories(facts);
         setFactoryCount(facts.length);
         setFloorPlans(plans);
         setEquipment(eqData);
+        setLaws(lawsRes);
         
         // Auto select first factory and plan
         const firstFactoryId = facts.length > 0 ? facts[0].id : 'all';
@@ -131,9 +304,9 @@ export function Dashboard() {
   const totalEquipmentCount = equipment.length;
 
   return (
-    <div className="p-8 max-w-[1600px] mx-auto space-y-6">
+    <div className="p-8 max-w-[1600px] mx-auto space-y-6" ref={dashboardRef}>
       {/* Header */}
-      <div className="flex justify-between items-end mb-8">
+      <div className="flex flex-col sm:flex-row justify-between sm:items-end gap-4 mb-8">
         <div>
           <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 text-blue-700 text-xs font-bold rounded-full mb-3 tracking-wide">
             <Activity className="w-3.5 h-3.5" /> 
@@ -143,6 +316,23 @@ export function Dashboard() {
             안전검사 통합 대시보드
           </h1>
           <p className="text-slate-500 mt-2 font-medium">실시간 설비 검사 현황 및 도면 배치 정보를 한눈에 파악하세요.</p>
+        </div>
+        <div className="flex flex-wrap items-center gap-3">
+          <button 
+            onClick={handleDownloadExcel}
+            className="flex items-center gap-2 bg-emerald-600 text-white px-5 py-2.5 rounded-xl font-bold text-sm hover:bg-emerald-700 transition-all shadow-md hover:shadow-lg"
+          >
+            <FileSpreadsheet className="w-4 h-4" />
+            엑셀 다운로드
+          </button>
+          <button 
+            onClick={handleDownloadPdf}
+            disabled={isDownloading}
+            className="flex items-center gap-2 bg-indigo-600 text-white px-5 py-2.5 rounded-xl font-bold text-sm hover:bg-indigo-700 transition-all shadow-md hover:shadow-lg disabled:opacity-70 disabled:cursor-not-allowed"
+          >
+            <Download className="w-4 h-4" />
+            {isDownloading ? 'PDF 생성 중...' : '리포트 다운로드'}
+          </button>
         </div>
       </div>
 
@@ -200,7 +390,7 @@ export function Dashboard() {
         <h3 className="text-xl font-bold text-slate-800 mb-5 flex items-center gap-2">
           공정별 도면 뷰어
         </h3>
-        <div className="bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100/50 overflow-hidden flex flex-col h-[600px]">
+        <div className="bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100/50 flex flex-col h-[600px] relative z-10">
           {floorPlans.length === 0 ? (
             <div className="flex-1 flex flex-col items-center justify-center text-gray-400 bg-slate-50">
               <ImageIcon className="w-16 h-16 mb-4 text-gray-200" />
@@ -216,9 +406,9 @@ export function Dashboard() {
                 onSelectPlan={setSelectedPlanId}
                 defaultFactoryId={selectedFactoryId === 'all' ? undefined : selectedFactoryId}
               />
-              <div className="flex-1 flex overflow-hidden">
+              <div className="flex-1 flex min-h-0">
                 {/* Left: Map */}
-                <div className="flex-1 relative bg-slate-50/50 flex items-center justify-center overflow-auto p-4 cursor-crosshair group border-r border-slate-100/50">
+                <div className="flex-1 relative bg-slate-50/50 flex items-center justify-center p-4 cursor-crosshair group border-r border-slate-100/50 min-h-0">
                   {(() => {
                     const selectedPlan = floorPlans.find(p => p.id === selectedPlanId);
                     if (!selectedPlan) return <div className="text-gray-400">도면을 선택해주세요.</div>;
@@ -226,21 +416,24 @@ export function Dashboard() {
                     return (
                       <>
                         <div className="relative inline-block max-w-full max-h-full">
-                          <img 
-                            src={selectedPlan.imageUrl} 
-                            alt={selectedPlan.name} 
-                            className="max-w-full max-h-[500px] object-contain rounded-lg shadow-sm border border-slate-200/50"
-                          />
+                            <img 
+                              crossOrigin="anonymous"
+                              src={selectedPlan.imageUrl} 
+                              alt={selectedPlan.name} 
+                              className="max-w-full max-h-[420px] object-contain rounded-lg shadow-sm border border-slate-200/50"
+                            />
                           <EquipmentLegend />
                           {placedEquipment.map((eq) => (
                             <div
                               key={eq.id}
-                              className="absolute group cursor-pointer hover:z-50"
+                              className={`absolute cursor-pointer transition-all ${hoveredEqId === eq.id ? 'z-[110]' : selectedEquipmentId === eq.id ? 'z-[100]' : 'z-10'}`}
                               style={{ 
                                 left: `${(eq.locationX || 0) * 100}%`, 
                                 top: `${(eq.locationY || 0) * 100}%`,
                                 transform: 'translate(-50%, -50%)'
                               }}
+                              onMouseEnter={() => setHoveredEqId(eq.id)}
+                              onMouseLeave={() => setHoveredEqId(null)}
                               onClick={(e) => {
                                 e.stopPropagation();
                                 const newId = selectedEquipmentId === eq.id ? null : eq.id;
@@ -254,6 +447,27 @@ export function Dashboard() {
                                 equipment={eq}
                                 isSelected={selectedEquipmentId === eq.id}
                               />
+                              {eq.attachmentUrl && (() => {
+                                const isTopHalf = (eq.locationY || 0) < 0.5;
+                                const popupYTransform = hoveredEqId === eq.id ? 'translate-y-0' : (isTopHalf ? '-translate-y-2' : 'translate-y-2');
+                                return (
+                                  <div className={`absolute left-1/2 -translate-x-1/2 w-max max-w-[500px] min-w-[240px] bg-white/95 backdrop-blur-sm rounded-2xl p-3 shadow-2xl border border-gray-200 z-[120] cursor-default pointer-events-none transition-all duration-200 ${hoveredEqId === eq.id ? 'opacity-100 visible' : 'opacity-0 invisible'} ${isTopHalf ? 'top-full mt-3' : 'bottom-full mb-3'} ${popupYTransform}`}>
+                                    <div className={`text-sm font-bold text-gray-800 text-center truncate ${!(eq.specification || eq.capacity) ? 'mb-2 border-b border-gray-100 pb-1.5' : 'mb-0.5'}`}>
+                                      {eq.name}
+                                    </div>
+                                    {(eq.specification || eq.capacity) && (
+                                      <div className="text-xs text-gray-500 text-center mb-2 border-b border-gray-100 pb-1.5 truncate">
+                                        {eq.specification} {eq.capacity ? `(${eq.capacity})` : ''}
+                                      </div>
+                                    )}
+                                    <div className="rounded-xl overflow-hidden bg-gray-50 flex justify-center w-full">
+                                      <img crossOrigin="anonymous" src={eq.attachmentUrl} alt="설비 사진" className="max-w-full h-auto max-h-[320px] object-contain" />
+                                    </div>
+                                    {/* Triangle pointer */}
+                                    <div className={`absolute left-1/2 -translate-x-1/2 w-0 h-0 border-l-[10px] border-r-[10px] border-transparent drop-shadow-sm ${isTopHalf ? '-top-2.5 border-b-[10px] border-b-white' : '-bottom-2.5 border-t-[10px] border-t-white'}`}></div>
+                                  </div>
+                                );
+                              })()}
                             </div>
                           ))}
                         </div>
@@ -263,7 +477,7 @@ export function Dashboard() {
                 </div>
 
                 {/* Right: Info Panel */}
-                <div className="w-[400px] bg-white p-6 flex flex-col gap-5 overflow-y-auto z-10 shadow-[-10px_0_30px_-15px_rgba(0,0,0,0.05)]">
+                <div className="w-[400px] bg-white p-6 flex flex-col gap-5 overflow-y-auto z-10 shadow-[-10px_0_30px_-15px_rgba(0,0,0,0.05)] min-h-0">
                   {(() => {
                     const selectedPlan = floorPlans.find(p => p.id === selectedPlanId);
                     const placedEquipment = equipment.filter(eq => eq.floorPlanId === selectedPlanId && eq.locationX !== null && eq.locationY !== null);
@@ -349,7 +563,7 @@ export function Dashboard() {
                                           {eq.lastInspectionDate && (
                                             <div className="text-gray-500 mt-1.5 pt-1.5 border-t border-gray-50 flex items-center gap-1">
                                               <ShieldCheck className="w-3.5 h-3.5 text-green-500"/> 
-                                              최근 검사일: {eq.lastInspectionDate}
+                                              최근 검사일: {eq.lastInspectionDate.substring(0, 10)}
                                             </div>
                                           )}
                                         </div>
@@ -496,6 +710,50 @@ export function Dashboard() {
               </ul>
             )}
           </div>
+        </div>
+      </div>
+
+      {/* Law & Notifications Section */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
+        {/* Law Newsfeed Widget */}
+        <div className="bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100/50 flex flex-col h-[400px] overflow-hidden">
+          <div className="p-7 border-b border-slate-100/80 flex justify-between items-center bg-blue-50/30">
+            <h3 className="text-lg font-bold text-slate-800 flex items-center gap-2">
+              <span className="text-xl">⚖️</span>
+              안전검사 법령 및 고시 제·개정 사항
+            </h3>
+            <span className="text-xs bg-blue-50 border border-blue-100 text-blue-600 px-2.5 py-1 rounded-full font-bold">국가법령정보센터</span>
+          </div>
+          <div className="flex-1 overflow-y-auto p-4 custom-scrollbar bg-slate-50/30">
+            {laws.length === 0 ? (
+              <div className="flex items-center justify-center h-full text-gray-400">데이터를 불러오는 중입니다...</div>
+            ) : (
+              <ul className="space-y-3">
+                {laws.map(law => (
+                  <li key={law.id} className="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 hover:border-blue-200 hover:shadow-md transition-all group cursor-pointer" onClick={() => window.open(law.link, '_blank')}>
+                    <div className="flex justify-between items-start mb-1">
+                      <span className={`text-xs font-bold px-2 py-0.5 rounded-md ${law.type === '입법예고' ? 'bg-orange-100 text-orange-700' : law.type === '개정' ? 'bg-rose-100 text-rose-700' : 'bg-gray-100 text-gray-600'}`}>
+                        {law.type}
+                      </span>
+                      <span className="text-xs text-gray-400 font-medium">{law.date}</span>
+                    </div>
+                    <h4 className="text-sm font-semibold text-gray-800 group-hover:text-blue-600 transition-colors line-clamp-2">
+                      {law.title}
+                    </h4>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </div>
+        
+        {/* Placeholder for future widget (e.g. recent inspection logs) */}
+        <div className="bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100/50 flex flex-col h-[400px] overflow-hidden justify-center items-center">
+          <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mb-4">
+            <Bot className="w-8 h-8 text-gray-300" />
+          </div>
+          <p className="text-gray-400 font-medium">추가 위젯 준비 중</p>
+          <p className="text-xs text-gray-300 mt-2">최근 검사 이력 또는 알림 내역이 표시될 예정입니다.</p>
         </div>
       </div>
 

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { LayoutDashboard, Bot, Settings, Map } from 'lucide-react';
+import { LayoutDashboard, Bot, Settings as SettingsIcon, Map } from 'lucide-react';
 import { Dashboard } from './components/Dashboard';
 import { FactoryList } from './components/FactoryList';
 import { FloorPlanAdmin } from './components/FloorPlanAdmin';
+import { Settings } from './components/Settings';
 import logo from './assets/choheung-logo.png';
 
 function App() {
@@ -58,12 +59,19 @@ function App() {
           </button>
         </nav>
         <div className="p-4 border-t border-gray-200">
-          <div className="flex items-center text-sm text-gray-500 hover:text-gray-900 cursor-pointer p-2 hover:bg-gray-50 rounded-lg transition-colors">
-            <div className="p-1.5 rounded-lg mr-2 bg-slate-100">
-              <Settings className="w-4 h-4 text-slate-600" />
+          <button 
+            onClick={() => setActiveTab('settings')}
+            className={`w-full flex items-center px-3 py-3 text-sm font-medium rounded-xl transition-colors ${
+              activeTab === 'settings' 
+                ? 'bg-blue-50 text-blue-700 shadow-sm border border-blue-100' 
+                : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 border border-transparent'
+            }`}
+          >
+            <div className={`p-1.5 rounded-lg mr-3 ${activeTab === 'settings' ? 'bg-blue-100' : 'bg-slate-100'}`}>
+              <SettingsIcon className={`w-5 h-5 ${activeTab === 'settings' ? 'text-blue-700' : 'text-slate-600'}`} />
             </div>
-            <span>설정</span>
-          </div>
+            설정 (권한)
+          </button>
         </div>
       </aside>
 
@@ -72,6 +80,7 @@ function App() {
         {activeTab === 'dashboard' && <Dashboard />}
         {activeTab === 'factories' && <FactoryList />}
         {activeTab === 'floorplans' && <FloorPlanAdmin />}
+        {activeTab === 'settings' && <Settings />}
       </main>
     </div>
   );

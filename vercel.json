@@ -1,9 +1,10 @@
 {
   "version": 2,
+  "regions": ["icn1"],
   "builds": [
     {
       "src": "package.json",
-      "use": "@vercel/vite"
+      "use": "@vercel/static-build"
     },
     {
       "src": "server/src/index.ts",
