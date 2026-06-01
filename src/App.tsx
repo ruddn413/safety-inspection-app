@@ -10,65 +10,65 @@ function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
 
   return (
-    <div className="flex h-screen bg-gray-50">
+    <div className="flex h-screen bg-[#F8FAFC]">
       {/* Sidebar */}
-      <aside className="w-64 bg-white border-r border-gray-200 flex flex-col">
-        <div className="py-4 px-6 flex flex-col items-start gap-2 border-b border-gray-200">
+      <aside className="w-64 bg-white shadow-[1px_0_20px_rgb(0,0,0,0.03)] flex flex-col z-10 relative">
+        <div className="py-5 px-6 flex flex-col items-start gap-2 border-b border-slate-100/60">
           <img src={logo} alt="조흥 로고" className="h-8 object-contain" />
           <h1 className="text-lg font-bold text-gray-800">[안전검사 통합관리 시스템]</h1>
         </div>
         <nav className="flex-1 px-4 py-4 space-y-2">
           <button
             onClick={() => setActiveTab('dashboard')}
-            className={`w-full flex items-center px-3 py-3 text-sm font-medium rounded-xl transition-colors ${
+            className={`w-full flex items-center px-4 py-3 text-sm font-medium rounded-2xl transition-all duration-300 ${
               activeTab === 'dashboard' 
-                ? 'bg-blue-50 text-blue-700 shadow-sm border border-blue-100' 
-                : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 border border-transparent'
+                ? 'bg-indigo-50 text-indigo-700 shadow-sm' 
+                : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900'
             }`}
           >
-            <div className={`p-1.5 rounded-lg mr-3 ${activeTab === 'dashboard' ? 'bg-blue-100' : 'bg-indigo-100'}`}>
-              <LayoutDashboard className={`h-5 w-5 ${activeTab === 'dashboard' ? 'text-blue-700' : 'text-indigo-600'}`} />
+            <div className={`p-2 rounded-xl mr-3 transition-colors ${activeTab === 'dashboard' ? 'bg-indigo-100/50' : 'bg-slate-100/50'}`}>
+              <LayoutDashboard className={`h-5 w-5 ${activeTab === 'dashboard' ? 'text-indigo-600' : 'text-slate-400'}`} />
             </div>
             대시보드
           </button>
           <button
             onClick={() => setActiveTab('factories')}
-            className={`w-full flex items-center px-3 py-3 text-sm font-medium rounded-xl transition-colors ${
+            className={`w-full flex items-center px-4 py-3 text-sm font-medium rounded-2xl transition-all duration-300 ${
               activeTab === 'factories' 
-                ? 'bg-blue-50 text-blue-700 shadow-sm border border-blue-100' 
-                : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 border border-transparent'
+                ? 'bg-indigo-50 text-indigo-700 shadow-sm' 
+                : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900'
             }`}
           >
-            <div className={`p-1.5 rounded-lg mr-3 ${activeTab === 'factories' ? 'bg-blue-100' : 'bg-emerald-100'}`}>
-              <Bot className={`h-5 w-5 ${activeTab === 'factories' ? 'text-blue-700' : 'text-emerald-600'}`} />
+            <div className={`p-2 rounded-xl mr-3 transition-colors ${activeTab === 'factories' ? 'bg-indigo-100/50' : 'bg-slate-100/50'}`}>
+              <Bot className={`h-5 w-5 ${activeTab === 'factories' ? 'text-indigo-600' : 'text-slate-400'}`} />
             </div>
             안전검사 설비 관리
           </button>
           <button
             onClick={() => setActiveTab('floorplans')}
-            className={`w-full flex items-center px-3 py-3 text-sm font-medium rounded-xl transition-colors ${
+            className={`w-full flex items-center px-4 py-3 text-sm font-medium rounded-2xl transition-all duration-300 ${
               activeTab === 'floorplans' 
-                ? 'bg-blue-50 text-blue-700 shadow-sm border border-blue-100' 
-                : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 border border-transparent'
+                ? 'bg-indigo-50 text-indigo-700 shadow-sm' 
+                : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900'
             }`}
           >
-            <div className={`p-1.5 rounded-lg mr-3 ${activeTab === 'floorplans' ? 'bg-blue-100' : 'bg-orange-100'}`}>
-              <Map className={`h-5 w-5 ${activeTab === 'floorplans' ? 'text-blue-700' : 'text-orange-600'}`} />
+            <div className={`p-2 rounded-xl mr-3 transition-colors ${activeTab === 'floorplans' ? 'bg-indigo-100/50' : 'bg-slate-100/50'}`}>
+              <Map className={`h-5 w-5 ${activeTab === 'floorplans' ? 'text-indigo-600' : 'text-slate-400'}`} />
             </div>
             공정별 도면 관리
           </button>
         </nav>
-        <div className="p-4 border-t border-gray-200">
+        <div className="p-4 border-t border-slate-100/60">
           <button 
             onClick={() => setActiveTab('settings')}
-            className={`w-full flex items-center px-3 py-3 text-sm font-medium rounded-xl transition-colors ${
+            className={`w-full flex items-center px-4 py-3 text-sm font-medium rounded-2xl transition-all duration-300 ${
               activeTab === 'settings' 
-                ? 'bg-blue-50 text-blue-700 shadow-sm border border-blue-100' 
-                : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 border border-transparent'
+                ? 'bg-indigo-50 text-indigo-700 shadow-sm' 
+                : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900'
             }`}
           >
-            <div className={`p-1.5 rounded-lg mr-3 ${activeTab === 'settings' ? 'bg-blue-100' : 'bg-slate-100'}`}>
-              <SettingsIcon className={`w-5 h-5 ${activeTab === 'settings' ? 'text-blue-700' : 'text-slate-600'}`} />
+            <div className={`p-2 rounded-xl mr-3 transition-colors ${activeTab === 'settings' ? 'bg-indigo-100/50' : 'bg-slate-100/50'}`}>
+              <SettingsIcon className={`w-5 h-5 ${activeTab === 'settings' ? 'text-indigo-600' : 'text-slate-400'}`} />
             </div>
             설정 (권한)
           </button>

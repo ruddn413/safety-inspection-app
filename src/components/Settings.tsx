@@ -31,8 +31,8 @@ export function Settings() {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-      <div className="p-6 border-b border-gray-100 bg-gray-50 flex items-center gap-3">
+    <div className="max-w-md mx-auto mt-10 bg-white rounded-3xl shadow-[0_4px_20px_rgb(0,0,0,0.03)] border border-slate-100 overflow-hidden">
+      <div className="p-6 border-b border-slate-100/60 bg-slate-50/50 flex items-center gap-3">
         {isAdmin ? (
           <ShieldCheck className="w-6 h-6 text-emerald-500" />
         ) : (
@@ -79,7 +79,7 @@ export function Settings() {
                 type="text"
                 value={inputUsername}
                 onChange={(e) => setInputUsername(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+                className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all bg-white"
                 placeholder="관리자 아이디 입력"
                 required
               />
@@ -90,7 +90,7 @@ export function Settings() {
                 type="password"
                 value={inputPassword}
                 onChange={(e) => setInputPassword(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+                className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all bg-white"
                 placeholder="비밀번호 입력"
                 required
               />
@@ -101,7 +101,7 @@ export function Settings() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full flex items-center justify-center gap-2 py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-medium transition-colors disabled:opacity-50"
+              className="w-full flex items-center justify-center gap-2 py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold transition-colors disabled:opacity-50 shadow-sm"
             >
               <LogIn className="w-5 h-5" />
               {loading ? '인증 중...' : '권한 부여받기'}

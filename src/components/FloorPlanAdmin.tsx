@@ -167,21 +167,21 @@ export function FloorPlanAdmin() {
       </div>
 
       {showUpload && (
-        <form onSubmit={handleUpload} className="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm flex flex-wrap gap-4 items-end">
+        <form onSubmit={handleUpload} className="bg-white p-6 rounded-3xl border border-slate-100 shadow-[0_4px_20px_rgb(0,0,0,0.03)] flex flex-wrap gap-4 items-end">
           <div className="flex-1 min-w-[200px]">
             <label className="block text-sm font-semibold text-gray-700 mb-1">공장 선택 <span className="text-red-500">*</span></label>
-            <select required value={uploadFactoryId} onChange={e => setUploadFactoryId(Number(e.target.value))} className="w-full border border-gray-300 rounded-lg px-3 py-2">
+            <select required value={uploadFactoryId} onChange={e => setUploadFactoryId(Number(e.target.value))} className="w-full border border-slate-200 rounded-xl px-4 py-2 bg-white">
               <option value={0}>공장 선택...</option>
               {factories.map(f => <option key={f.id} value={f.id}>{f.name}</option>)}
             </select>
           </div>
           <div className="flex-1 min-w-[200px]">
             <label className="block text-sm font-semibold text-gray-700 mb-1">도면명 <span className="text-red-500">*</span></label>
-            <input required type="text" placeholder="예: 이스트 1층 작업장" value={uploadName} onChange={e => setUploadName(e.target.value)} className="w-full border border-gray-300 rounded-lg px-3 py-2" />
+            <input required type="text" placeholder="예: 이스트 1층 작업장" value={uploadName} onChange={e => setUploadName(e.target.value)} className="w-full border border-slate-200 rounded-xl px-4 py-2 bg-white" />
           </div>
           <div className="flex-1 min-w-[200px]">
             <label className="block text-sm font-semibold text-gray-700 mb-1">매핑 공정/팀명</label>
-            <input type="text" placeholder="예: 이스트 (설비 자동필터용)" value={uploadProcess} onChange={e => setUploadProcess(e.target.value)} className="w-full border border-gray-300 rounded-lg px-3 py-2" />
+            <input type="text" placeholder="예: 이스트 (설비 자동필터용)" value={uploadProcess} onChange={e => setUploadProcess(e.target.value)} className="w-full border border-slate-200 rounded-xl px-4 py-2 bg-white" />
           </div>
           <div className="flex-1 min-w-[250px]">
             <label className="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-1">
@@ -190,7 +190,7 @@ export function FloorPlanAdmin() {
             <input required type="file" accept="image/*,.pdf" onChange={e => setUploadFile(e.target.files?.[0] || null)} className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" />
             <p className="text-[11px] text-gray-400 mt-1 flex items-center gap-1"><FileType2 className="w-3 h-3"/> PDF 업로드 시 1페이지가 고화질 이미지로 자동 변환됩니다.</p>
           </div>
-          <button type="submit" disabled={isUploading} className="bg-gray-800 hover:bg-gray-900 text-white px-6 py-2.5 rounded-lg text-sm font-bold shadow-sm whitespace-nowrap disabled:opacity-50">
+          <button type="submit" disabled={isUploading} className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2.5 rounded-xl text-sm font-bold shadow-sm whitespace-nowrap disabled:opacity-50 transition-colors">
             {isUploading ? '업로드/변환 중...' : '저장하기'}
           </button>
         </form>
@@ -205,8 +205,8 @@ export function FloorPlanAdmin() {
 
       <div className="flex-1 flex gap-6 min-h-0">
         {/* Sidebar: Unplaced Equipment */}
-        <div className="w-72 bg-white rounded-2xl border border-gray-200 shadow-sm flex flex-col overflow-hidden">
-          <div className="p-4 border-b border-gray-100 bg-gray-50 flex items-center gap-2">
+        <div className="w-72 bg-white rounded-3xl border border-slate-100 shadow-[0_4px_20px_rgb(0,0,0,0.03)] flex flex-col overflow-hidden">
+          <div className="p-5 border-b border-slate-100/60 bg-slate-50/50 flex items-center gap-2">
             <Search className="w-5 h-5 text-gray-400" />
             <h3 className="font-bold text-gray-700">배치 대기 설비</h3>
           </div>
@@ -242,7 +242,7 @@ export function FloorPlanAdmin() {
         </div>
 
         {/* Main: Map Viewer */}
-        <div className="flex-1 bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden flex flex-col relative">
+        <div className="flex-1 bg-white rounded-3xl border border-slate-100 shadow-[0_4px_20px_rgb(0,0,0,0.03)] overflow-hidden flex flex-col relative">
           {!selectedPlan ? (
             <div className="flex-1 flex flex-col items-center justify-center text-gray-400">
               <ImageIcon className="w-16 h-16 mb-4 text-gray-200" />

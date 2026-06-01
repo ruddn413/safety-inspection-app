@@ -292,14 +292,14 @@ export function FactoryList() {
       
       <div className="w-full">
         {/* 설비 목록 */}
-        <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
-          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 gap-4">
+        <div className="bg-white p-6 rounded-3xl shadow-[0_4px_20px_rgb(0,0,0,0.03)] border border-slate-100">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-4">
             <div className="flex items-center gap-4">
               <h3 className="text-lg font-semibold">공장 목록</h3>
               <select 
                 value={selectedFactoryId}
                 onChange={(e) => setSelectedFactoryId(e.target.value === 'all' ? 'all' : Number(e.target.value))}
-                className="border border-gray-300 rounded-md px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white min-w-[150px]"
+                className="border border-slate-200 rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white min-w-[150px] shadow-sm transition-all hover:border-indigo-300"
               >
                 <option value="all">전체 보기</option>
                 {factories.map(f => (
@@ -313,7 +313,7 @@ export function FactoryList() {
                   <select 
                     value={selectedTeam}
                     onChange={(e) => setSelectedTeam(e.target.value)}
-                    className="border border-gray-300 rounded-md px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white min-w-[130px]"
+                    className="border border-slate-200 rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white min-w-[130px] shadow-sm transition-all hover:border-indigo-300"
                   >
                     <option value="all">전체 보기</option>
                     {ANSAN_TEAMS.map(team => (
@@ -327,7 +327,7 @@ export function FactoryList() {
               <select 
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
-                className="border border-gray-300 rounded-md px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white min-w-[150px]"
+                className="border border-slate-200 rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white min-w-[150px] shadow-sm transition-all hover:border-indigo-300"
               >
                 <option value="all">전체 보기</option>
                 {EQUIPMENT_CATEGORIES.map(cat => (
@@ -335,7 +335,7 @@ export function FactoryList() {
                 ))}
               </select>
 
-              <div className="ml-2 sm:ml-4 px-3 py-1.5 bg-blue-50 text-blue-700 rounded-full text-sm font-semibold border border-blue-100 flex items-center shadow-sm">
+              <div className="ml-2 sm:ml-4 px-4 py-2 bg-indigo-50 text-indigo-700 rounded-xl text-sm font-semibold border border-indigo-100 flex items-center shadow-sm">
                 총 {filteredEquipment.length}대
               </div>
             </div>
@@ -370,7 +370,7 @@ export function FactoryList() {
                 </button>
                 <button 
                   onClick={() => setIsBulkModalOpen(true)}
-                  className="bg-gray-100 text-gray-700 border border-gray-300 px-3 py-1 rounded text-sm hover:bg-gray-200"
+                  className="bg-white text-slate-700 border border-slate-200 px-4 py-2 rounded-xl text-sm hover:bg-slate-50 hover:border-slate-300 shadow-sm transition-all font-medium"
                 >
                   엑셀 붙여넣기
                 </button>
@@ -378,14 +378,14 @@ export function FactoryList() {
             )}
           </div>
           
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
+          <div className="overflow-x-auto rounded-2xl border border-slate-100 shadow-[0_2px_10px_rgb(0,0,0,0.02)]">
+            <table className="min-w-full divide-y divide-slate-100">
+              <thead className="bg-slate-50/50">
                 <tr>
                   <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-10">
                     <input 
                       type="checkbox" 
-                      className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
+                      className="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500 cursor-pointer w-4 h-4"
                       onChange={(e) => {
                         if (e.target.checked) {
                           setSelectedIds(filteredEquipment.map(eq => eq.id));
@@ -408,7 +408,7 @@ export function FactoryList() {
                   <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">첨부파일</th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
+              <tbody className="bg-white divide-y divide-slate-100/60">
                 {filteredEquipment.length === 0 ? (
                   <tr>
                     <td colSpan={11} className="px-6 py-4 text-center text-sm text-gray-500">
@@ -417,11 +417,11 @@ export function FactoryList() {
                   </tr>
                 ) : (
                   filteredEquipment.map(eq => (
-                    <tr key={eq.id} className="hover:bg-gray-50">
+                    <tr key={eq.id} className="hover:bg-slate-50/80 transition-colors duration-200">
                       <td className="px-6 py-4 whitespace-nowrap text-center">
                         <input 
                           type="checkbox" 
-                          className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer disabled:opacity-50"
+                          className="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500 cursor-pointer disabled:opacity-50 w-4 h-4"
                           checked={selectedIds.includes(eq.id)}
                           disabled={!isAdmin}
                           onChange={(e) => {
