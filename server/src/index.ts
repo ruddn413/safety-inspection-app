@@ -32,7 +32,7 @@ async function seedAdmin() {
   try {
     const adminExists = await prisma.user.findUnique({ where: { username: 'admin' } });
     if (!adminExists) {
-      const passwordHash = await bcrypt.hash('admin1234', 10);
+      const passwordHash = await bcrypt.hash('1234', 10);
       await prisma.user.create({
         data: { username: 'admin', passwordHash, role: 'admin' }
       });
