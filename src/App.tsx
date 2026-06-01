@@ -10,9 +10,9 @@ function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
 
   return (
-    <div className="flex h-screen bg-[#F8FAFC]">
-      {/* Sidebar */}
-      <aside className="w-64 bg-white shadow-[1px_0_20px_rgb(0,0,0,0.03)] flex flex-col z-10 relative">
+    <div className="flex h-[100dvh] bg-[#F8FAFC] relative">
+      {/* Sidebar (PC Only) */}
+      <aside className="hidden md:flex w-64 bg-white shadow-[1px_0_20px_rgb(0,0,0,0.03)] flex-col z-10 relative shrink-0">
         <div className="py-5 px-6 flex flex-col items-start gap-2 border-b border-slate-100/60">
           <img src={logo} alt="조흥 로고" className="h-8 object-contain" />
           <h1 className="text-lg font-bold text-gray-800">[안전검사 통합관리 시스템]</h1>
@@ -76,12 +76,52 @@ function App() {
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 overflow-y-auto p-8">
+      <main className="flex-1 overflow-y-auto p-4 md:p-8 pb-24 md:pb-8 w-full">
         {activeTab === 'dashboard' && <Dashboard />}
         {activeTab === 'factories' && <FactoryList />}
         {activeTab === 'floorplans' && <FloorPlanAdmin />}
         {activeTab === 'settings' && <Settings />}
       </main>
+
+      {/* Mobile Bottom Navigation */}
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-slate-100 flex justify-around items-center px-2 py-3 z-50 shadow-[0_-4px_20px_rgb(0,0,0,0.05)] pb-[env(safe-area-inset-bottom)]">
+        <button
+          onClick={() => setActiveTab('dashboard')}
+          className={`flex flex-col items-center gap-1 w-1/4 ${activeTab === 'dashboard' ? 'text-indigo-600' : 'text-slate-400'}`}
+        >
+          <div className={`p-1.5 rounded-xl transition-colors ${activeTab === 'dashboard' ? 'bg-indigo-50' : 'bg-transparent'}`}>
+            <LayoutDashboard className="h-5 w-5" />
+          </div>
+          <span className="text-[10px] font-bold">대시보드</span>
+        </button>
+        <button
+          onClick={() => setActiveTab('factories')}
+          className={`flex flex-col items-center gap-1 w-1/4 ${activeTab === 'factories' ? 'text-indigo-600' : 'text-slate-400'}`}
+        >
+          <div className={`p-1.5 rounded-xl transition-colors ${activeTab === 'factories' ? 'bg-indigo-50' : 'bg-transparent'}`}>
+            <Bot className="h-5 w-5" />
+          </div>
+          <span className="text-[10px] font-bold">설비관리</span>
+        </button>
+        <button
+          onClick={() => setActiveTab('floorplans')}
+          className={`flex flex-col items-center gap-1 w-1/4 ${activeTab === 'floorplans' ? 'text-indigo-600' : 'text-slate-400'}`}
+        >
+          <div className={`p-1.5 rounded-xl transition-colors ${activeTab === 'floorplans' ? 'bg-indigo-50' : 'bg-transparent'}`}>
+            <Map className="h-5 w-5" />
+          </div>
+          <span className="text-[10px] font-bold">도면관리</span>
+        </button>
+        <button
+          onClick={() => setActiveTab('settings')}
+          className={`flex flex-col items-center gap-1 w-1/4 ${activeTab === 'settings' ? 'text-indigo-600' : 'text-slate-400'}`}
+        >
+          <div className={`p-1.5 rounded-xl transition-colors ${activeTab === 'settings' ? 'bg-indigo-50' : 'bg-transparent'}`}>
+            <SettingsIcon className="h-5 w-5" />
+          </div>
+          <span className="text-[10px] font-bold">설정</span>
+        </button>
+      </nav>
     </div>
   );
 }

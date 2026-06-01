@@ -313,7 +313,7 @@ export function Dashboard() {
   const totalEquipmentCount = equipment.length;
 
   return (
-    <div className="p-8 max-w-[1600px] mx-auto space-y-6" ref={dashboardRef}>
+    <div className="w-full max-w-[1600px] mx-auto space-y-6" ref={dashboardRef}>
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between sm:items-end gap-4 mb-8">
         <div>
@@ -415,9 +415,9 @@ export function Dashboard() {
                 onSelectPlan={setSelectedPlanId}
                 defaultFactoryId={selectedFactoryId === 'all' ? undefined : selectedFactoryId}
               />
-              <div className="flex-1 flex min-h-0">
-                {/* Left: Map */}
-                <div className="flex-1 relative bg-slate-50/50 flex items-center justify-center p-4 cursor-crosshair group border-r border-slate-100/50 min-h-0">
+              <div className="flex-1 flex flex-col lg:flex-row min-h-0">
+                {/* Top/Left: Map */}
+                <div className="flex-1 relative bg-slate-50/50 flex items-center justify-center p-4 cursor-crosshair group border-b lg:border-b-0 lg:border-r border-slate-100/50 min-h-[300px]">
                   {(() => {
                     const selectedPlan = floorPlans.find(p => p.id === selectedPlanId);
                     if (!selectedPlan) return <div className="text-gray-400">도면을 선택해주세요.</div>;
@@ -485,8 +485,8 @@ export function Dashboard() {
                   })()}
                 </div>
 
-                {/* Right: Info Panel */}
-                <div className="w-[400px] bg-white p-6 flex flex-col gap-5 overflow-y-auto z-10 shadow-[-10px_0_30px_-15px_rgba(0,0,0,0.05)] min-h-0">
+                {/* Bottom/Right: Info Panel */}
+                <div className="w-full lg:w-[400px] bg-white p-6 flex flex-col gap-5 overflow-y-auto z-10 lg:shadow-[-10px_0_30px_-15px_rgba(0,0,0,0.05)] shrink-0 max-h-[400px] lg:max-h-full">
                   {(() => {
                     const selectedPlan = floorPlans.find(p => p.id === selectedPlanId);
                     const placedEquipment = equipment.filter(eq => eq.floorPlanId === selectedPlanId && eq.locationX !== null && eq.locationY !== null);

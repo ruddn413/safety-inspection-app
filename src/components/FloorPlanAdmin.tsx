@@ -203,9 +203,9 @@ export function FloorPlanAdmin() {
         onSelectPlan={setSelectedPlanId}
       />
 
-      <div className="flex-1 flex gap-6 min-h-0">
+      <div className="flex-1 flex flex-col lg:flex-row gap-6 min-h-0">
         {/* Sidebar: Unplaced Equipment */}
-        <div className="w-72 bg-white rounded-3xl border border-slate-100 shadow-[0_4px_20px_rgb(0,0,0,0.03)] flex flex-col overflow-hidden">
+        <div className="w-full lg:w-72 bg-white rounded-3xl border border-slate-100 shadow-[0_4px_20px_rgb(0,0,0,0.03)] flex flex-col overflow-hidden max-h-[300px] lg:max-h-none shrink-0">
           <div className="p-5 border-b border-slate-100/60 bg-slate-50/50 flex items-center gap-2">
             <Search className="w-5 h-5 text-gray-400" />
             <h3 className="font-bold text-gray-700">배치 대기 설비</h3>

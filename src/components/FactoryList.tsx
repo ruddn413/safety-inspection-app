@@ -293,9 +293,9 @@ export function FactoryList() {
       <div className="w-full">
         {/* 설비 목록 */}
         <div className="bg-white p-6 rounded-3xl shadow-[0_4px_20px_rgb(0,0,0,0.03)] border border-slate-100">
-          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-4">
-            <div className="flex items-center gap-4">
-              <h3 className="text-lg font-semibold">공장 목록</h3>
+          <div className="flex flex-col xl:flex-row xl:justify-between xl:items-center mb-6 gap-4">
+            <div className="flex flex-wrap items-center gap-3 w-full xl:w-auto">
+              <h3 className="text-lg font-semibold shrink-0 w-full sm:w-auto mb-2 sm:mb-0">공장 목록</h3>
               <select 
                 value={selectedFactoryId}
                 onChange={(e) => setSelectedFactoryId(e.target.value === 'all' ? 'all' : Number(e.target.value))}
@@ -341,7 +341,7 @@ export function FactoryList() {
             </div>
             
             {isAdmin && (
-              <div className="flex gap-2 mt-4 sm:mt-0">
+              <div className="flex flex-wrap items-center gap-2 mt-2 xl:mt-0 w-full xl:w-auto justify-end border-t xl:border-t-0 pt-4 xl:pt-0 border-slate-100/60">
                 <button 
                   onClick={() => {
                     setEditingEqId(null);
