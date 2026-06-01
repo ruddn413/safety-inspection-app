@@ -348,14 +348,14 @@ export function Dashboard() {
       {/* KPI Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
         {/* Total */}
-        <div className="bg-white rounded-3xl p-7 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100/50 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all relative overflow-hidden group cursor-default">
-          <div className="absolute -right-6 -top-6 bg-blue-50 w-24 h-24 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
-            <Settings className="w-8 h-8 text-blue-300 absolute bottom-4 left-4" />
+        <div className="bg-white rounded-3xl p-7 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100/50 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:border-blue-200/50 hover:-translate-y-1 transition-all cursor-default relative overflow-hidden group">
+          <div className="absolute -right-6 -top-6 bg-blue-50 w-28 h-28 rounded-full flex items-center justify-center group-hover:scale-110 group-hover:bg-blue-100/50 transition-all duration-500">
+            <Settings className="w-10 h-10 text-blue-400 absolute bottom-5 left-5" />
           </div>
-          <p className="text-sm font-semibold text-blue-600 mb-1 relative z-10">총 등록 설비</p>
+          <p className="text-sm font-semibold text-blue-600 mb-2 relative z-10">총 등록 설비</p>
           <div className="flex items-baseline gap-2 relative z-10">
-            <h3 className="text-4xl font-bold text-gray-900">{totalEquipmentCount}</h3>
-            <span className="text-sm font-medium text-gray-500">대</span>
+            <h3 className="text-5xl font-extrabold text-slate-800">{totalEquipmentCount}</h3>
+            <span className="text-sm font-semibold text-slate-400">대</span>
           </div>
         </div>
 
