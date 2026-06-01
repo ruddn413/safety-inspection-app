@@ -374,9 +374,18 @@ app.patch('/api/equipment/:id/location', async (req, res) => {
   }
 });
 
+let cachedLaws: any = null;
+let lastLawFetchTime = 0;
+
 // --- Laws API ---
 app.get('/api/laws', async (req, res) => {
   try {
+    const now = Date.now();
+    // Cache for 1 hour (3600000 ms)
+    if (cachedLaws && now - lastLawFetchTime < 3600000) {
+      return res.json(cachedLaws);
+    }
+
     const apiKey = process.env.LAW_API_KEY;
     
     // If no API key is set, return mock data for demonstration
@@ -520,6 +529,8 @@ app.get('/api/laws', async (req, res) => {
       link: item.link
     }));
 
+    cachedLaws = topLaws;
+    lastLawFetchTime = now;
     res.json(topLaws);
   } catch (error) {
     console.error('Error fetching laws from OpenAPI:', error);

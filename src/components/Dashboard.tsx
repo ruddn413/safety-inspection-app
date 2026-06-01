@@ -198,19 +198,17 @@ export function Dashboard() {
   useEffect(() => {
     async function loadData() {
       try {
-        const [sumRes, facts, plans, eqData, lawsRes] = await Promise.all([
+        const [sumRes, facts, plans, eqData] = await Promise.all([
           fetchDashboardSummary(),
           fetchFactories(),
           fetchFloorPlans(),
-          fetchEquipment(),
-          fetchLaws()
+          fetchEquipment()
         ]);
         setSummary(sumRes);
         setFactories(facts);
         setFactoryCount(facts.length);
         setFloorPlans(plans);
         setEquipment(eqData);
-        setLaws(lawsRes);
         
         // Auto select first factory and plan
         const firstFactoryId = facts.length > 0 ? facts[0].id : 'all';
@@ -221,10 +219,21 @@ export function Dashboard() {
           setSelectedPlanId(firstPlan.id);
         }
       } catch (err) {
-        console.error("Failed to load dashboard data", err);
+        console.error("Failed to load core dashboard data", err);
       }
     }
+
+    async function loadLaws() {
+      try {
+        const lawsRes = await fetchLaws();
+        setLaws(lawsRes);
+      } catch (err) {
+        console.error("Failed to load laws", err);
+      }
+    }
+
     loadData();
+    loadLaws();
   }, []);
 
   useEffect(() => {
