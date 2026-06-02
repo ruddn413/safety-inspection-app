@@ -93,6 +93,7 @@ app.post('/api/auth/login', async (req, res) => {
 // --- Factories API ---
 app.get('/api/factories', async (req, res) => {
   try {
+    res.setHeader('Cache-Control', 's-maxage=10, stale-while-revalidate=59');
     const factories = await prisma.factory.findMany();
     res.json(factories);
   } catch (error) {
@@ -116,6 +117,7 @@ app.post('/api/factories', checkAdmin, async (req, res) => {
 app.get('/api/equipment', async (req, res) => {
   const { factoryId } = req.query;
   try {
+    res.setHeader('Cache-Control', 's-maxage=10, stale-while-revalidate=59');
     const equipment = await prisma.equipment.findMany({
       where: factoryId ? { factoryId: Number(factoryId) } : undefined,
       include: { factory: true }
@@ -265,28 +267,20 @@ app.post('/api/equipment/bulk', checkAdmin, async (req, res) => {
 // Dashboard specific endpoint for summary
 app.get('/api/dashboard/summary', async (req, res) => {
   try {
+    res.setHeader('Cache-Control', 's-maxage=10, stale-while-revalidate=59');
     const now = new Date();
     const thirtyDaysFromNow = new Date();
     thirtyDaysFromNow.setDate(now.getDate() + 30);
 
-    const totalEquipment = await prisma.equipment.count();
-    
-    const overdue = await prisma.equipment.count({
-      where: {
-        nextInspectionDate: {
-          lt: now
-        }
-      }
-    });
-
-    const approaching = await prisma.equipment.count({
-      where: {
-        nextInspectionDate: {
-          gte: now,
-          lte: thirtyDaysFromNow
-        }
-      }
-    });
+    const [totalEquipment, overdue, approaching] = await Promise.all([
+      prisma.equipment.count(),
+      prisma.equipment.count({
+        where: { nextInspectionDate: { lt: now } }
+      }),
+      prisma.equipment.count({
+        where: { nextInspectionDate: { gte: now, lte: thirtyDaysFromNow } }
+      })
+    ]);
 
     res.json({
       totalEquipment,
@@ -301,6 +295,7 @@ app.get('/api/dashboard/summary', async (req, res) => {
 // --- FloorPlan API ---
 app.get('/api/floorplans', async (req, res) => {
   try {
+    res.setHeader('Cache-Control', 's-maxage=10, stale-while-revalidate=59');
     const floorPlans = await prisma.floorPlan.findMany();
     res.json(floorPlans);
   } catch (error) {
@@ -380,6 +375,7 @@ let lastLawFetchTime = 0;
 // --- Laws API ---
 app.get('/api/laws', async (req, res) => {
   try {
+    res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=86400');
     const now = Date.now();
     // Cache for 1 hour (3600000 ms)
     if (cachedLaws && now - lastLawFetchTime < 3600000) {
