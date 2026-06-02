@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { fetchFactories, fetchEquipment, createFactory, uploadExcel, uploadBulkEquipment, createEquipment, updateEquipment, deleteEquipment, uploadQrImage, type Factory, type Equipment } from '../api';
-import { ExcelPasteModal } from './ExcelPasteModal';
+import { fetchFactories, fetchEquipment, createFactory, uploadBulkEquipment, createEquipment, updateEquipment, deleteEquipment, uploadQrImage, type Factory, type Equipment } from '../api';
 import { PdfSplitterModal } from './PdfSplitterModal';
 import { useAuth } from '../context/AuthContext';
 import { differenceInDays, isBefore, startOfToday } from 'date-fns';

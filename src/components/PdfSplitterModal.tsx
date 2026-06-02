@@ -2,7 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import * as pdfjsLib from 'pdfjs-dist';
 import { PDFDocument } from 'pdf-lib';
 import { X, ChevronLeft, ChevronRight, Save, Loader2, UploadCloud } from 'lucide-react';
-import { Equipment, uploadFile, updateEquipment } from '../api';
+import { updateEquipment, uploadQrImage } from '../api';
+import type { Equipment } from '../api';
 
 // Worker setup for PDF.js
 pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
@@ -90,7 +91,7 @@ export function PdfSplitterModal({ isOpen, onClose, equipmentList, onComplete }:
         canvas.height = scaledViewport.height;
         canvas.width = scaledViewport.width;
 
-        const renderContext = {
+        const renderContext: any = {
           canvasContext: context,
           viewport: scaledViewport,
         };
@@ -132,11 +133,11 @@ export function PdfSplitterModal({ isOpen, onClose, equipmentList, onComplete }:
       
       // 3. Serialize to Blob
       const newPdfBytes = await newPdf.save();
-      const blob = new Blob([newPdfBytes], { type: 'application/pdf' });
+      const blob = new Blob([newPdfBytes.buffer as ArrayBuffer], { type: 'application/pdf' });
       const splitFile = new File([blob], `certificate_${selectedEqId}_page${currentPage}.pdf`, { type: 'application/pdf' });
       
       // 4. Upload to server
-      const uploadUrl = await uploadFile(splitFile);
+      const uploadUrl = await uploadQrImage(splitFile);
       
       // 5. Update equipment record
       await updateEquipment(selectedEqId, { certificateUrl: uploadUrl });
