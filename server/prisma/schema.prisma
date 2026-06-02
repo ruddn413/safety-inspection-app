@@ -43,6 +43,7 @@ model Equipment {
   qrImageUrl         String?   // QR코드 이미지 URL
   attachmentUrl      String?   // 첨부파일 (추가 이미지) URL
   attachmentMemo     String?   // 첨부파일 하단 메모
+  certificateUrl     String?   // 합격증명서 PDF URL
   lastInspectionDate DateTime?
   nextInspectionDate DateTime? // 유효기간
   status             String    @default("ACTIVE") // ACTIVE, PASS, FAIL, EXCLUDED

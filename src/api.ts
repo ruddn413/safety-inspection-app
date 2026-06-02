@@ -20,6 +20,7 @@ export interface Equipment {
   qrImageUrl?: string;
   attachmentUrl?: string;
   attachmentMemo?: string;
+  certificateUrl?: string;
   lastInspectionDate?: string;
   nextInspectionDate?: string;
   status: string;
