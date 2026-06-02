@@ -137,10 +137,10 @@ export function PdfSplitterModal({ isOpen, onClose, equipmentList, onComplete }:
       const splitFile = new File([blob], `certificate_${selectedEqId}_page${currentPage}.pdf`, { type: 'application/pdf' });
       
       // 4. Upload to server
-      const uploadUrl = await uploadQrImage(splitFile);
+      const uploadRes = await uploadQrImage(splitFile);
       
       // 5. Update equipment record
-      await updateEquipment(selectedEqId, { certificateUrl: uploadUrl });
+      await updateEquipment(selectedEqId, { certificateUrl: uploadRes.url });
       
       // 6. Go to next page or finish
       if (currentPage < numPages) {
