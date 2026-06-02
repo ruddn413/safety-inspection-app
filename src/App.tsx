@@ -15,7 +15,7 @@ function App() {
       <aside className="hidden md:flex w-64 bg-white shadow-[1px_0_20px_rgb(0,0,0,0.03)] flex-col z-10 relative shrink-0">
         <div className="py-5 px-6 flex flex-col items-start gap-2 border-b border-slate-100/60">
           <img src={logo} alt="조흥 로고" className="h-8 object-contain" />
-          <h1 className="text-lg font-bold text-gray-800">[C'HES 안전검사 통합관리 시스템]</h1>
+          <h1 className="text-base font-bold text-gray-800 whitespace-nowrap tracking-tight">[C'HES 안전검사 통합관리]</h1>
         </div>
         <nav className="flex-1 px-4 py-4 space-y-2">
           <button
