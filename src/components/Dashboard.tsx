@@ -60,7 +60,7 @@ export function Dashboard() {
       // Header
       pdf.setFontSize(22);
       pdf.setTextColor(30);
-      pdf.text('안전검사 통합 대시보드 현황 리포트', 14, 20);
+      pdf.text("C'HES 안전검사 통합관리 시스템 현황 리포트", 14, 20);
       
       pdf.setFontSize(10);
       pdf.setTextColor(100);
@@ -322,7 +322,7 @@ export function Dashboard() {
             실시간 모니터링
           </div>
           <h1 className="text-4xl font-extrabold text-slate-900 tracking-tight flex items-center gap-3">
-            안전검사 통합 대시보드
+            C'HES 안전검사 통합관리 시스템
           </h1>
           <p className="text-slate-500 mt-2 font-medium">실시간 설비 검사 현황 및 도면 배치 정보를 한눈에 파악하세요.</p>
         </div>
