@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { fetchFactories, fetchEquipment, createFactory, uploadBulkEquipment, createEquipment, updateEquipment, deleteEquipment, uploadQrImage, type Factory, type Equipment } from '../api';
-import { PdfSplitterModal } from './PdfSplitterModal';
 import { useAuth } from '../context/AuthContext';
 import { differenceInDays, isBefore, startOfToday } from 'date-fns';
 
@@ -64,7 +63,6 @@ export function FactoryList() {
   const [validityEnd, setValidityEnd] = useState('');
   
   const [isBulkModalOpen, setIsBulkModalOpen] = useState(false);
-  const [isSplitterOpen, setIsSplitterOpen] = useState(false);
   const [bulkText, setBulkText] = useState('');
 
   const qrInputRef = useRef<HTMLInputElement>(null);
@@ -376,12 +374,6 @@ export function FactoryList() {
                 >
                   엑셀 붙여넣기
                 </button>
-                <button 
-                  onClick={() => setIsSplitterOpen(true)}
-                  className="bg-indigo-600 text-white px-4 py-2 rounded-xl text-sm hover:bg-indigo-700 shadow-sm transition-all font-medium"
-                >
-                  초고속 서류 분배기
-                </button>
               </div>
             )}
           </div>
@@ -414,7 +406,6 @@ export function FactoryList() {
                   <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">QR코드 번호</th>
                   <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">QR코드</th>
                   <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">첨부파일</th>
-                  <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">합격증</th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-slate-100/60">
@@ -473,20 +464,6 @@ export function FactoryList() {
                           >
                             첨부파일 보기
                           </button>
-                        ) : (
-                          <span className="text-gray-400 text-xs">-</span>
-                        )}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500">
-                        {eq.certificateUrl ? (
-                          <a 
-                            href={eq.certificateUrl} 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center justify-center px-2 py-1 text-xs font-medium bg-emerald-50 text-emerald-600 border border-emerald-200 rounded hover:bg-emerald-100 transition-colors"
-                          >
-                            서류 보기
-                          </a>
                         ) : (
                           <span className="text-gray-400 text-xs">-</span>
                         )}
@@ -814,13 +791,6 @@ export function FactoryList() {
           </div>
         </div>
       )}
-
-      <PdfSplitterModal 
-        isOpen={isSplitterOpen} 
-        onClose={() => setIsSplitterOpen(false)} 
-        equipmentList={filteredEquipment}
-        onComplete={loadEquipment}
-      />
 
       {/* Attachment Viewer Modal */}
       {viewingAttachmentEq && viewingAttachmentEq.attachmentUrl && (
