@@ -1,5 +1,5 @@
 import React from 'react';
-import { Bot, Cylinder, Package, ArrowUpDown } from 'lucide-react';
+import { Bot, Cylinder, Package } from 'lucide-react';
 import type { Equipment } from '../api';
 
 export const ConveyorIcon = ({ className }: { className?: string }) => (
@@ -20,7 +20,32 @@ export const ConveyorIcon = ({ className }: { className?: string }) => (
     {/* Rollers */}
     <circle cx="6" cy="16" r="1" />
     <circle cx="12" cy="16" r="1" />
-    <circle cx="18" cy="16" r="1" />
+  </svg>
+);
+
+export const LiftIcon = ({ className }: { className?: string }) => (
+  <svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    viewBox="0 0 24 24" 
+    fill="none" 
+    stroke="currentColor" 
+    strokeWidth="2" 
+    strokeLinecap="round" 
+    strokeLinejoin="round" 
+    className={className}
+  >
+    {/* Ground base support */}
+    <path d="M3 21h18" />
+    {/* Vertical guide columns */}
+    <path d="M6 3v18M18 3v18" />
+    {/* Top cross beam */}
+    <path d="M6 3h12" />
+    {/* Moving lift platform */}
+    <rect x="6" y="14" width="12" height="2.5" />
+    {/* Cargo crate sitting on lift */}
+    <rect x="9" y="8" width="6" height="6" rx="1" />
+    {/* Up/down lift direction arrows */}
+    <path d="M12 5v2M10 6l2-2 2 2" />
   </svg>
 );
 
@@ -70,7 +95,7 @@ export function EquipmentMarker({ equipment, isSelected = false }: Props) {
       <div className="relative flex items-center justify-center w-7 h-7">
         <span className={`absolute inline-flex h-full w-full rounded-full opacity-50 ${isSelected ? 'bg-amber-300 scale-150 animate-none' : 'bg-emerald-300 animate-ping'}`}></span>
         <div className={`relative flex items-center justify-center w-7 h-7 bg-white rounded-full shadow-md border-2 transition-all ${isSelected ? 'border-amber-400 scale-125' : 'border-emerald-200 text-emerald-600'}`}>
-          <ArrowUpDown className={`w-4 h-4 ${isSelected ? 'text-amber-600' : 'text-emerald-600'}`} />
+          <LiftIcon className={`w-4 h-4 ${isSelected ? 'text-amber-600' : 'text-emerald-600'}`} />
         </div>
       </div>
     );
@@ -109,7 +134,7 @@ export function EquipmentLegend() {
       </div>
       <div className="flex items-center gap-2">
         <div className="flex items-center justify-center w-5 h-5 bg-white rounded-full shadow-sm border border-emerald-200">
-          <ArrowUpDown className="w-3 h-3 text-emerald-600" />
+          <LiftIcon className="w-3 h-3 text-emerald-600" />
         </div>
         <span className="text-xs font-semibold text-gray-600">산업용리프트</span>
       </div>
