@@ -27,12 +27,15 @@ export function FactoryList() {
   
   const EQUIPMENT_CATEGORIES = ['컨베이어', '산업용로봇', '압력용기', '혼합기'];
   const ANSAN_TEAMS = ['이스트', 'SD', '슈레드', '피자', '소스', '치즈', '골드', '혼합제제', '기타'];
+  const DAESO_TEAMS = ['유탕', '피자', '밀키트', '기타'];
   
-  const isAnsanSelected = selectedFactoryId !== 'all' && factories.find(f => f.id === selectedFactoryId)?.name === '안산공장';
+  const selectedFactoryName = selectedFactoryId !== 'all' ? factories.find(f => f.id === selectedFactoryId)?.name : null;
+  const isAnsanSelected = selectedFactoryName === '안산공장';
+  const isDaesoSelected = selectedFactoryName === '대소공장';
 
   const filteredEquipment = equipment.filter(eq => {
     let teamMatch = true;
-    if (isAnsanSelected && selectedTeam !== 'all') {
+    if ((isAnsanSelected || isDaesoSelected) && selectedTeam !== 'all') {
       teamMatch = (eq.categoryMain && eq.categoryMain.includes(selectedTeam)) || 
                   (eq.name && eq.name.includes(selectedTeam)) || 
                   (eq.specification && eq.specification.includes(selectedTeam)) || 
@@ -286,6 +289,16 @@ export function FactoryList() {
     }
   }
 
+  const modalFactoryName = factories.find(f => String(f.id) === String(newEq.factoryId))?.name;
+  const baseTeams = modalFactoryName === '대소공장' 
+    ? DAESO_TEAMS 
+    : modalFactoryName === '안산공장' 
+      ? ANSAN_TEAMS 
+      : Array.from(new Set([...ANSAN_TEAMS, ...DAESO_TEAMS]));
+  const modalTeams = newEq.categoryMain && !baseTeams.includes(newEq.categoryMain)
+    ? [newEq.categoryMain, ...baseTeams]
+    : baseTeams;
+
   return (
     <div>
       <h2 className="text-2xl font-bold text-gray-900 mb-6">안전검사 설비 관리</h2>
@@ -298,7 +311,10 @@ export function FactoryList() {
               <h3 className="text-lg font-semibold shrink-0 w-full sm:w-auto mb-2 sm:mb-0">공장 목록</h3>
               <select 
                 value={selectedFactoryId}
-                onChange={(e) => setSelectedFactoryId(e.target.value === 'all' ? 'all' : Number(e.target.value))}
+                onChange={(e) => {
+                  setSelectedFactoryId(e.target.value === 'all' ? 'all' : Number(e.target.value));
+                  setSelectedTeam('all');
+                }}
                 className="border border-slate-200 rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white min-w-[150px] shadow-sm transition-all hover:border-indigo-300"
               >
                 <option value="all">전체 보기</option>
@@ -307,7 +323,7 @@ export function FactoryList() {
                 ))}
               </select>
               
-              {isAnsanSelected && (
+              {(isAnsanSelected || isDaesoSelected) && (
                 <>
                   <h3 className="text-lg font-semibold ml-2 sm:ml-4">공정 분류</h3>
                   <select 
@@ -489,7 +505,7 @@ export function FactoryList() {
                   <select 
                     className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
                     value={newEq.factoryId}
-                    onChange={e => setNewEq({...newEq, factoryId: e.target.value})}
+                    onChange={e => setNewEq({...newEq, factoryId: e.target.value, categoryMain: ''})}
                     required
                   >
                     <option value="">공장 선택</option>
@@ -530,7 +546,7 @@ export function FactoryList() {
                     required
                   >
                     <option value="" disabled>공정/팀 선택</option>
-                    {ANSAN_TEAMS.map(team => (
+                    {modalTeams.map(team => (
                       <option key={team} value={team}>{team}</option>
                     ))}
                   </select>
