@@ -333,7 +333,7 @@ export function FactoryList() {
                     className="border border-slate-200 rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white min-w-[130px] shadow-sm transition-all hover:border-indigo-300"
                   >
                     <option value="all">전체 보기</option>
-                    {ANSAN_TEAMS.map(team => (
+                    {(isDaesoSelected ? DAESO_TEAMS : ANSAN_TEAMS).map(team => (
                       <option key={team} value={team}>{team}</option>
                     ))}
                   </select>
