@@ -35,6 +35,10 @@ export function FactoryList() {
   const isDaesoSelected = selectedFactoryName === '대소공장';
 
   const filteredEquipment = equipment.filter(eq => {
+    const factoryMatch = selectedFactoryId === 'all' || 
+                         Number(eq.factoryId) === Number(selectedFactoryId) || 
+                         Number(eq.factory?.id) === Number(selectedFactoryId);
+
     let teamMatch = true;
     if ((isAnsanSelected || isDaesoSelected) && selectedTeam !== 'all') {
       teamMatch = (eq.categoryMain && eq.categoryMain.includes(selectedTeam)) || 
@@ -50,7 +54,7 @@ export function FactoryList() {
                       false;
     }
     
-    return teamMatch && categoryMatch;
+    return factoryMatch && teamMatch && categoryMatch;
   });
   
   const [showAddModal, setShowAddModal] = useState(false);
