@@ -3,7 +3,7 @@ import { differenceInDays, isBefore, startOfToday, parseISO } from 'date-fns';
 import { FloorPlanSelector } from './FloorPlanSelector';
 import { EquipmentMarker, EquipmentLegend, ConveyorIcon } from './EquipmentMarker';
 import { fetchDashboardSummary, fetchFactories, fetchFloorPlans, fetchEquipment, fetchLaws, type DashboardSummary, type Factory, type FloorPlan, type Equipment, type LawUpdate } from '../api';
-import { ShieldCheck, AlertTriangle, AlertCircle, Settings, Map as MapIcon, Image as ImageIcon, CheckCircle, CalendarClock, Bot, Cylinder, X, ArrowRight, Activity, Package, Download, FileSpreadsheet } from 'lucide-react';
+import { ShieldCheck, AlertTriangle, AlertCircle, Settings, Map as MapIcon, Image as ImageIcon, CheckCircle, CalendarClock, Bot, Cylinder, X, ArrowRight, Activity, Package, Download, FileSpreadsheet, ArrowUpDown } from 'lucide-react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip as RechartsTooltip, Legend } from 'recharts';
 import { toPng } from 'html-to-image';
 import { jsPDF } from 'jspdf';
@@ -80,6 +80,7 @@ export function Dashboard() {
           if (eq.name?.includes('컨베이어')) capacity = `${capacity}m`;
           else if (eq.name?.includes('로봇')) capacity = `${capacity}(대)`;
           else if (eq.name?.includes('압력용기')) capacity = `${capacity}m³`;
+          else if (eq.name?.includes('리프트')) capacity = `${capacity}TON`;
         }
         
         return [
@@ -151,6 +152,7 @@ export function Dashboard() {
           if (eq.name?.includes('컨베이어')) capacity = `${capacity}m`;
           else if (eq.name?.includes('로봇')) capacity = `${capacity}(대)`;
           else if (eq.name?.includes('압력용기')) capacity = `${capacity}m³`;
+          else if (eq.name?.includes('리프트')) capacity = `${capacity}TON`;
         }
         
         aoa.push([
@@ -565,7 +567,8 @@ export function Dashboard() {
                                                 {eq.capacity}
                                                 {eq.name.includes('컨베이어') ? 'm' : 
                                                  eq.name.includes('로봇') ? ' (대)' : 
-                                                 eq.name.includes('압력용기') ? '㎥' : ''}
+                                                 eq.name.includes('압력용기') ? '㎥' : 
+                                                 eq.name.includes('리프트') ? 'TON' : ''}
                                               </span>
                                             </div>
                                           )}
@@ -652,6 +655,7 @@ export function Dashboard() {
                 if (item.name.includes('컨베이어')) return <ConveyorIcon className={`w-6 h-6 ${colorTheme.icon}`} />;
                 if (item.name.includes('로봇')) return <Bot className={`w-6 h-6 ${colorTheme.icon}`} />;
                 if (item.name.includes('압력용기')) return <Cylinder className={`w-6 h-6 ${colorTheme.icon}`} />;
+                if (item.name.includes('리프트')) return <ArrowUpDown className={`w-6 h-6 ${colorTheme.icon}`} />;
                 return <Settings className={`w-6 h-6 ${colorTheme.icon}`} />;
               };
 

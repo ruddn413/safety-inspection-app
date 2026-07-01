@@ -9,6 +9,7 @@ const formatCapacity = (eq: Partial<Equipment>) => {
   if (eq.name?.includes('컨베이어')) return `${eq.capacity}m`;
   if (eq.name?.includes('로봇')) return `${eq.capacity}(대)`;
   if (eq.name?.includes('압력용기')) return `${eq.capacity}m³`;
+  if (eq.name?.includes('리프트')) return `${eq.capacity}TON`;
   return eq.capacity;
 };
 
@@ -25,7 +26,7 @@ export function FactoryList() {
   const [viewingAttachmentEq, setViewingAttachmentEq] = useState<Equipment | null>(null);
   const [imageScale, setImageScale] = useState<number>(1);
   
-  const EQUIPMENT_CATEGORIES = ['컨베이어', '산업용로봇', '압력용기', '혼합기'];
+  const EQUIPMENT_CATEGORIES = ['컨베이어', '산업용로봇', '압력용기', '혼합기', '산업용리프트'];
   const ANSAN_TEAMS = ['이스트', 'SD', '슈레드', '피자', '소스', '치즈', '골드', '혼합제제', '기타'];
   const DAESO_TEAMS = ['유탕', '피자', '밀키트', '기타'];
   
@@ -561,12 +562,15 @@ export function FactoryList() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">용량 (m/EA)</label>
+                  <label className="block text-sm font-medium text-gray-700">
+                    용량 {newEq.name?.includes('컨베이어') ? '(단위: m)' : newEq.name?.includes('산업용로봇') ? '(단위: 대)' : newEq.name?.includes('압력용기') ? '(단위: m³)' : newEq.name?.includes('리프트') ? '(단위: TON)' : '(m/EA)'}
+                  </label>
                   <input 
                     type="text" 
                     className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
                     value={newEq.capacity}
                     onChange={e => setNewEq({...newEq, capacity: e.target.value})}
+                    placeholder={newEq.name?.includes('리프트') ? '예: 5 (숫자만 입력 시 TON 자동 표시)' : ''}
                   />
                 </div>
                 <div className="md:col-span-2">

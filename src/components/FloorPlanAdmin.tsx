@@ -145,6 +145,7 @@ export function FloorPlanAdmin() {
     if (eq.name?.includes('컨베이어')) return `${eq.capacity}m`;
     if (eq.name?.includes('로봇')) return `${eq.capacity}(대)`;
     if (eq.name?.includes('압력용기')) return `${eq.capacity}㎥`;
+    if (eq.name?.includes('리프트')) return `${eq.capacity}TON`;
     
     return eq.capacity;
   };

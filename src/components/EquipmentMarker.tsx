@@ -1,5 +1,5 @@
 import React from 'react';
-import { Bot, Cylinder, Package } from 'lucide-react';
+import { Bot, Cylinder, Package, ArrowUpDown } from 'lucide-react';
 import type { Equipment } from '../api';
 
 export const ConveyorIcon = ({ className }: { className?: string }) => (
@@ -65,6 +65,17 @@ export function EquipmentMarker({ equipment, isSelected = false }: Props) {
     );
   }
 
+  if (name.includes('리프트')) {
+    return (
+      <div className="relative flex items-center justify-center w-7 h-7">
+        <span className={`absolute inline-flex h-full w-full rounded-full opacity-50 ${isSelected ? 'bg-amber-300 scale-150 animate-none' : 'bg-emerald-300 animate-ping'}`}></span>
+        <div className={`relative flex items-center justify-center w-7 h-7 bg-white rounded-full shadow-md border-2 transition-all ${isSelected ? 'border-amber-400 scale-125' : 'border-emerald-200 text-emerald-600'}`}>
+          <ArrowUpDown className={`w-4 h-4 ${isSelected ? 'text-amber-600' : 'text-emerald-600'}`} />
+        </div>
+      </div>
+    );
+  }
+
   // Default Blue Circle
   return (
     <div className="relative flex h-5 w-5">
@@ -95,6 +106,12 @@ export function EquipmentLegend() {
           <ConveyorIcon className="w-3 h-3 text-purple-600" />
         </div>
         <span className="text-xs font-semibold text-gray-600">컨베이어</span>
+      </div>
+      <div className="flex items-center gap-2">
+        <div className="flex items-center justify-center w-5 h-5 bg-white rounded-full shadow-sm border border-emerald-200">
+          <ArrowUpDown className="w-3 h-3 text-emerald-600" />
+        </div>
+        <span className="text-xs font-semibold text-gray-600">산업용리프트</span>
       </div>
     </div>
   );
