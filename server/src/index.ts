@@ -349,9 +349,11 @@ app.post('/api/floorplans', checkAdmin, upload.single('image'), async (req, res)
   }
 
   try {
-    const blob = await put(file.originalname, file.buffer, {
+    const originalName = Buffer.from(file.originalname, 'latin1').toString('utf8');
+    const blob = await put(originalName, file.buffer, {
       access: 'public',
-      token: process.env.BLOB_READ_WRITE_TOKEN
+      token: process.env.BLOB_READ_WRITE_TOKEN,
+      addRandomSuffix: true
     });
 
     const floorPlan = await prisma.floorPlan.create({
