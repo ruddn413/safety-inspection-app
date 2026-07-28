@@ -628,7 +628,7 @@ export function FactoryList() {
                         />
                         <input 
                           type="file" 
-                          accept="image/*" 
+                          accept="image/*,.pdf" 
                           className="hidden" 
                           ref={qrInputRef}
                           onChange={handleQrUpload}
@@ -656,7 +656,7 @@ export function FactoryList() {
                       <div className="flex gap-2">
                         <input 
                           type="file" 
-                          accept="image/*" 
+                          accept="image/*,.pdf" 
                           className="hidden" 
                           ref={attachInputRef}
                           onChange={handleAttachUpload}
