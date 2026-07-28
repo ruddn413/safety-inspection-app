@@ -789,6 +789,8 @@ export function FactoryList() {
                 onClick={() => setImageScale(s => s >= 1.5 ? 1 : s + 0.5)}
                 style={{ 
                   width: imageScale === 1 ? 'auto' : `${imageScale * 100}%`, 
+                  maxHeight: imageScale === 1 ? '70vh' : 'none',
+                  maxWidth: imageScale === 1 ? '100%' : 'none',
                   imageRendering: '-webkit-optimize-contrast',
                   filter: 'contrast(1.05) brightness(1.02)'
                 }}
@@ -843,21 +845,22 @@ export function FactoryList() {
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
               </button>
             </div>
-            <div className="p-4 flex-1 overflow-auto bg-gray-200 flex flex-col gap-6 justify-start items-center min-h-[400px]">
+            <div className="p-4 flex-1 overflow-auto bg-gray-200 flex flex-wrap gap-2 justify-center content-start min-h-[400px]">
               {viewingAttachmentEq.attachmentUrl.split(',').map((url, idx) => (
-                <div key={idx} className="relative w-full flex justify-center">
-                  <img 
-                    src={url} 
-                    alt={`Attachment ${idx+1}`} 
-                    onClick={() => setImageScale(s => s >= 1.5 ? 1 : s + 0.5)}
-                    style={{ 
-                      width: imageScale === 1 ? 'auto' : `${imageScale * 100}%`, 
-                      imageRendering: '-webkit-optimize-contrast',
-                      filter: 'contrast(1.05) brightness(1.02)'
-                    }}
-                    className={`bg-white shadow-md transition-all duration-200 ${imageScale >= 1.5 ? 'cursor-zoom-out' : 'cursor-zoom-in'}`}
-                  />
-                </div>
+                <img 
+                  key={idx}
+                  src={url} 
+                  alt={`Attachment ${idx+1}`} 
+                  onClick={() => setImageScale(s => s >= 1.5 ? 1 : s + 0.5)}
+                  style={{ 
+                    width: imageScale === 1 ? 'auto' : `${imageScale * 100}%`, 
+                    maxHeight: imageScale === 1 ? '50vh' : 'none',
+                    maxWidth: imageScale === 1 ? '100%' : 'none',
+                    imageRendering: '-webkit-optimize-contrast',
+                    filter: 'contrast(1.05) brightness(1.02)'
+                  }}
+                  className={`bg-white shadow-md transition-all duration-200 ${imageScale >= 1.5 ? 'cursor-zoom-out' : 'cursor-zoom-in'}`}
+                />
               ))}
             </div>
             <div className="p-4 border-t border-gray-200 flex justify-between items-center bg-gray-50">
