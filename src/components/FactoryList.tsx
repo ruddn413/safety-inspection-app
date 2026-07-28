@@ -281,21 +281,20 @@ export function FactoryList() {
   }
 
   async function handleAttachUpload(e: React.ChangeEvent<HTMLInputElement>) {
-    alert('파일 첨부 이벤트가 시작되었습니다.');
-    const file = e.target.files?.[0];
-    if (!file) {
-      alert('파일이 선택되지 않았습니다. (취소 누름)');
-      return;
-    }
-    alert(`선택된 파일: ${file.name} (크기: ${file.size} bytes)`);
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
 
     try {
-      const res = await uploadQrImage(file);
-      alert(`업로드 성공! 반환된 URL: ${res.url}`);
-      setNewEq(prev => ({ ...prev, attachmentUrl: res.url }));
+      const uploadPromises = Array.from(files).map(f => uploadQrImage(f));
+      const results = await Promise.all(uploadPromises);
+      const newUrls = results.map(r => r.url).join(',');
+      
+      setNewEq(prev => {
+        const updatedUrl = prev.attachmentUrl ? prev.attachmentUrl + ',' + newUrls : newUrls;
+        return { ...prev, attachmentUrl: updatedUrl };
+      });
     } catch(err) {
       console.error("이미지 업로드 실패", err);
-      alert(`첨부파일 업로드 실패! 원인: ${err}`);
     } finally {
       if (attachInputRef.current) attachInputRef.current.value = '';
     }
@@ -664,6 +663,7 @@ export function FactoryList() {
                         <input 
                           type="file" 
                           accept="image/*,.pdf" 
+                          multiple
                           className="hidden" 
                           ref={attachInputRef}
                           onChange={handleAttachUpload}
@@ -680,8 +680,12 @@ export function FactoryList() {
                         )}
                       </div>
                       {newEq.attachmentUrl && (
-                        <div className="mt-2 p-2 bg-gray-50 rounded border border-gray-200 inline-block">
-                          <img src={newEq.attachmentUrl} alt="첨부파일 미리보기" className="h-20 object-contain" />
+                        <div className="mt-2 flex flex-wrap gap-2">
+                          {newEq.attachmentUrl.split(',').map((url, idx) => (
+                            <div key={idx} className="p-2 bg-gray-50 rounded border border-gray-200 inline-block">
+                              <img src={url} alt={`첨부파일 미리보기 ${idx+1}`} className="h-20 object-contain" />
+                            </div>
+                          ))}
                         </div>
                       )}
                     </div>
@@ -841,20 +845,24 @@ export function FactoryList() {
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
               </button>
             </div>
-            <div className="p-4 flex-1 overflow-auto bg-gray-200 flex justify-center items-start min-h-[400px]">
-              <img 
-                src={viewingAttachmentEq.attachmentUrl} 
-                alt="Attachment" 
-                onClick={() => setImageScale(s => s >= 1.5 ? 1 : s + 0.5)}
-                style={{ 
-                  width: imageScale === 1 ? 'auto' : `${imageScale * 100}%`, 
-                  maxHeight: imageScale === 1 ? '70vh' : 'none',
-                  maxWidth: imageScale === 1 ? '100%' : 'none',
-                  imageRendering: '-webkit-optimize-contrast',
-                  filter: 'contrast(1.05) brightness(1.02)'
-                }}
-                className={`bg-white shadow-md transition-all duration-200 ${imageScale >= 1.5 ? 'cursor-zoom-out' : 'cursor-zoom-in'}`}
-              />
+            <div className="p-4 flex-1 overflow-auto bg-gray-200 flex flex-col gap-6 justify-start items-center min-h-[400px]">
+              {viewingAttachmentEq.attachmentUrl.split(',').map((url, idx) => (
+                <div key={idx} className="relative w-full flex justify-center">
+                  <img 
+                    src={url} 
+                    alt={`Attachment ${idx+1}`} 
+                    onClick={() => setImageScale(s => s >= 1.5 ? 1 : s + 0.5)}
+                    style={{ 
+                      width: imageScale === 1 ? 'auto' : `${imageScale * 100}%`, 
+                      maxHeight: imageScale === 1 ? '70vh' : 'none',
+                      maxWidth: imageScale === 1 ? '100%' : 'none',
+                      imageRendering: '-webkit-optimize-contrast',
+                      filter: 'contrast(1.05) brightness(1.02)'
+                    }}
+                    className={`bg-white shadow-md transition-all duration-200 ${imageScale >= 1.5 ? 'cursor-zoom-out' : 'cursor-zoom-in'}`}
+                  />
+                </div>
+              ))}
             </div>
             <div className="p-4 border-t border-gray-200 flex justify-between items-center bg-gray-50">
               <div className="flex-1 mr-4">
