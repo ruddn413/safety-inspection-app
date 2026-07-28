@@ -6,6 +6,7 @@ import { PrismaClient } from '@prisma/client';
 import multer from 'multer';
 import * as xlsx from 'xlsx';
 import { put } from '@vercel/blob';
+import { handleUpload } from '@vercel/blob/client';
 import axios from 'axios';
 import { parseStringPromise } from 'xml2js';
 import https from 'https';
@@ -207,6 +208,39 @@ app.post('/api/upload', checkAdmin, upload.single('file'), async (req, res) => {
   } catch (error) {
     console.error('Failed to upload file:', error);
     res.status(500).json({ error: 'Failed to upload file' });
+  }
+});
+
+app.post('/api/upload/handle', express.json(), async (req, res) => {
+  try {
+    const jsonResponse = await handleUpload({
+      body: req.body,
+      request: req,
+      onBeforeGenerateToken: async (pathname, clientPayload) => {
+        if (!clientPayload) {
+          throw new Error('Unauthorized: No token provided');
+        }
+        
+        try {
+          jwt.verify(clientPayload, JWT_SECRET);
+        } catch (err) {
+          throw new Error('Unauthorized: Invalid token');
+        }
+
+        return {
+          allowedContentTypes: ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/heic', 'application/pdf', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
+          tokenPayload: JSON.stringify({ userId: 'admin' }),
+        };
+      },
+      onUploadCompleted: async ({ blob, tokenPayload }) => {
+        console.log('Upload completed:', blob.url);
+      },
+    });
+
+    return res.status(200).json(jsonResponse);
+  } catch (error) {
+    console.error('Error handling upload:', error);
+    return res.status(400).json({ error: (error as Error).message });
   }
 });
 

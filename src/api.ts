@@ -133,15 +133,16 @@ export async function uploadBulkEquipment(data: any[]): Promise<{ message: strin
 }
 
 export async function uploadQrImage(file: File): Promise<{ url: string }> {
-  const formData = new FormData();
-  formData.append('file', file);
-  const res = await fetch('/api/upload', {
-    method: 'POST',
-    headers: getAuthHeaders(true),
-    body: formData,
+  const { upload } = await import('@vercel/blob/client');
+  const token = localStorage.getItem('token') || '';
+  
+  const blob = await upload(file.name, file, {
+    access: 'public',
+    handleUploadUrl: '/api/upload/handle',
+    clientPayload: token
   });
-  if (!res.ok) throw new Error('Failed to upload QR image');
-  return res.json();
+  
+  return { url: blob.url };
 }
 
 export interface LawUpdate {
