@@ -19,50 +19,47 @@ model Factory {
 model FloorPlan {
   id          Int         @id @default(autoincrement())
   factoryId   Int
-  factory     Factory     @relation(fields: [factoryId], references: [id])
-  name        String      // 도면 이름 (예: 이스트 작업장 도면)
-  processName String?     // 매핑되는 공정/팀 이름 (categoryMain 과 매칭)
-  imageUrl    String      // 업로드된 도면 이미지 URL
-  equipment   Equipment[]
+  name        String
+  processName String?
+  imageUrl    String
   createdAt   DateTime    @default(now())
+  equipment   Equipment[]
+  factory     Factory     @relation(fields: [factoryId], references: [id])
 }
 
 model Equipment {
-  id                 Int       @id @default(autoincrement())
+  id                 Int        @id @default(autoincrement())
   factoryId          Int
-  factory            Factory   @relation(fields: [factoryId], references: [id])
   name               String
-  categoryMain       String?   // 대분류
-  categorySub        String?   // 중분류
-  categoryDetail     String?   // 소분류
-  specification      String?   // 규격/형식번호
-  capacity           String?   // 용량/등급
-  manufacturingNum   String?   // 기기제조번호
-  recentPassNum      String?   // 최근합격번호
-  certificationNum   String?   // 기기인증번호 (QR번호)
-  qrImageUrl         String?   // QR코드 이미지 URL
-  attachmentUrl      String?   // 첨부파일 (추가 이미지) URL
-  attachmentMemo     String?   // 첨부파일 하단 메모
-  certificateUrl     String?   // 합격증명서 PDF URL
+  categoryMain       String?
+  categorySub        String?
+  categoryDetail     String?
+  specification      String?
+  capacity           String?
+  manufacturingNum   String?
+  recentPassNum      String?
+  certificationNum   String?
+  qrImageUrl         String?
+  attachmentUrl      String?
+  attachmentMemo     String?
   lastInspectionDate DateTime?
-  nextInspectionDate DateTime? // 유효기간
-  status             String    @default("ACTIVE") // ACTIVE, PASS, FAIL, EXCLUDED
-  
-  // Floor Plan Mapping
+  nextInspectionDate DateTime?
+  status             String     @default("ACTIVE")
   floorPlanId        Int?
+  locationX          Float?
+  locationY          Float?
+  createdAt          DateTime   @default(now())
+  updatedAt          DateTime   @updatedAt
+  certificateUrl     String?
+  factory            Factory    @relation(fields: [factoryId], references: [id])
   floorPlan          FloorPlan? @relation(fields: [floorPlanId], references: [id])
-  locationX          Float?    // 0.0 ~ 1.0 (비율)
-  locationY          Float?    // 0.0 ~ 1.0 (비율)
-  
-  createdAt          DateTime  @default(now())
-  updatedAt          DateTime  @updatedAt
 }
 
 model User {
   id           Int      @id @default(autoincrement())
   username     String   @unique
   passwordHash String
-  role         String   @default("guest") // admin, guest
+  role         String   @default("guest")
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }

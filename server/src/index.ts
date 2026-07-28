@@ -206,9 +206,9 @@ app.post('/api/upload', checkAdmin, upload.single('file'), async (req, res) => {
     });
 
     res.json({ url: blob.url });
-  } catch (error) {
+  } catch (error: any) {
     console.error('Failed to upload file:', error);
-    res.status(500).json({ error: 'Failed to upload file' });
+    res.status(500).json({ error: error.message || String(error) });
   }
 });
 

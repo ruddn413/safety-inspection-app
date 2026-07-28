@@ -167,16 +167,21 @@ export async function uploadQrImage(file: File): Promise<{ url: string }> {
     
     if (!res.ok) {
       if (res.status === 413) throw new Error('파일 크기가 너무 큽니다 (최대 4.5MB)');
-      throw new Error(`서버 전송 실패 (${res.status})`);
+      const errText = await res.text();
+      let errDetail = errText;
+      try {
+        errDetail = JSON.parse(errText).error;
+      } catch(e) {}
+      throw new Error(`서버 전송 실패: ${errDetail || res.status}`);
     }
     
     const json = await res.json();
     alert('파일 전송 성공!');
     return json;
-  } catch (err: any) {
-    console.error("Upload Error:", err);
-    alert(`에러: ${err.message || '알 수 없는 오류'}`);
-    throw err;
+  } catch (error: any) {
+    console.error('Failed to upload file:', error);
+    alert(`에러: ${error.message || '알 수 없는 오류'}`);
+    throw error;
   }
 }
 
