@@ -366,9 +366,9 @@ app.post('/api/floorplans', checkAdmin, upload.single('image'), async (req, res)
     });
 
     res.status(201).json(floorPlan);
-  } catch (error) {
+  } catch (error: any) {
     console.error('Failed to create floor plan:', error);
-    res.status(500).json({ error: 'Failed to create floor plan' });
+    res.status(500).json({ error: `Failed to create floor plan: ${error.message || String(error)}` });
   }
 });
 
