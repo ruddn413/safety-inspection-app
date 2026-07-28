@@ -202,7 +202,8 @@ app.post('/api/upload', checkAdmin, upload.single('file'), async (req, res) => {
     const originalName = Buffer.from(file.originalname, 'latin1').toString('utf8');
     const blob = await put(originalName, file.buffer, {
       access: 'public',
-      token: process.env.BLOB_READ_WRITE_TOKEN
+      token: process.env.BLOB_READ_WRITE_TOKEN,
+      addRandomSuffix: true
     });
 
     res.json({ url: blob.url });
