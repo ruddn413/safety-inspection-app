@@ -219,6 +219,7 @@ export function FactoryList() {
 
   async function handleAddEquipment(e: React.FormEvent) {
     e.preventDefault();
+    alert('저장 버튼 클릭됨! 데이터 검증 시작...');
     if (!newEq.name || !newEq.factoryId) {
       alert('공장과 설비명은 필수입니다.');
       return;
@@ -280,15 +281,21 @@ export function FactoryList() {
   }
 
   async function handleAttachUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    alert('파일 첨부 이벤트가 시작되었습니다.');
     const file = e.target.files?.[0];
-    if (!file) return;
+    if (!file) {
+      alert('파일이 선택되지 않았습니다. (취소 누름)');
+      return;
+    }
+    alert(`선택된 파일: ${file.name} (크기: ${file.size} bytes)`);
 
     try {
       const res = await uploadQrImage(file);
+      alert(`업로드 성공! 반환된 URL: ${res.url}`);
       setNewEq(prev => ({ ...prev, attachmentUrl: res.url }));
     } catch(err) {
       console.error("이미지 업로드 실패", err);
-      alert('첨부파일 업로드 중 오류가 발생했습니다.');
+      alert(`첨부파일 업로드 실패! 원인: ${err}`);
     } finally {
       if (attachInputRef.current) attachInputRef.current.value = '';
     }
