@@ -214,6 +214,7 @@ app.post('/api/upload', checkAdmin, upload.single('file'), async (req, res) => {
 app.post('/api/upload/handle', express.json(), async (req, res) => {
   try {
     const jsonResponse = await handleUpload({
+      token: process.env.BLOB_READ_WRITE_TOKEN,
       body: req.body,
       request: req,
       onBeforeGenerateToken: async (pathname, clientPayload) => {

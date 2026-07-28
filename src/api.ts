@@ -133,16 +133,22 @@ export async function uploadBulkEquipment(data: any[]): Promise<{ message: strin
 }
 
 export async function uploadQrImage(file: File): Promise<{ url: string }> {
-  const { upload } = await import('@vercel/blob/client');
-  const token = localStorage.getItem('token') || '';
-  
-  const blob = await upload(file.name, file, {
-    access: 'public',
-    handleUploadUrl: '/api/upload/handle',
-    clientPayload: token
-  });
-  
-  return { url: blob.url };
+  try {
+    const { upload } = await import('@vercel/blob/client');
+    const token = localStorage.getItem('token') || '';
+    
+    const blob = await upload(file.name, file, {
+      access: 'public',
+      handleUploadUrl: window.location.origin + '/api/upload/handle',
+      clientPayload: token
+    });
+    
+    return { url: blob.url };
+  } catch (err: any) {
+    console.error("Vercel Blob Client Error:", err);
+    alert(`디버그 에러: ${err.message || '알 수 없는 오류'}`);
+    throw err;
+  }
 }
 
 export interface LawUpdate {
