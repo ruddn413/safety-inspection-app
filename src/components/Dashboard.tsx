@@ -291,12 +291,18 @@ export function Dashboard() {
           p = plan.processName.trim();
         }
       }
+      if (p === '기타') {
+        const factory = factories.find(f => f.id === eq.factoryId);
+        if (factory) {
+          p = `[${factory.name}] 기타`;
+        }
+      }
       processMap.set(p, (processMap.get(p) || 0) + 1);
     });
     return Array.from(processMap.entries())
       .map(([name, value]) => ({ name, value }))
       .sort((a, b) => b.value - a.value);
-  }, [equipment, floorPlans]);
+  }, [equipment, floorPlans, factories]);
 
   const barData = useMemo(() => {
     const categoryMap = new Map<string, number>();
