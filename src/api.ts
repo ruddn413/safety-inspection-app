@@ -1,4 +1,4 @@
-import { upload } from '@vercel/blob/client';
+import imageCompression from 'browser-image-compression';
 
 export interface Factory {
   id: number;
@@ -136,21 +136,45 @@ export async function uploadBulkEquipment(data: any[]): Promise<{ message: strin
 
 export async function uploadQrImage(file: File): Promise<{ url: string }> {
   try {
-    alert('업로드 함수 진입 - 토큰 확인중');
-    const token = localStorage.getItem('token') || '';
+    alert('업로드 준비중 (이미지 최적화 처리)');
+    let uploadFile = file;
+
+    if (file.type.startsWith('image/')) {
+      const options = {
+        maxSizeMB: 1,
+        maxWidthOrHeight: 1920,
+        useWebWorker: true
+      };
+      uploadFile = await imageCompression(file, options);
+      alert(`이미지 최적화 완료: ${(uploadFile.size / 1024 / 1024).toFixed(2)}MB`);
+    } else if (file.type === 'application/pdf') {
+      if (file.size > 4.5 * 1024 * 1024) {
+        alert('사내 방화벽 우회 시스템의 한계로 인해 PDF 파일은 4.5MB 이하만 업로드 가능합니다.');
+        throw new Error('PDF size exceeds 4.5MB');
+      }
+    }
+
+    alert('사내망 우회 채널로 파일 전송 시작...');
+    const formData = new FormData();
+    formData.append('file', uploadFile);
     
-    alert('업로드 함수 - Vercel Blob에 전송 시작 (서버 응답 대기중...)');
-    const blob = await upload(file.name, file, {
-      access: 'public',
-      handleUploadUrl: window.location.origin + '/api/upload/handle',
-      clientPayload: token
+    const res = await fetch('/api/upload', {
+      method: 'POST',
+      headers: getAuthHeaders(true),
+      body: formData
     });
     
-    alert('업로드 함수 - Vercel Blob 응답 완료!');
-    return { url: blob.url };
+    if (!res.ok) {
+      if (res.status === 413) throw new Error('파일 크기가 너무 큽니다 (최대 4.5MB)');
+      throw new Error(`서버 전송 실패 (${res.status})`);
+    }
+    
+    const json = await res.json();
+    alert('파일 전송 성공!');
+    return json;
   } catch (err: any) {
-    console.error("Vercel Blob Client Error:", err);
-    alert(`디버그 에러: ${err.message || '알 수 없는 오류'}`);
+    console.error("Upload Error:", err);
+    alert(`에러: ${err.message || '알 수 없는 오류'}`);
     throw err;
   }
 }
