@@ -471,8 +471,10 @@ export function Dashboard() {
                                         {eq.specification} {eq.capacity ? `(${eq.capacity})` : ''}
                                       </div>
                                     )}
-                                    <div className="rounded-xl overflow-hidden bg-gray-50 flex justify-center w-full">
-                                      <img crossOrigin="anonymous" src={eq.attachmentUrl} alt="설비 사진" className="max-w-full h-auto max-h-[320px] object-contain" />
+                                    <div className="rounded-xl overflow-x-auto bg-gray-50 flex gap-2 justify-start w-full snap-x snap-mandatory pb-1 scrollbar-hide">
+                                      {eq.attachmentUrl.split(',').map((url, i) => (
+                                        <img key={i} crossOrigin="anonymous" src={url} alt={`설비 사진 ${i+1}`} className="max-w-full h-auto max-h-[320px] object-contain shrink-0 snap-center" />
+                                      ))}
                                     </div>
                                     {/* Triangle pointer */}
                                     <div className={`absolute left-1/2 -translate-x-1/2 w-0 h-0 border-l-[10px] border-r-[10px] border-transparent drop-shadow-sm ${isTopHalf ? '-top-2.5 border-b-[10px] border-b-white' : '-bottom-2.5 border-t-[10px] border-t-white'}`}></div>
