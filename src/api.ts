@@ -145,7 +145,8 @@ export async function uploadQrImage(file: File): Promise<{ url: string }> {
         maxWidthOrHeight: 1920,
         useWebWorker: true
       };
-      uploadFile = await imageCompression(file, options);
+      const compressedBlob = await imageCompression(file, options);
+      uploadFile = new File([compressedBlob], file.name, { type: file.type });
       alert(`이미지 최적화 완료: ${(uploadFile.size / 1024 / 1024).toFixed(2)}MB`);
     } else if (file.type === 'application/pdf') {
       if (file.size > 4.5 * 1024 * 1024) {
