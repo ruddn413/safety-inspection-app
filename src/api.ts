@@ -1,3 +1,5 @@
+import { upload } from '@vercel/blob/client';
+
 export interface Factory {
   id: number;
   name: string;
@@ -134,15 +136,17 @@ export async function uploadBulkEquipment(data: any[]): Promise<{ message: strin
 
 export async function uploadQrImage(file: File): Promise<{ url: string }> {
   try {
-    const { upload } = await import('@vercel/blob/client');
+    alert('업로드 함수 진입 - 토큰 확인중');
     const token = localStorage.getItem('token') || '';
     
+    alert('업로드 함수 - Vercel Blob에 전송 시작 (서버 응답 대기중...)');
     const blob = await upload(file.name, file, {
       access: 'public',
       handleUploadUrl: window.location.origin + '/api/upload/handle',
       clientPayload: token
     });
     
+    alert('업로드 함수 - Vercel Blob 응답 완료!');
     return { url: blob.url };
   } catch (err: any) {
     console.error("Vercel Blob Client Error:", err);
