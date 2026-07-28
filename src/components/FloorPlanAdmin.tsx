@@ -65,9 +65,9 @@ export function FloorPlanAdmin() {
       setUploadFile(null);
       setUploadName('');
       setUploadProcess('');
-    } catch (e) {
+    } catch (e: any) {
       console.error(e);
-      alert('업로드 또는 PDF 변환에 실패했습니다.');
+      alert(`업로드 또는 PDF 변환 실패: ${e.message || String(e)}`);
     } finally {
       setIsUploading(false);
     }

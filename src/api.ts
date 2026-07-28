@@ -218,7 +218,12 @@ export async function createFloorPlan(data: { factoryId: number; name: string; p
     headers: getAuthHeaders(true),
     body: formData,
   });
-  if (!res.ok) throw new Error('Failed to create floor plan');
+  if (!res.ok) {
+    const errText = await res.text();
+    let errDetail = errText;
+    try { errDetail = JSON.parse(errText).error; } catch(e) {}
+    throw new Error(`Failed to create floor plan: ${errDetail || res.status}`);
+  }
   return res.json();
 }
 
