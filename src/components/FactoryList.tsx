@@ -789,8 +789,6 @@ export function FactoryList() {
                 onClick={() => setImageScale(s => s >= 1.5 ? 1 : s + 0.5)}
                 style={{ 
                   width: imageScale === 1 ? 'auto' : `${imageScale * 100}%`, 
-                  maxHeight: imageScale === 1 ? '70vh' : 'none',
-                  maxWidth: imageScale === 1 ? '100%' : 'none',
                   imageRendering: '-webkit-optimize-contrast',
                   filter: 'contrast(1.05) brightness(1.02)'
                 }}
@@ -854,8 +852,6 @@ export function FactoryList() {
                     onClick={() => setImageScale(s => s >= 1.5 ? 1 : s + 0.5)}
                     style={{ 
                       width: imageScale === 1 ? 'auto' : `${imageScale * 100}%`, 
-                      maxHeight: imageScale === 1 ? '70vh' : 'none',
-                      maxWidth: imageScale === 1 ? '100%' : 'none',
                       imageRendering: '-webkit-optimize-contrast',
                       filter: 'contrast(1.05) brightness(1.02)'
                     }}

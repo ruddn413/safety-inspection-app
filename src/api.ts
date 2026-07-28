@@ -136,7 +136,6 @@ export async function uploadBulkEquipment(data: any[]): Promise<{ message: strin
 
 export async function uploadQrImage(file: File): Promise<{ url: string }> {
   try {
-    alert('업로드 준비중 (이미지 최적화 처리)');
     let uploadFile = file;
 
     if (file.type.startsWith('image/')) {
@@ -147,7 +146,6 @@ export async function uploadQrImage(file: File): Promise<{ url: string }> {
       };
       const compressedBlob = await imageCompression(file, options);
       uploadFile = new File([compressedBlob], file.name, { type: file.type });
-      alert(`이미지 최적화 완료: ${(uploadFile.size / 1024 / 1024).toFixed(2)}MB`);
     } else if (file.type === 'application/pdf') {
       if (file.size > 4.5 * 1024 * 1024) {
         alert('사내 방화벽 우회 시스템의 한계로 인해 PDF 파일은 4.5MB 이하만 업로드 가능합니다.');
@@ -155,7 +153,6 @@ export async function uploadQrImage(file: File): Promise<{ url: string }> {
       }
     }
 
-    alert('사내망 우회 채널로 파일 전송 시작...');
     const formData = new FormData();
     formData.append('file', uploadFile);
     
@@ -176,11 +173,9 @@ export async function uploadQrImage(file: File): Promise<{ url: string }> {
     }
     
     const json = await res.json();
-    alert('파일 전송 성공!');
     return json;
   } catch (error: any) {
     console.error('Failed to upload file:', error);
-    alert(`에러: ${error.message || '알 수 없는 오류'}`);
     throw error;
   }
 }
