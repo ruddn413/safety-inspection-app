@@ -153,7 +153,7 @@ export function FloorPlanAdmin() {
   return (
     <div className="h-full flex flex-col">
       {/* C'HES Banner Header */}
-      <div className="bg-gradient-to-r from-[#133e60] via-[#1b5683] to-[#2573b1] text-white p-6 md:p-8 rounded-none shadow-md -mx-4 md:-mx-8 -mt-4 md:-mt-8 mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 relative overflow-hidden shrink-0">
+      <div className="bg-gradient-to-r from-[#133e60] via-[#1b5683] to-[#2573b1] text-white p-6 md:p-8 rounded-2xl shadow-md mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 relative overflow-hidden shrink-0">
         {/* Subtle circular overlays for C'HES wave effect */}
         <div className="absolute top-1/2 right-0 -translate-y-1/2 translate-x-[30%] w-[800px] h-[800px] border-[60px] border-white/[0.03] rounded-full pointer-events-none"></div>
         <div className="absolute top-1/2 right-0 -translate-y-1/2 translate-x-[15%] w-[500px] h-[500px] border-[40px] border-white/[0.04] rounded-full pointer-events-none"></div>
