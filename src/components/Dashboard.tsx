@@ -322,22 +322,19 @@ export function Dashboard() {
 
   return (
     <div className="w-full max-w-[1600px] mx-auto space-y-6" ref={dashboardRef}>
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row justify-between sm:items-end gap-4 mb-8">
-        <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 text-blue-700 text-xs font-bold rounded-full mb-3 tracking-wide">
-            <Activity className="w-3.5 h-3.5" /> 
-            실시간 모니터링
-          </div>
-          <h1 className="text-4xl font-extrabold text-slate-900 tracking-tight flex items-center gap-3">
-            C'HES 안전검사 통합관리
-          </h1>
-          <p className="text-slate-500 mt-2 font-medium">실시간 설비 검사 현황 및 도면 배치 정보를 한눈에 파악하세요.</p>
+      {/* C'HES Banner Header */}
+      <div className="bg-[#1b5c8e] text-white p-6 md:p-8 rounded-none md:rounded-b-xl shadow-md -mx-4 md:mx-0 -mt-4 md:mt-0 mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-64 h-full bg-white/5 skew-x-12 translate-x-20 pointer-events-none"></div>
+        <div className="relative z-10">
+          <div className="text-blue-100 text-xs font-bold tracking-wider mb-1">C'HES SAFETY MANAGEMENT</div>
+          <h1 className="text-3xl font-extrabold tracking-tight mb-2">안전검사 통합관리</h1>
+          <p className="text-blue-50 text-sm">법정 안전검사 대상 설비의 실시간 현황 및 도면 배치를 한 곳에서 관리합니다.</p>
         </div>
-        <div className="flex flex-wrap items-center gap-3">
+        
+        <div className="flex flex-wrap items-center gap-2 relative z-10">
           <button 
             onClick={handleDownloadExcel}
-            className="flex items-center gap-2 bg-emerald-600 text-white px-5 py-2.5 rounded-xl font-bold text-sm hover:bg-emerald-700 transition-all shadow-md hover:shadow-lg"
+            className="flex items-center gap-1.5 bg-transparent border border-white/30 text-white px-4 py-2 rounded font-medium text-sm hover:bg-white/10 transition-colors"
           >
             <FileSpreadsheet className="w-4 h-4" />
             엑셀 다운로드

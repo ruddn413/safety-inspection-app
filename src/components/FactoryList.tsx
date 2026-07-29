@@ -317,15 +317,46 @@ export function FactoryList() {
     : baseTeams;
 
   return (
-    <div>
-      <h2 className="text-2xl font-bold text-gray-900 mb-6">안전검사 설비 관리</h2>
+    <div className="w-full">
+      {/* C'HES Banner Header */}
+      <div className="bg-[#1b5c8e] text-white p-6 md:p-8 rounded-none md:rounded-b-xl shadow-md -mx-4 md:mx-0 -mt-4 md:mt-0 mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-64 h-full bg-white/5 skew-x-12 translate-x-20 pointer-events-none"></div>
+        <div className="relative z-10">
+          <div className="text-blue-100 text-xs font-bold tracking-wider mb-1">C'HES SAFETY MANAGEMENT</div>
+          <h1 className="text-3xl font-extrabold tracking-tight mb-2">안전검사 통합관리</h1>
+          <p className="text-blue-50 text-sm">안전검사 대상 설비의 상세 정보와 검사 이력을 한 곳에서 관리합니다.</p>
+        </div>
+        
+        {isAdmin && (
+          <div className="flex flex-wrap items-center gap-2 relative z-10">
+            <button 
+              onClick={() => setIsBulkModalOpen(true)}
+              className="flex items-center gap-1.5 bg-transparent border border-white/30 text-white px-4 py-2 rounded font-medium text-sm hover:bg-white/10 transition-colors"
+            >
+              엑셀 일괄 등록
+            </button>
+            <button 
+              onClick={() => {
+                setEditingEqId(null);
+                setNewEq(emptyEq);
+                setValidityStart('');
+                setValidityEnd('');
+                setShowAddModal(true);
+              }}
+              className="flex items-center gap-1.5 bg-white text-[#1b5c8e] px-4 py-2 rounded font-bold text-sm hover:bg-blue-50 transition-colors shadow-sm"
+            >
+              + 설비 추가
+            </button>
+          </div>
+        )}
+      </div>
       
       <div className="w-full">
-        {/* 설비 목록 */}
-        <div className="bg-white p-6 rounded-3xl shadow-[0_4px_20px_rgb(0,0,0,0.03)] border border-slate-100">
-          <div className="flex flex-col xl:flex-row xl:justify-between xl:items-center mb-6 gap-4">
+        {/* 설비 목록 필터 영역 */}
+        <div className="bg-white p-5 rounded-xl shadow-sm border border-gray-200 mb-6">
+          <div className="flex flex-col xl:flex-row xl:justify-between xl:items-center gap-4">
             <div className="flex flex-wrap items-center gap-3 w-full xl:w-auto">
-              <h3 className="text-lg font-semibold shrink-0 w-full sm:w-auto mb-2 sm:mb-0">공장 목록</h3>
+              <span className="text-sm font-semibold text-gray-700 w-full sm:w-auto mb-1 sm:mb-0">공장</span>
               <select 
                 value={selectedFactoryId}
                 onChange={(e) => {
@@ -342,13 +373,13 @@ export function FactoryList() {
               
               {(isAnsanSelected || isDaesoSelected || isChoheungGFSelected) && (
                 <>
-                  <h3 className="text-lg font-semibold ml-2 sm:ml-4">공정 분류</h3>
+                  <span className="text-sm font-semibold text-gray-700 ml-2 sm:ml-4">공정</span>
                   <select 
                     value={selectedTeam}
                     onChange={(e) => setSelectedTeam(e.target.value)}
-                    className="border border-slate-200 rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white min-w-[130px] shadow-sm transition-all hover:border-indigo-300"
+                    className="border border-slate-200 rounded px-3 py-1.5 text-sm focus:outline-none focus:border-blue-500 bg-white min-w-[130px] transition-colors"
                   >
-                    <option value="all">전체 보기</option>
+                    <option value="all">전체</option>
                     {(isChoheungGFSelected ? CHOHEUNG_GF_TEAMS : isDaesoSelected ? DAESO_TEAMS : ANSAN_TEAMS).map(team => (
                       <option key={team} value={team}>{team}</option>
                     ))}
@@ -356,64 +387,48 @@ export function FactoryList() {
                 </>
               )}
               
-              <h3 className="text-lg font-semibold ml-2 sm:ml-4">설비 분류</h3>
+              <span className="text-sm font-semibold text-gray-700 ml-2 sm:ml-4">설비</span>
               <select 
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
-                className="border border-slate-200 rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white min-w-[150px] shadow-sm transition-all hover:border-indigo-300"
+                className="border border-slate-200 rounded px-3 py-1.5 text-sm focus:outline-none focus:border-blue-500 bg-white min-w-[150px] transition-colors"
               >
-                <option value="all">전체 보기</option>
+                <option value="all">전체</option>
                 {EQUIPMENT_CATEGORIES.map(cat => (
                   <option key={cat} value={cat}>{cat}</option>
                 ))}
               </select>
 
-              <div className="ml-2 sm:ml-4 px-4 py-2 bg-indigo-50 text-indigo-700 rounded-xl text-sm font-semibold border border-indigo-100 flex items-center shadow-sm">
-                총 {filteredEquipment.length}대
+              <div className="ml-2 sm:ml-4 px-3 py-1 bg-blue-50 text-blue-700 rounded text-xs font-semibold flex items-center">
+                조회 결과: {filteredEquipment.length}건
               </div>
             </div>
             
             {isAdmin && (
-              <div className="flex flex-wrap items-center gap-2 mt-2 xl:mt-0 w-full xl:w-auto justify-end border-t xl:border-t-0 pt-4 xl:pt-0 border-slate-100/60">
-                <button 
-                  onClick={() => {
-                    setEditingEqId(null);
-                    setNewEq(emptyEq);
-                    setValidityStart('');
-                    setValidityEnd('');
-                    setShowAddModal(true);
-                  }}
-                  className="bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700"
-                >
-                  설비 추가
-                </button>
+              <div className="flex flex-wrap items-center gap-2 mt-2 xl:mt-0 w-full xl:w-auto justify-end border-t xl:border-t-0 pt-4 xl:pt-0 border-gray-100">
                 <button 
                   onClick={handleEditClick}
                   disabled={selectedIds.length !== 1}
-                  className={`px-3 py-1 rounded text-sm ${selectedIds.length !== 1 ? 'bg-gray-100 text-gray-400 cursor-not-allowed border border-gray-200' : 'bg-blue-600 text-white hover:bg-blue-700'}`}
+                  className={`px-4 py-1.5 rounded text-sm transition-colors border ${selectedIds.length !== 1 ? 'bg-white text-gray-400 cursor-not-allowed border-gray-200' : 'bg-white text-blue-600 border-blue-600 hover:bg-blue-50'}`}
                 >
-                  선택 수정
+                  수정
                 </button>
                 <button 
                   onClick={handleDeleteEquipment}
                   disabled={selectedIds.length === 0}
-                  className={`px-3 py-1 rounded text-sm ${selectedIds.length === 0 ? 'bg-gray-100 text-gray-400 cursor-not-allowed border border-gray-200' : 'bg-red-600 text-white hover:bg-red-700'}`}
+                  className={`px-4 py-1.5 rounded text-sm transition-colors border ${selectedIds.length === 0 ? 'bg-white text-gray-400 cursor-not-allowed border-gray-200' : 'bg-white text-red-600 border-red-600 hover:bg-red-50'}`}
                 >
-                  선택 삭제
-                </button>
-                <button 
-                  onClick={() => setIsBulkModalOpen(true)}
-                  className="bg-white text-slate-700 border border-slate-200 px-4 py-2 rounded-xl text-sm hover:bg-slate-50 hover:border-slate-300 shadow-sm transition-all font-medium"
-                >
-                  엑셀 붙여넣기
+                  삭제
                 </button>
               </div>
             )}
           </div>
-          
-          <div className="overflow-x-auto rounded-2xl border border-slate-100 shadow-[0_2px_10px_rgb(0,0,0,0.02)]">
-            <table className="min-w-full divide-y divide-slate-100">
-              <thead className="bg-slate-50/50">
+        </div>
+        
+        <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-[#f8fafc]">
                 <tr>
                   <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-10">
                     <input 
