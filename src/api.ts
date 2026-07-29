@@ -195,7 +195,7 @@ export async function fetchDashboardSummary(): Promise<DashboardSummary> {
 }
 
 export async function fetchLaws(): Promise<LawUpdate[]> {
-  const res = await fetch('/api/laws');
+  const res = await fetch('/api/laws?t=' + new Date().getTime());
   if (!res.ok) throw new Error('Failed to fetch laws');
   return res.json();
 }
