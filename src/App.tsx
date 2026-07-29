@@ -22,22 +22,22 @@ function App() {
   return (
     <div className="flex h-[100dvh] bg-[#F4F6F8] font-sans">
       {/* Sidebar (PC Only) */}
-      <aside className="hidden md:flex w-64 bg-white flex-col z-20 shrink-0 border-r border-gray-200">
-        <div className="py-4 px-5 flex items-center gap-2 border-b border-gray-200">
-          <img src={logo} alt="조흥 로고" className="h-6 object-contain" />
+      <aside className="hidden md:flex w-72 bg-white flex-col z-20 shrink-0 border-r border-gray-200">
+        <div className="py-5 px-5 flex items-center gap-3 border-b border-gray-200">
+          <img src={logo} alt="조흥 로고" className="h-7 object-contain" />
           <div className="flex flex-col">
-            <span className="text-[13px] font-bold text-gray-800 leading-tight">체스 C'HES</span>
-            <span className="text-[9px] text-gray-500 leading-tight">조흥 보건/환경/안전 관리 시스템</span>
+            <span className="text-[14px] font-extrabold text-gray-800 leading-tight">체스 C'HES</span>
+            <span className="text-[10px] text-gray-500 leading-tight whitespace-nowrap mt-0.5">조흥 보건/환경/안전 관리 시스템</span>
           </div>
         </div>
         
         <nav className="flex-1 px-4 py-4 space-y-2">
           <button
             onClick={() => setActiveTab('dashboard')}
-            className={`w-full flex items-center px-4 py-3 text-sm font-medium rounded-2xl transition-all duration-300 ${
+            className={`w-full flex items-center px-4 py-3 text-[15px] font-bold rounded-2xl transition-all duration-300 ${
               activeTab === 'dashboard' 
                 ? 'bg-blue-50 text-blue-700 shadow-sm' 
-                : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'
+                : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
             }`}
           >
             <div className={`p-2 rounded-xl mr-3 transition-colors ${activeTab === 'dashboard' ? 'bg-blue-100/50' : 'bg-gray-100/50'}`}>
@@ -47,10 +47,10 @@ function App() {
           </button>
           <button
             onClick={() => setActiveTab('factories')}
-            className={`w-full flex items-center px-4 py-3 text-sm font-medium rounded-2xl transition-all duration-300 ${
+            className={`w-full flex items-center px-4 py-3 text-[15px] font-bold rounded-2xl transition-all duration-300 ${
               activeTab === 'factories' 
                 ? 'bg-blue-50 text-blue-700 shadow-sm' 
-                : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'
+                : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
             }`}
           >
             <div className={`p-2 rounded-xl mr-3 transition-colors ${activeTab === 'factories' ? 'bg-blue-100/50' : 'bg-gray-100/50'}`}>
@@ -60,10 +60,10 @@ function App() {
           </button>
           <button
             onClick={() => setActiveTab('floorplans')}
-            className={`w-full flex items-center px-4 py-3 text-sm font-medium rounded-2xl transition-all duration-300 ${
+            className={`w-full flex items-center px-4 py-3 text-[15px] font-bold rounded-2xl transition-all duration-300 ${
               activeTab === 'floorplans' 
                 ? 'bg-blue-50 text-blue-700 shadow-sm' 
-                : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'
+                : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
             }`}
           >
             <div className={`p-2 rounded-xl mr-3 transition-colors ${activeTab === 'floorplans' ? 'bg-blue-100/50' : 'bg-gray-100/50'}`}>
@@ -73,10 +73,10 @@ function App() {
           </button>
           <button
             onClick={() => setActiveTab('settings')}
-            className={`w-full flex items-center px-4 py-3 text-sm font-medium rounded-2xl transition-all duration-300 ${
+            className={`w-full flex items-center px-4 py-3 text-[15px] font-bold rounded-2xl transition-all duration-300 ${
               activeTab === 'settings' 
                 ? 'bg-blue-50 text-blue-700 shadow-sm' 
-                : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'
+                : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
             }`}
           >
             <div className={`p-2 rounded-xl mr-3 transition-colors ${activeTab === 'settings' ? 'bg-blue-100/50' : 'bg-gray-100/50'}`}>
@@ -89,7 +89,7 @@ function App() {
         <div className="p-4 border-t border-gray-200">
           <button 
             onClick={logout}
-            className="w-full flex items-center px-4 py-3 text-sm font-medium rounded-2xl text-gray-500 hover:bg-gray-50 hover:text-gray-900 transition-all duration-300"
+            className="w-full flex items-center px-4 py-3 text-[15px] font-bold rounded-2xl text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-all duration-300"
           >
             <div className="p-2 rounded-xl mr-3 bg-gray-100/50">
               <LogOut className="w-5 h-5 text-gray-400" />
