@@ -151,24 +151,34 @@ export function FloorPlanAdmin() {
   };
 
   return (
-    <div className="h-full flex flex-col gap-6 animate-in fade-in">
-      <div className="flex justify-between items-end">
-        <div>
-          <h2 className="text-2xl font-bold text-gray-800">공정별 도면 관리</h2>
-          <p className="text-gray-500 mt-1">새로운 도면을 업로드하고 설비 핀을 마우스로 끌어서 배치하세요.</p>
+    <div className="h-full flex flex-col">
+      {/* C'HES Banner Header */}
+      <div className="bg-gradient-to-r from-[#133e60] via-[#1b5683] to-[#2573b1] text-white p-6 md:p-8 rounded-none shadow-md -mx-4 md:-mx-8 -mt-4 md:-mt-8 mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 relative overflow-hidden shrink-0">
+        {/* Subtle circular overlays for C'HES wave effect */}
+        <div className="absolute top-1/2 right-0 -translate-y-1/2 translate-x-[30%] w-[800px] h-[800px] border-[60px] border-white/[0.03] rounded-full pointer-events-none"></div>
+        <div className="absolute top-1/2 right-0 -translate-y-1/2 translate-x-[15%] w-[500px] h-[500px] border-[40px] border-white/[0.04] rounded-full pointer-events-none"></div>
+        
+        <div className="relative z-10">
+          <div className="text-blue-100 text-xs font-bold tracking-wider mb-1">C'HES FLOOR PLAN MANAGEMENT</div>
+          <h1 className="text-3xl font-extrabold tracking-tight mb-2">공정별 도면 관리</h1>
+          <p className="text-blue-100 text-sm opacity-90 font-medium">새로운 도면을 업로드하고 설비 핀을 마우스로 끌어서 배치하세요.</p>
         </div>
+        
         {isAdmin && (
-          <button 
-            onClick={() => setShowUpload(!showUpload)}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2 shadow-sm transition-colors"
-          >
-            <Upload className="w-4 h-4" /> 도면 이미지 추가
-          </button>
+          <div className="relative z-10 flex gap-2 w-full md:w-auto">
+            <button 
+              onClick={() => setShowUpload(!showUpload)}
+              className="bg-white/10 hover:bg-white/20 text-white px-5 py-2.5 rounded border border-white/20 text-sm font-bold flex items-center justify-center transition-all"
+            >
+              <Upload className="w-4 h-4 mr-2" />
+              도면 이미지 추가
+            </button>
+          </div>
         )}
       </div>
 
       {showUpload && (
-        <form onSubmit={handleUpload} className="bg-white p-6 rounded-3xl border border-slate-100 shadow-[0_4px_20px_rgb(0,0,0,0.03)] flex flex-wrap gap-4 items-end">
+        <form onSubmit={handleUpload} className="bg-white p-6 rounded-3xl border border-slate-100 shadow-[0_4px_20px_rgb(0,0,0,0.03)] flex flex-wrap gap-4 items-end mb-6">
           <div className="flex-1 min-w-[200px]">
             <label className="block text-sm font-semibold text-gray-700 mb-1">공장 선택 <span className="text-red-500">*</span></label>
             <select required value={uploadFactoryId} onChange={e => setUploadFactoryId(Number(e.target.value))} className="w-full border border-slate-200 rounded-xl px-4 py-2 bg-white">
