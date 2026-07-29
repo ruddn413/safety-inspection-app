@@ -323,8 +323,11 @@ export function Dashboard() {
   return (
     <div className="w-full max-w-[1600px] mx-auto space-y-6" ref={dashboardRef}>
       {/* C'HES Banner Header */}
-      <div className="bg-[#1b5c8e] text-white p-6 md:p-8 rounded-none md:rounded-b-xl shadow-md -mx-4 md:mx-0 -mt-4 md:mt-0 mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-64 h-full bg-white/5 skew-x-12 translate-x-20 pointer-events-none"></div>
+      <div className="bg-gradient-to-r from-[#133e60] via-[#1b5683] to-[#2573b1] text-white p-6 md:p-8 rounded-none md:rounded-b-xl shadow-md -mx-4 md:mx-0 -mt-4 md:mt-0 mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 relative overflow-hidden">
+        {/* Subtle circular overlays for C'HES wave effect */}
+        <div className="absolute top-1/2 right-0 -translate-y-1/2 translate-x-[30%] w-[800px] h-[800px] border-[60px] border-white/[0.03] rounded-full pointer-events-none"></div>
+        <div className="absolute top-1/2 right-0 -translate-y-1/2 translate-x-[15%] w-[500px] h-[500px] border-[40px] border-white/[0.04] rounded-full pointer-events-none"></div>
+        
         <div className="relative z-10">
           <div className="text-blue-100 text-xs font-bold tracking-wider mb-1">C'HES SAFETY MANAGEMENT</div>
           <h1 className="text-3xl font-extrabold tracking-tight mb-2">안전검사 통합관리</h1>
