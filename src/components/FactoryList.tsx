@@ -474,15 +474,8 @@ export function FactoryList() {
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-medium text-center">
                         {eq.lastInspectionDate ? new Date(eq.lastInspectionDate).toLocaleDateString() : (eq.nextInspectionDate ? '?' : '-')} ~ {eq.nextInspectionDate ? new Date(eq.nextInspectionDate).toLocaleDateString() : '-'}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-center">
-                        {(() => {
-                          const koshaNum = eq.recentPassNum;
-                          return koshaNum ? (
-                            <a href={`https://miis.kosha.or.kr/webm/idfNo.do?num=${koshaNum}`} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 hover:underline inline-flex items-center gap-1" title="KOSHA 안전인증 조회">
-                              {koshaNum} <ExternalLink className="w-3 h-3" />
-                            </a>
-                          ) : '-';
-                        })()}
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-indigo-600 text-center">
+                        {eq.recentPassNum || '-'}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-center">
                         {(() => {
