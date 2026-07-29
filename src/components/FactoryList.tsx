@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { fetchFactories, fetchEquipment, createFactory, uploadBulkEquipment, createEquipment, updateEquipment, deleteEquipment, uploadQrImage, type Factory, type Equipment } from '../api';
 import { useAuth } from '../context/AuthContext';
 import { differenceInDays, isBefore, startOfToday } from 'date-fns';
+import { ExternalLink } from 'lucide-react';
 
 const formatCapacity = (eq: Partial<Equipment>) => {
   if (!eq.capacity) return '-';
@@ -473,11 +474,25 @@ export function FactoryList() {
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-medium text-center">
                         {eq.lastInspectionDate ? new Date(eq.lastInspectionDate).toLocaleDateString() : (eq.nextInspectionDate ? '?' : '-')} ~ {eq.nextInspectionDate ? new Date(eq.nextInspectionDate).toLocaleDateString() : '-'}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-indigo-600 text-center">
-                        {eq.recentPassNum || '-'}
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-center">
+                        {(() => {
+                          const koshaNum = eq.recentPassNum;
+                          return koshaNum ? (
+                            <a href={`https://miis.kosha.or.kr/webm/idfNo.do?num=${koshaNum}`} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 hover:underline inline-flex items-center gap-1" title="KOSHA 안전인증 조회">
+                              {koshaNum} <ExternalLink className="w-3 h-3" />
+                            </a>
+                          ) : '-';
+                        })()}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
-                        {eq.certificationNum || '-'}
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-center">
+                        {(() => {
+                          const koshaNum = eq.certificationNum;
+                          return koshaNum ? (
+                            <a href={`https://miis.kosha.or.kr/webm/idfNo.do?num=${koshaNum}`} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 hover:underline inline-flex items-center gap-1" title="KOSHA 안전인증 조회">
+                              {koshaNum} <ExternalLink className="w-3 h-3" />
+                            </a>
+                          ) : '-';
+                        })()}
                         {eq.qrImageUrl && (
                           <button 
                             onClick={() => { setViewingImageEq(eq); setImageScale(1); }}

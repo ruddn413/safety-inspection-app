@@ -3,7 +3,7 @@ import { differenceInDays, isBefore, startOfToday, parseISO } from 'date-fns';
 import { FloorPlanSelector } from './FloorPlanSelector';
 import { EquipmentMarker, EquipmentLegend, ConveyorIcon, LiftIcon } from './EquipmentMarker';
 import { fetchDashboardSummary, fetchFactories, fetchFloorPlans, fetchEquipment, fetchLaws, type DashboardSummary, type Factory, type FloorPlan, type Equipment, type LawUpdate } from '../api';
-import { ShieldCheck, AlertTriangle, AlertCircle, Settings, Map as MapIcon, Image as ImageIcon, CheckCircle, CalendarClock, Bot, Cylinder, X, ArrowRight, Activity, Package, Download, FileSpreadsheet } from 'lucide-react';
+import { ShieldCheck, AlertTriangle, AlertCircle, Settings, Map as MapIcon, Image as ImageIcon, CheckCircle, CalendarClock, Bot, Cylinder, X, ArrowRight, Activity, Package, Download, FileSpreadsheet, ExternalLink } from 'lucide-react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip as RechartsTooltip, Legend } from 'recharts';
 import { toPng } from 'html-to-image';
 import { jsPDF } from 'jspdf';
@@ -566,7 +566,24 @@ export function Dashboard() {
                                         >
                                           <div className={`font-bold flex justify-between ${selectedEquipmentId === eq.id ? 'text-blue-900' : 'text-gray-800'}`}>
                                             <span>{eq.name}</span>
-                                            <span className="text-blue-600">{eq.recentPassNum || '합격번호 없음'}</span>
+                                            {(() => {
+                                              const koshaNum = eq.certificationNum || eq.recentPassNum || (eq.qrImageUrl && !eq.qrImageUrl.match(/^(http|\/|data:|blob:)/) ? eq.qrImageUrl : '');
+                                              return koshaNum ? (
+                                                <a 
+                                                  href={`https://miis.kosha.or.kr/webm/idfNo.do?num=${koshaNum}`} 
+                                                  target="_blank" 
+                                                  rel="noopener noreferrer" 
+                                                  className="text-blue-600 hover:text-blue-800 hover:underline inline-flex items-center gap-1 z-10"
+                                                  onClick={(e) => e.stopPropagation()}
+                                                  title="KOSHA 안전인증 조회"
+                                                >
+                                                  {koshaNum}
+                                                  <ExternalLink className="w-3 h-3" />
+                                                </a>
+                                              ) : (
+                                                <span className="text-gray-400 font-normal text-[10px]">번호 없음</span>
+                                              );
+                                            })()}
                                           </div>
                                           {eq.specification && (
                                             <div className="text-gray-600 flex gap-2">
