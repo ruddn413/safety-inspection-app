@@ -105,7 +105,7 @@ function App() {
         </header>
 
         {/* Scrollable Main Content */}
-        <main className="flex-1 overflow-y-auto pb-24 md:pb-8">
+        <main className="flex-1 overflow-y-auto p-4 md:p-8 pb-24 md:pb-8">
           {activeTab === 'dashboard' && <Dashboard />}
           {activeTab === 'factories' && <FactoryList />}
           {activeTab === 'floorplans' && <FloorPlanAdmin />}
