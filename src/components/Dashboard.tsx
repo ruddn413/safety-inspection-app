@@ -416,6 +416,12 @@ export function Dashboard() {
             </div>
           ) : (
             <>
+              {/* Preload images to eliminate network delay when switching floor plans */}
+              <div className="hidden">
+                {floorPlans.map(plan => (
+                  <img key={`preload-${plan.id}`} src={plan.imageUrl} crossOrigin="anonymous" alt="" />
+                ))}
+              </div>
               <FloorPlanSelector
                 factories={factories}
                 floorPlans={floorPlans}
