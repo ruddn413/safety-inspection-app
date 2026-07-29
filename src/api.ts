@@ -86,7 +86,12 @@ export async function createEquipment(data: Partial<Equipment>): Promise<Equipme
     headers: getAuthHeaders(),
     body: JSON.stringify(data)
   });
-  if (!res.ok) throw new Error('Failed to create equipment');
+  if (!res.ok) {
+    const errText = await res.text();
+    let errDetail = errText;
+    try { errDetail = JSON.parse(errText).details || JSON.parse(errText).error || errText; } catch(e) {}
+    throw new Error(errDetail);
+  }
   return res.json();
 }
 

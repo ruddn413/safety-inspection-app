@@ -246,9 +246,10 @@ export function FactoryList() {
       setValidityEnd('');
       setEditingEqId(null);
       loadEquipment();
-    } catch (err) {
-      console.error(err);
-      alert(editingEqId ? '설비 수정 실패' : '설비 추가 실패');
+    } catch (error: any) {
+      console.error(error);
+      const msg = editingEqId ? '설비 수정 실패' : '설비 추가 실패';
+      alert(`${msg}: ${error.message || String(error)}`);
     }
   }
 

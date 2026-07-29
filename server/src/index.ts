@@ -130,29 +130,35 @@ app.get('/api/equipment', async (req, res) => {
 });
 
 app.post('/api/equipment', checkAdmin, async (req, res) => {
-  const { factoryId, name, categoryMain, categorySub, categoryDetail, specification, capacity, manufacturingNum, recentPassNum, certificationNum, qrImageUrl, lastInspectionDate, nextInspectionDate, status } = req.body;
+  const data = req.body;
   try {
     const equipment = await prisma.equipment.create({
       data: {
-        factoryId: Number(factoryId),
-        name,
-        categoryMain,
-        categorySub,
-        categoryDetail,
-        specification,
-        capacity,
-        manufacturingNum,
-        recentPassNum,
-        certificationNum,
-        qrImageUrl,
-        lastInspectionDate: lastInspectionDate ? new Date(lastInspectionDate) : null,
-        nextInspectionDate: nextInspectionDate ? new Date(nextInspectionDate) : null,
-        status: status || 'ACTIVE'
+        factoryId: Number(data.factoryId),
+        name: data.name,
+        categoryMain: data.categoryMain,
+        categorySub: data.categorySub,
+        categoryDetail: data.categoryDetail,
+        specification: data.specification,
+        capacity: data.capacity,
+        manufacturingNum: data.manufacturingNum,
+        recentPassNum: data.recentPassNum,
+        certificationNum: data.certificationNum,
+        qrImageUrl: data.qrImageUrl,
+        attachmentUrl: data.attachmentUrl,
+        attachmentMemo: data.attachmentMemo,
+        floorPlanId: data.floorPlanId ? Number(data.floorPlanId) : null,
+        locationX: data.locationX,
+        locationY: data.locationY,
+        lastInspectionDate: data.lastInspectionDate ? new Date(data.lastInspectionDate) : null,
+        nextInspectionDate: data.nextInspectionDate ? new Date(data.nextInspectionDate) : null,
+        status: data.status || 'ACTIVE'
       }
     });
     res.status(201).json(equipment);
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to create equipment' });
+  } catch (error: any) {
+    console.error('Equipment Creation Error:', error);
+    res.status(500).json({ error: 'Failed to create equipment', details: error.message });
   }
 });
 
