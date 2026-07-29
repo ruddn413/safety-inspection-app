@@ -29,10 +29,12 @@ export function FactoryList() {
   const EQUIPMENT_CATEGORIES = ['컨베이어', '산업용로봇', '압력용기', '혼합기', '산업용리프트'];
   const ANSAN_TEAMS = ['이스트', 'SD', '슈레드', '피자', '소스', '치즈', '골드', '혼합제제', '기타'];
   const DAESO_TEAMS = ['유탕', '피자', '밀키트', '기타'];
+  const CHOHEUNG_GF_TEAMS = ['생산1팀(슈레드)', '생산2팀(가공치즈)', '기타'];
   
   const selectedFactoryName = selectedFactoryId !== 'all' ? factories.find(f => f.id === selectedFactoryId)?.name : null;
   const isAnsanSelected = selectedFactoryName === '안산공장';
   const isDaesoSelected = selectedFactoryName === '대소공장';
+  const isChoheungGFSelected = selectedFactoryName === '조흥GF';
 
   const filteredEquipment = equipment.filter(eq => {
     const factoryMatch = selectedFactoryId === 'all' || 
@@ -305,7 +307,9 @@ export function FactoryList() {
     ? DAESO_TEAMS 
     : modalFactoryName === '안산공장' 
       ? ANSAN_TEAMS 
-      : Array.from(new Set([...ANSAN_TEAMS, ...DAESO_TEAMS]));
+      : modalFactoryName === '조흥GF'
+        ? CHOHEUNG_GF_TEAMS
+        : Array.from(new Set([...ANSAN_TEAMS, ...DAESO_TEAMS, ...CHOHEUNG_GF_TEAMS]));
   const modalTeams = newEq.categoryMain && !baseTeams.includes(newEq.categoryMain)
     ? [newEq.categoryMain, ...baseTeams]
     : baseTeams;
@@ -334,7 +338,7 @@ export function FactoryList() {
                 ))}
               </select>
               
-              {(isAnsanSelected || isDaesoSelected) && (
+              {(isAnsanSelected || isDaesoSelected || isChoheungGFSelected) && (
                 <>
                   <h3 className="text-lg font-semibold ml-2 sm:ml-4">공정 분류</h3>
                   <select 
@@ -343,7 +347,7 @@ export function FactoryList() {
                     className="border border-slate-200 rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white min-w-[130px] shadow-sm transition-all hover:border-indigo-300"
                   >
                     <option value="all">전체 보기</option>
-                    {(isDaesoSelected ? DAESO_TEAMS : ANSAN_TEAMS).map(team => (
+                    {(isChoheungGFSelected ? CHOHEUNG_GF_TEAMS : isDaesoSelected ? DAESO_TEAMS : ANSAN_TEAMS).map(team => (
                       <option key={team} value={team}>{team}</option>
                     ))}
                   </select>
