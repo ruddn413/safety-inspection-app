@@ -356,7 +356,10 @@ export function Dashboard() {
       {/* KPI Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
         {/* Total */}
-        <div className="bg-white rounded-3xl p-7 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100/50 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:border-blue-200/50 hover:-translate-y-1 transition-all cursor-default relative overflow-hidden group">
+        <div 
+          onClick={() => setModalType('total')}
+          className="bg-white rounded-3xl p-7 shadow-sm border border-slate-100 hover:shadow-xl hover:shadow-blue-900/5 hover:border-blue-200 hover:-translate-y-2 transition-all duration-300 cursor-pointer relative overflow-hidden group"
+        >
           <div className="absolute -right-6 -top-6 bg-blue-50 w-28 h-28 rounded-full flex items-center justify-center group-hover:scale-110 group-hover:bg-blue-100/50 transition-all duration-500">
             <Settings className="w-10 h-10 text-blue-400 absolute bottom-5 left-5" />
           </div>
@@ -370,7 +373,7 @@ export function Dashboard() {
         {/* Completed This Year */}
         <div 
           onClick={() => setModalType('completedThisYear')}
-          className="bg-white rounded-3xl p-7 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100/50 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:border-emerald-200/50 hover:-translate-y-1 transition-all cursor-pointer relative overflow-hidden group"
+          className="bg-white rounded-3xl p-7 shadow-sm border border-slate-100 hover:shadow-xl hover:shadow-emerald-900/5 hover:border-emerald-200 hover:-translate-y-2 transition-all duration-300 cursor-pointer relative overflow-hidden group"
         >
           <div className="absolute -right-6 -top-6 bg-emerald-50 w-28 h-28 rounded-full flex items-center justify-center group-hover:scale-110 group-hover:bg-emerald-100/50 transition-all duration-500">
             <ShieldCheck className="w-10 h-10 text-emerald-400 absolute bottom-5 left-5" />
@@ -387,7 +390,7 @@ export function Dashboard() {
         {/* Scheduled Next Year */}
         <div 
           onClick={() => setModalType('scheduledNextYear')}
-          className="bg-white rounded-3xl p-7 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100/50 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:border-indigo-200/50 hover:-translate-y-1 transition-all cursor-pointer relative overflow-hidden group"
+          className="bg-white rounded-3xl p-7 shadow-sm border border-slate-100 hover:shadow-xl hover:shadow-indigo-900/5 hover:border-indigo-200 hover:-translate-y-2 transition-all duration-300 cursor-pointer relative overflow-hidden group"
         >
           <div className="absolute -right-6 -top-6 bg-indigo-50 w-28 h-28 rounded-full flex items-center justify-center group-hover:scale-110 group-hover:bg-indigo-100/50 transition-all duration-500">
             <CalendarClock className="w-10 h-10 text-indigo-400 absolute bottom-5 left-5" />
@@ -693,7 +696,7 @@ export function Dashboard() {
               return (
                 <div 
                   key={item.name} 
-                  className={`bg-white rounded-2xl p-4 border shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md cursor-default group overflow-hidden relative flex items-center justify-between ${colorTheme.border} ${colorTheme.hover}`}
+                  className={`bg-white rounded-2xl p-4 border shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-lg cursor-default group overflow-hidden relative flex items-center justify-between ${colorTheme.border} ${colorTheme.hover}`}
                 >
                   <div className={`absolute -right-4 -top-4 w-24 h-24 rounded-full ${colorTheme.bg} opacity-50 group-hover:scale-[2] transition-transform duration-700 ease-out`}></div>
                   <div className="relative z-10 flex items-center gap-4">
@@ -774,7 +777,7 @@ export function Dashboard() {
             ) : (
               <ul className="space-y-3">
                 {laws.map(law => (
-                  <li key={law.id} className="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 hover:border-blue-200 hover:shadow-md transition-all group cursor-pointer" onClick={() => window.open(law.link, '_blank')}>
+                  <li key={law.id} className="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 hover:border-blue-200 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group cursor-pointer" onClick={() => window.open(law.link, '_blank')}>
                     <div className="flex justify-between items-start mb-1">
                       <span className={`text-xs font-bold px-2 py-0.5 rounded-md ${law.type === '입법예고' ? 'bg-orange-100 text-orange-700' : law.type === '개정' ? 'bg-rose-100 text-rose-700' : 'bg-gray-100 text-gray-600'}`}>
                         {law.type}
