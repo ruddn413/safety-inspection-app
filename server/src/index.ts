@@ -536,7 +536,8 @@ app.get('/api/laws', async (req, res) => {
         const title = `${lawName} ${amendmentType}`.trim();
         
         const lbicId = noticeItem.lbicId && noticeItem.lbicId[0] ? noticeItem.lbicId[0] : '';
-        const link = lbicId ? `https://opinion.lawmaking.go.kr/gcom/ogLmPp/${lbicId}` : 'https://opinion.lawmaking.go.kr/gcom/ogLmPp/list';
+        const searchKeyword = lawName || '산업안전';
+        const link = lbicId ? `https://opinion.lawmaking.go.kr/gcom/ogLmPp/${lbicId}` : `https://opinion.lawmaking.go.kr/gcom/ogLmPp/list?srchLsNm=${encodeURIComponent(searchKeyword)}`;
         
         combinedLaws.push({
           type: typeStr,
