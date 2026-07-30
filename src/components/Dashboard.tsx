@@ -474,9 +474,15 @@ export function Dashboard() {
                               />
                               {eq.attachmentUrl && (() => {
                                 const isTopHalf = (eq.locationY || 0) < 0.5;
-                                const popupYTransform = hoveredEqId === eq.id ? 'translate-y-0' : (isTopHalf ? '-translate-y-2' : 'translate-y-2');
+                                const isVisible = hoveredEqId === eq.id || selectedEquipmentId === eq.id;
+                                const popupYTransform = isVisible ? 'translate-y-0' : (isTopHalf ? '-translate-y-2' : 'translate-y-2');
                                 return (
-                                  <div className={`absolute left-1/2 -translate-x-1/2 w-max max-w-[500px] min-w-[240px] bg-white/95 backdrop-blur-sm rounded-2xl p-3 shadow-2xl border border-gray-200 z-[120] cursor-default pointer-events-none transition-all duration-200 ${hoveredEqId === eq.id ? 'opacity-100 visible' : 'opacity-0 invisible'} ${isTopHalf ? 'top-full mt-3' : 'bottom-full mb-3'} ${popupYTransform}`}>
+                                  <div 
+                                    className={`absolute left-1/2 -translate-x-1/2 w-max max-w-[500px] min-w-[240px] bg-white/95 backdrop-blur-sm rounded-2xl p-3 shadow-2xl border border-gray-200 z-[120] cursor-default transition-all duration-200 ${isVisible ? 'opacity-100 visible pointer-events-auto' : 'opacity-0 invisible pointer-events-none'} ${isTopHalf ? 'top-full mt-2' : 'bottom-full mb-2'} ${popupYTransform}`}
+                                    onClick={(e) => e.stopPropagation()}
+                                  >
+                                    {/* Hover bridge to prevent losing hover in the gap */}
+                                    <div className={`absolute left-0 right-0 h-4 bg-transparent ${isTopHalf ? '-top-3' : '-bottom-3'}`}></div>
                                     <div className={`text-sm font-bold text-gray-800 text-center truncate ${!(eq.specification || eq.capacity) ? 'mb-2 border-b border-gray-100 pb-1.5' : 'mb-0.5'}`}>
                                       {eq.name}
                                     </div>
@@ -485,7 +491,7 @@ export function Dashboard() {
                                         {eq.specification} {eq.capacity ? `(${eq.capacity})` : ''}
                                       </div>
                                     )}
-                                    <div className="rounded-xl overflow-x-auto bg-gray-50 flex gap-2 justify-start w-full snap-x snap-mandatory pb-1 scrollbar-hide">
+                                    <div className="rounded-xl overflow-x-auto bg-gray-50 flex gap-2 justify-start w-full snap-x snap-mandatory pb-2 custom-scrollbar">
                                       {eq.attachmentUrl.split(',').map((url, i) => (
                                         <img key={i} crossOrigin="anonymous" src={url} alt={`설비 사진 ${i+1}`} className="max-w-full h-auto max-h-[320px] object-contain shrink-0 snap-center" />
                                       ))}
