@@ -25,6 +25,7 @@ export function Dashboard() {
   const [selectedEquipmentId, setSelectedEquipmentId] = useState<number | null>(null);
   const [hoveredEqId, setHoveredEqId] = useState<number | null>(null);
   const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
+  const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   
   const [modalType, setModalType] = useState<'completedThisYear' | 'scheduledNextYear' | null>(null);
   const [modalEquipment, setModalEquipment] = useState<Equipment[]>([]);
@@ -457,8 +458,15 @@ export function Dashboard() {
                                 top: `${(eq.locationY || 0) * 100}%`,
                                 transform: 'translate(-50%, -50%)'
                               }}
-                              onMouseEnter={() => setHoveredEqId(eq.id)}
-                              onMouseLeave={() => setHoveredEqId(null)}
+                              onMouseEnter={() => {
+                                if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
+                                setHoveredEqId(eq.id);
+                              }}
+                              onMouseLeave={() => {
+                                hoverTimeoutRef.current = setTimeout(() => {
+                                  setHoveredEqId(null);
+                                }, 300);
+                              }}
                               onClick={(e) => {
                                 e.stopPropagation();
                                 const newId = selectedEquipmentId === eq.id ? null : eq.id;
