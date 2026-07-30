@@ -357,8 +357,7 @@ export function Dashboard() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
         {/* Total */}
         <div 
-          onClick={() => setModalType('total')}
-          className="bg-white rounded-3xl p-7 shadow-sm border border-slate-100 hover:shadow-xl hover:shadow-blue-900/5 hover:border-blue-200 hover:-translate-y-2 transition-all duration-300 cursor-pointer relative overflow-hidden group"
+          className="bg-white rounded-3xl p-7 shadow-sm border border-slate-100 hover:shadow-xl hover:shadow-blue-900/5 hover:border-blue-200 hover:-translate-y-2 transition-all duration-300 cursor-default relative overflow-hidden group"
         >
           <div className="absolute -right-6 -top-6 bg-blue-50 w-28 h-28 rounded-full flex items-center justify-center group-hover:scale-110 group-hover:bg-blue-100/50 transition-all duration-500">
             <Settings className="w-10 h-10 text-blue-400 absolute bottom-5 left-5" />
