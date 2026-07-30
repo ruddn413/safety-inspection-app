@@ -25,7 +25,7 @@ export function Dashboard() {
   const [selectedEquipmentId, setSelectedEquipmentId] = useState<number | null>(null);
   const [hoveredEqId, setHoveredEqId] = useState<number | null>(null);
   const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
-  const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const hoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   
   const [modalType, setModalType] = useState<'completedThisYear' | 'scheduledNextYear' | null>(null);
   const [modalEquipment, setModalEquipment] = useState<Equipment[]>([]);
