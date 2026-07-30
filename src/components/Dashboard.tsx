@@ -637,7 +637,7 @@ export function Dashboard() {
           <h3 className="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2">
             공정(팀)별 설비 점유율
           </h3>
-          <div className="flex-1 overflow-y-auto pr-2 space-y-5 custom-scrollbar">
+          <div className="flex-1 overflow-y-auto pr-2 pt-2 -mt-2 pb-2 space-y-5 custom-scrollbar">
             {pieData.length === 0 ? (
               <div className="flex items-center justify-center h-full text-gray-400">데이터가 없습니다.</div>
             ) : (
@@ -673,7 +673,7 @@ export function Dashboard() {
           <h3 className="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2">
             설비 종류별 현황
           </h3>
-          <div className="flex-1 overflow-y-auto pr-2 space-y-4 custom-scrollbar">
+          <div className="flex-1 overflow-y-auto pr-2 pt-2 -mt-2 pb-2 space-y-4 custom-scrollbar">
             {barData.map((item, idx) => {
               const colors = [
                 { bg: 'bg-blue-50', text: 'text-blue-700', icon: 'text-blue-500', border: 'border-blue-100', hover: 'hover:border-blue-300 hover:shadow-blue-100' },
